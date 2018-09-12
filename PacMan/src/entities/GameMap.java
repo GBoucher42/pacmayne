@@ -2,12 +2,13 @@ package entities;
 
 public class GameMap {
 
+	// TODO: Encode wall location using numbers below
 	// Number 1 is a left wall
 	// Number 2 is top wall
 	// Number 4 is right wall
 	// Number 8 is bottom wall
 	// Number 16 is a point
-	private final short tileGrid[] = {
+	public final short tileGrid[] = {
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
 			0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0,
