@@ -2,9 +2,9 @@ package entities;
 
 public class GameEntity {
 
-	private Velocity velocity;
-	private SpawnPoint spawnPoint;
-	private Animatable animatable;
+	protected Velocity velocity;
+	protected SpawnPoint spawnPoint;
+	protected Animatable animatable;
 	
 	public GameEntity()
 	{
@@ -19,6 +19,10 @@ public class GameEntity {
 	public void hide()
 	{
 		// TODO:
+	}
+	
+	public void setSpeed(double speed) {
+		velocity.setSpeed(speed);
 	}
 	
 	public void moveOneFrameBySpeed()
@@ -40,4 +44,17 @@ public class GameEntity {
 	{
 		velocity.setDirection(direction);
 	}
+
+	public void setVelocity(Velocity velocity) {
+		this.velocity = velocity;
+	}
+
+	public void setSpawnPoint(SpawnPoint spawnPoint) {
+		this.spawnPoint = spawnPoint;
+	}
+
+	public void setAnimatable(Animatable animatable) {
+		this.animatable = animatable;
+	}
+	
 }
