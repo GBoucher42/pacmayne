@@ -14,6 +14,7 @@ import entities.Direction;
 import entities.GameMap;
 import entities.PacMan;
 import entities.Velocity;
+import javafx.animation.AnimationTimer;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
@@ -55,48 +56,75 @@ public class Game {
 	public void run()
 	{
 		stage.getScene().setOnKeyPressed(this::onKeyPress);
+		new AnimationTimer()
+        {
+			int candidateTileIndex = 0;
+			long lastUpdate = 0;
+
+            public void handle(long currentNanoTime)
+            {
+            	if (currentNanoTime - lastUpdate < 100000000) {
+                    return;
+                }
+            	move();
+				lastUpdate = currentNanoTime;
+            }
+        }.start();
+	}
+	
+	private void move() {
+		int candidateTileIndex = 0;
+		switch(pacman.getVelocity().getDirection()){
+		case UP:
+			candidateTileIndex = pacman.getTileIndex() - GAME_TILE_WIDTH_COUNT - 1;
+			if (candidateTileIndex > 0 && map.tileGrid[candidateTileIndex] != 0){
+				pacman.startMoving();
+				detectGums(candidateTileIndex);
+			}
+			break;
+		case DOWN:
+			candidateTileIndex = pacman.getTileIndex() + GAME_TILE_WIDTH_COUNT - 1;
+			if (candidateTileIndex < GAME_TOTAL_TILE_COUNT && map.tileGrid[candidateTileIndex] != 0){
+				pacman.startMoving();
+				detectGums(candidateTileIndex);
+			}
+			
+			break;
+		case LEFT:
+			candidateTileIndex = pacman.getTileIndex() - 2;
+			if (candidateTileIndex > 0 && map.tileGrid[candidateTileIndex] != 0){
+				pacman.startMoving();
+				detectGums(candidateTileIndex);
+			}
+			
+			break;
+		case RIGHT:
+			candidateTileIndex = pacman.getTileIndex();
+			if (candidateTileIndex < GAME_TOTAL_TILE_COUNT && map.tileGrid[candidateTileIndex] != 0){
+				pacman.startMoving();
+				detectGums(candidateTileIndex);
+			}
+			
+			break;
+		default:
+			break;			
+		}
 	}
 	
 	private void onKeyPress(KeyEvent key) {
 		KeyCode keyCode = key.getCode();
-		int candidateTileIndex = 0;
-		
 		switch(keyCode) {
 			case UP:
 				pacman.setDirection(Direction.UP);
-				candidateTileIndex = pacman.getTileIndex() - GAME_TILE_WIDTH_COUNT - 1;
-				if (candidateTileIndex > 0 && map.tileGrid[candidateTileIndex] != 0){
-					pacman.startMoving();
-					detectGums(candidateTileIndex);
-				}
-
 				break;
 			case DOWN:
 				pacman.setDirection(Direction.DOWN);
-				candidateTileIndex = pacman.getTileIndex() + GAME_TILE_WIDTH_COUNT - 1;
-				if (candidateTileIndex < GAME_TOTAL_TILE_COUNT && map.tileGrid[candidateTileIndex] != 0){
-					pacman.startMoving();
-					detectGums(candidateTileIndex);
-				}
-				
 				break;
 			case LEFT:
 				pacman.setDirection(Direction.LEFT);
-				candidateTileIndex = pacman.getTileIndex() - 2;
-				if (candidateTileIndex > 0 && map.tileGrid[candidateTileIndex] != 0){
-					pacman.startMoving();
-					detectGums(candidateTileIndex);
-				}
-				
 				break;
 			case RIGHT:
 				pacman.setDirection(Direction.RIGHT);
-				candidateTileIndex = pacman.getTileIndex();
-				if (candidateTileIndex < GAME_TOTAL_TILE_COUNT && map.tileGrid[candidateTileIndex] != 0){
-					pacman.startMoving();
-					detectGums(candidateTileIndex);
-				}
-				
 				break;
 			case F:
 				pacman.setSpeed(2);
@@ -175,8 +203,8 @@ public class Game {
 		pacman.setShape(pacmanView);
 		Velocity velocity = new Velocity();
 		velocity.setSpeed(1);
+		velocity.setDirection(Direction.RIGHT);
 		pacman.setVelocity(velocity);
-		Pane root = (Pane) stage.getScene().getRoot();
 		root.getChildren().add(pacman.getShape());
 		eatGum(pacman.getTileIndex()-1);
 	}
