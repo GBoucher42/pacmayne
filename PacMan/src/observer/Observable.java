@@ -4,17 +4,17 @@ import java.util.ArrayList;
 
 public class Observable {
 
-	private ArrayList<IObserver> ObserverList = new ArrayList<IObserver>();
+	private ArrayList<IObserver> observerList = new ArrayList<IObserver>();
 	
 	public void register(IObserver observer) {
-		if(!ObserverList.contains(observer)) {
-			ObserverList.add(observer);
+		if(!observerList.contains(observer)) {
+			observerList.add(observer);
 		}
 	}
 	
 	public void unregister(IObserver observer) {
-		if(ObserverList.contains(observer)) {
-			ObserverList.remove(observer);
+		if(observerList.contains(observer)) {
+			observerList.remove(observer);
 		}
 	}
 	
@@ -23,7 +23,7 @@ public class Observable {
 	}
 	
 	public void notifyAllObservers() {
-		for (IObserver observer: ObserverList) {
+		for (IObserver observer: observerList) {
 			observer.update();
 		}
 	}
