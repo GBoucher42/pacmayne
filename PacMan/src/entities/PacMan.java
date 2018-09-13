@@ -8,8 +8,12 @@ import static configs.GameConfig.GAME_TILE_WIDTH_COUNT;
 public class PacMan extends GameEntity{
 	private Rectangle shape;
 	
-	public PacMan()
+	public final static int MAX_LIFE = 3;
+	private int lives = MAX_LIFE;
+	
+	public PacMan(double x, double y)
 	{
+		super("pacman", x, y);
 		tileIndex = 30;
 	}
 	
@@ -54,6 +58,10 @@ public class PacMan extends GameEntity{
 
 	public Rectangle getShape() {
 		return shape;
+	}
+	
+	public int getLives() {
+		return lives;
 	}
 
 	public void setShape(Rectangle shape) {

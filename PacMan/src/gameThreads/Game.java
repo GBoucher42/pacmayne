@@ -109,7 +109,7 @@ public class Game {
     }
 	
 	private void addPacMan() {
-		pacman = new PacMan();
+		pacman = new PacMan(0, 0);
 		Rectangle pacmanView = new Rectangle(TILE_SIZE, TILE_SIZE, TILE_SIZE, TILE_SIZE);
 		pacmanView.setFill(Color.YELLOW);
 		pacman.setShape(pacmanView);

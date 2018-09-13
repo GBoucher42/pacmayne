@@ -5,12 +5,17 @@ public abstract class GameEntity {
 	protected Velocity velocity;
 	protected SpawnPoint spawnPoint;
 	protected Animatable animatable;
-	protected int tileIndex;
-	// TODO: protected Image sprite;
+	protected int tileIndex;	
+	protected final String name;
+	double startX, startY, currentX, currentY;
 	
-	public GameEntity()
+	public GameEntity(String name, double x, double y)
 	{
-		// TODO: init game entity
+		this.name = name;
+		startX = x;
+		currentX = x;
+		startY = y;
+		currentY = y;
 	}
 	
 	public abstract void update();
@@ -18,16 +23,6 @@ public abstract class GameEntity {
 	public int getTileIndex()
 	{
 		return tileIndex;
-	}
-	
-	public void show()
-	{
-		// TODO:
-	}
-	
-	public void hide()
-	{
-		// TODO:
 	}
 	
 	public void setSpeed(double speed) {
@@ -71,4 +66,28 @@ public abstract class GameEntity {
 		this.animatable = animatable;
 	}
 	
+	public String getName()
+	{
+		return this.name;
+	}
+	
+	public double getStartX()
+	{
+		return startX;
+	}
+	
+	public double getStartY()
+	{
+		return startY;
+	}
+	
+	public double getCurrentX()
+	{
+		return currentX;
+	}
+	
+	public double getCurrentY()
+	{
+		return currentY;
+	}
 }
