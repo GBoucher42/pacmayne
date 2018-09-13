@@ -1,37 +1,42 @@
 package entities;
 
-import static configs.GameConfig.GAME_SIZE;
+import static configs.GameConfig.GAME_HEIGHT;
+import static configs.GameConfig.GAME_WIDTH;
 import static configs.GameConfig.TILE_SIZE;
 
 import javafx.scene.shape.Rectangle;
+import static configs.GameConfig.GAME_TILE_WIDTH_COUNT;
 
 public class PacMan extends GameEntity{
 	private Rectangle shape;
 	
+	public PacMan()
+	{
+		tileIndex = 30;
+	}
+	
 	public void startMoving()
 	{
 		switch(velocity.getDirection()){
-		case UP:
-			if(shape.getY() >= TILE_SIZE * velocity.getSpeed())
-				shape.setY(shape.getY() - TILE_SIZE * velocity.getSpeed());
+		case UP:			
+			tileIndex -= GAME_TILE_WIDTH_COUNT;		
+			shape.setY(shape.getY() - TILE_SIZE * velocity.getSpeed());
 			break;
 		case DOWN:
-			if(shape.getY() < GAME_SIZE - TILE_SIZE * velocity.getSpeed())
-				shape.setY(shape.getY() + TILE_SIZE * velocity.getSpeed());
+			tileIndex += GAME_TILE_WIDTH_COUNT;		
+			shape.setY(shape.getY() + TILE_SIZE * velocity.getSpeed());
 			break;
 		case LEFT:
-			if(shape.getX() >= TILE_SIZE * velocity.getSpeed())
-				shape.setX(shape.getX() - TILE_SIZE * velocity.getSpeed());
+			--tileIndex;		
+			shape.setX(shape.getX() - TILE_SIZE * velocity.getSpeed());
 			break;
 		case RIGHT:
-			if(shape.getX() < GAME_SIZE - TILE_SIZE * velocity.getSpeed())
-				shape.setX(shape.getX() + TILE_SIZE * velocity.getSpeed());
+			++tileIndex;
+			shape.setX(shape.getX() + TILE_SIZE * velocity.getSpeed());
 			break;
 		default:
-			break;
-			
+			break;			
 		}
-
 	}
 	
 	public void stopMoving()
