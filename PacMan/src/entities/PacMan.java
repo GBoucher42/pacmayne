@@ -46,7 +46,7 @@ public class PacMan extends GameEntity{
 		// TODO:
 	}
 
-	public void setDead(boolean dead)
+	public void setDead(boolean isDead)
 	{
 		// TODO:
 	}

@@ -1,15 +1,28 @@
 package entities;
 
+import java.util.ArrayList;
+
 public class EntityManager {
+	
+	private ArrayList<GameEntity> entities;
+	
+	public EntityManager()
+	{
+		entities = new ArrayList<>();
+	}
 	
 	public void addEntity(GameEntity entity)
 	{
-		// TODO:
+		entities.add(entity);
 	}
 	
-	public GameEntity getEntity(GameEntity entity)
+	public GameEntity getEntity(int index)
 	{
-		// TODO:
-		return null;
+		return entities.get(index);
+	}
+	
+	public void deleteEntity(GameEntity entity)
+	{
+		entities.remove(entity);
 	}
 }

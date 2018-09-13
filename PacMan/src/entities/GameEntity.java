@@ -16,6 +16,7 @@ public abstract class GameEntity {
 		currentX = x;
 		startY = y;
 		currentY = y;
+		velocity = new Velocity();
 	}
 	
 	public abstract void update();
