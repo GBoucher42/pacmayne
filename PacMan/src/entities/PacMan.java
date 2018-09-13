@@ -1,7 +1,5 @@
 package entities;
 
-import static configs.GameConfig.GAME_HEIGHT;
-import static configs.GameConfig.GAME_WIDTH;
 import static configs.GameConfig.TILE_SIZE;
 
 import javafx.scene.shape.Rectangle;
@@ -60,6 +58,12 @@ public class PacMan extends GameEntity{
 
 	public void setShape(Rectangle shape) {
 		this.shape = shape;
+	}
+
+	@Override
+	public void update() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

@@ -1,16 +1,19 @@
 package entities;
 
-public class GameEntity {
+public abstract class GameEntity {
 
 	protected Velocity velocity;
 	protected SpawnPoint spawnPoint;
 	protected Animatable animatable;
 	protected int tileIndex;
+	// TODO: protected Image sprite;
 	
 	public GameEntity()
 	{
 		// TODO: init game entity
 	}
+	
+	public abstract void update();
 	
 	public int getTileIndex()
 	{

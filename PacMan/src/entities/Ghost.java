@@ -26,9 +26,10 @@ public class Ghost extends GameEntity{
 		// TODO:
 	}
 	
-	public void update()
-	{
-		// TODO:
+	@Override
+	public void update() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	public void setStandBy()

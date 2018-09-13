@@ -14,7 +14,7 @@ public class RenderSystem extends Application {
 	public RenderSystem()
 	{}
 	
-	public Stage initStage(Stage primaryStage, int width, int height) {
+	private Stage initStage(Stage primaryStage, int width, int height) {
 		try {
 			BorderPane root = new BorderPane();
 			Scene scene = new Scene(root, width, height, Color.BLACK);
