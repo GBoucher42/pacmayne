@@ -6,7 +6,8 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import static configs.GameConfig.GAME_SIZE;
+import static configs.GameConfig.GAME_HEIGHT;
+import static configs.GameConfig.GAME_WIDTH;;
 
 public class RenderSystem extends Application {
 	
@@ -28,7 +29,7 @@ public class RenderSystem extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		primaryStage = initStage(primaryStage, GAME_SIZE, GAME_SIZE);
+		primaryStage = initStage(primaryStage, GAME_WIDTH, GAME_HEIGHT);
 		Game gameInstance = new Game(primaryStage);
  		gameInstance.run();
 	}
