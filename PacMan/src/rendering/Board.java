@@ -84,15 +84,15 @@ public class Board extends Pane implements IBoardRenderer{
 	
 	public void onKeyPressed(KeyCode keyCode) {
 		int candidateTileIndex = 0;
-		
+		pacman.setIsMoving(true);
 		// TODO: adopt behavior to current state of state machine 
 		
-		/*switch(keyCode) {
+		switch(keyCode) {
 			case UP:
 				pacman.setDirection(Direction.UP);
 				candidateTileIndex = pacman.getTileIndex() - GAME_TILE_WIDTH_COUNT - 1;
 				if (candidateTileIndex > 0 && map.tileGrid[candidateTileIndex] != 0){
-					pacman.startMoving();
+					pacman.moveOneFrameBySpeed();
 				}
 
 				break;
@@ -100,7 +100,7 @@ public class Board extends Pane implements IBoardRenderer{
 				pacman.setDirection(Direction.DOWN);
 				candidateTileIndex = pacman.getTileIndex() + GAME_TILE_WIDTH_COUNT - 1;
 				if (candidateTileIndex < GAME_TOTAL_TILE_COUNT && map.tileGrid[candidateTileIndex] != 0){
-					pacman.startMoving();
+					pacman.moveOneFrameBySpeed();
 				}
 				
 				break;
@@ -108,7 +108,7 @@ public class Board extends Pane implements IBoardRenderer{
 				pacman.setDirection(Direction.LEFT);
 				candidateTileIndex = pacman.getTileIndex() - 2;
 				if (candidateTileIndex > 0 && map.tileGrid[candidateTileIndex] != 0){
-					pacman.startMoving();
+					pacman.moveOneFrameBySpeed();
 				}
 				
 				break;
@@ -116,7 +116,7 @@ public class Board extends Pane implements IBoardRenderer{
 				pacman.setDirection(Direction.RIGHT);
 				candidateTileIndex = pacman.getTileIndex();
 				if (candidateTileIndex < GAME_TOTAL_TILE_COUNT && map.tileGrid[candidateTileIndex] != 0){
-					pacman.startMoving();
+					pacman.moveOneFrameBySpeed();
 				}
 				
 				break;
@@ -128,6 +128,8 @@ public class Board extends Pane implements IBoardRenderer{
 				break;
 			default:
 				break;
-		}*/
+		}
+		
+		refreshView();
 	}
 }

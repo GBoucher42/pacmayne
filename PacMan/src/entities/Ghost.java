@@ -16,7 +16,7 @@ public class Ghost extends Animatable{
 		aiStrategy = strategy;	
 	}
 	
-	public void setDead(boolean dead)
+	public void setDead(boolean isDead)
 	{
 		// TODO:
 	}

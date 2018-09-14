@@ -6,7 +6,6 @@ import javafx.scene.shape.Rectangle;
 import static configs.GameConfig.GAME_TILE_WIDTH_COUNT;
 
 public class PacMan extends Animatable{
-	private Rectangle shape;
 	
 	public final static int MAX_LIFE = 3;
 	private int lives = MAX_LIFE;
@@ -19,26 +18,7 @@ public class PacMan extends Animatable{
 	
 	public void startMoving()
 	{
-		switch(velocity.getDirection()){
-		case UP:			
-			tileIndex -= GAME_TILE_WIDTH_COUNT;		
-			shape.setY(shape.getY() - TILE_SIZE * velocity.getSpeed());
-			break;
-		case DOWN:
-			tileIndex += GAME_TILE_WIDTH_COUNT;		
-			shape.setY(shape.getY() + TILE_SIZE * velocity.getSpeed());
-			break;
-		case LEFT:
-			--tileIndex;		
-			shape.setX(shape.getX() - TILE_SIZE * velocity.getSpeed());
-			break;
-		case RIGHT:
-			++tileIndex;
-			shape.setX(shape.getX() + TILE_SIZE * velocity.getSpeed());
-			break;
-		default:
-			break;			
-		}
+		// TODO:
 	}
 	
 	public void stopMoving()
@@ -56,16 +36,8 @@ public class PacMan extends Animatable{
 		// TODO:
 	}
 
-	public Rectangle getShape() {
-		return shape;
-	}
-	
 	public int getLives() {
 		return lives;
-	}
-
-	public void setShape(Rectangle shape) {
-		this.shape = shape;
 	}
 
 	@Override
@@ -73,6 +45,4 @@ public class PacMan extends Animatable{
 		// TODO Auto-generated method stub
 		
 	}
-	
-	
 }

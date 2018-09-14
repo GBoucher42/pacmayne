@@ -52,4 +52,14 @@ public abstract class GameEntity {
 	{
 		return currentY;
 	}
+	
+	public void setCurrentX(double x)
+	{
+		this.currentX = x;
+	}
+	
+	public void setCurrentY(double y)
+	{
+		this.currentY = y;
+	}
 }
