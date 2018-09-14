@@ -30,6 +30,7 @@ public class Sprite extends StackPane{
 		updatePosition();
 	}
 
+	// TODO: use bounds to detect collision with other sprites and walls (?)
 	public Bounds getBounds(){
 		BoundingBox box = new BoundingBox(this.getLayoutX() + 4, this.getLayoutY() + 4, 8, 8);
 		return (Bounds)box;

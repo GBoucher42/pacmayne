@@ -32,6 +32,7 @@ public class Board extends Pane implements IBoardRenderer{
 	
 	public void drawMaze() 
 	{		
+		// TODO: import maze image and slap it on the board instead of drawing shitty rectangles
 		int i = 0;
 		for (int y = 0; y < GAME_TILE_HEIGHT_COUNT; ++y) {
             for (int x = 0; x < GAME_TILE_WIDTH_COUNT; ++x) {

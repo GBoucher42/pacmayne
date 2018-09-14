@@ -4,6 +4,7 @@ import static configs.GameConfig.GAME_TILE_WIDTH_COUNT;
 import static configs.GameConfig.TILE_SIZE;
 
 public abstract class Animatable extends GameEntity{
+	private boolean isMoving;
 	protected Velocity velocity = new Velocity();
 	
 	public Animatable(String name, double x, double y, double speed, Direction direction) {
@@ -11,8 +12,6 @@ public abstract class Animatable extends GameEntity{
 		setSpeed(speed);
 		setDirection(direction);
 	}
-
-	private boolean isMoving;
 	
 	// Change on collision
 	public void setIsMoving(boolean isMoving)

@@ -4,7 +4,6 @@ import gameThreads.Game;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import static configs.GameConfig.GAME_HEIGHT;
@@ -31,7 +30,6 @@ public class RenderingSystem extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		primaryStage = initStage(primaryStage, GAME_WIDTH, GAME_HEIGHT);
-		//Game gameInstance = new Game(primaryStage);
 		Game gameInstance = new Game((IBoardRenderer) primaryStage.getScene().getRoot());
  		gameInstance.run();
 	}

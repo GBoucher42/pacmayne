@@ -1,10 +1,5 @@
 package entities;
 
-import static configs.GameConfig.TILE_SIZE;
-
-import javafx.scene.shape.Rectangle;
-import static configs.GameConfig.GAME_TILE_WIDTH_COUNT;
-
 public class PacMan extends Animatable{
 	
 	public final static int MAX_LIFE = 3;

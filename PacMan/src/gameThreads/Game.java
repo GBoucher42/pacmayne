@@ -40,6 +40,6 @@ public class Game {
 	
 	public void run()
 	{
-		// TODO: start thread
+		// TODO: start game thread
 	}
 }
