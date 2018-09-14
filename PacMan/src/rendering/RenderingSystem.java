@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 import static configs.GameConfig.GAME_HEIGHT;
 import static configs.GameConfig.GAME_WIDTH;;
 
-public class RenderSystem extends Application {
+public class RenderingSystem extends Application {
 	
 	private Stage initStage(Stage primaryStage, int width, int height) {
 		try {
@@ -31,7 +31,8 @@ public class RenderSystem extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		primaryStage = initStage(primaryStage, GAME_WIDTH, GAME_HEIGHT);
-		Game gameInstance = new Game(primaryStage);
+		//Game gameInstance = new Game(primaryStage);
+		Game gameInstance = new Game((IBoardRenderer) primaryStage.getScene().getRoot());
  		gameInstance.run();
 	}
 }

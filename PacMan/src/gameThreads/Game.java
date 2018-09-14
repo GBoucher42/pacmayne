@@ -6,41 +6,63 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import rendering.Board;
+import rendering.IBoardRenderer;
+
 import static configs.GameConfig.TILE_SIZE;
+
+import audio.AudioRepository;
+
 import static configs.GameConfig.GAME_TILE_HEIGHT_COUNT;
 import static configs.GameConfig.GAME_TILE_WIDTH_COUNT;
 import static configs.GameConfig.GAME_TOTAL_TILE_COUNT;
 
 import entities.Direction;
+import entities.EntityManager;
 import entities.GameMap;
 import entities.PacMan;
 import entities.Velocity;
 
 public class Game {
 	
-	PacMan pacman;
+	/*PacMan pacman;
 	Stage stage;
-	GameMap map;
+	GameMap map;*/
+	IBoardRenderer board;
+	AudioRepository audioRepository = new AudioRepository();
+	EntityManager entityManager = new EntityManager();
 
-	public Game(Stage stage)
+	/*public Game(Stage stage)
 	{
 		this.map = new GameMap();
 		this.stage = stage;
+		board = (Board) stage.getScene().getRoot();
 		init();
+	}*/
+	
+	public Game(IBoardRenderer board)
+	{
+		this.board = board;
+		this.init();
 	}
 	
 	private void init()
 	{
-		addPacMan();
-		drawMaze();
+		//addPacMan();
+		//drawMaze();
+		board.drawMaze();
+		board.spawnAnimatables();
+		board.spawnStaticEntities();		
+		
+		// TODO: start thread
 	}
 	
 	public void run()
 	{
-		stage.getScene().setOnKeyPressed(this::onKeyPress);
+		//stage.getScene().setOnKeyPressed(this::onKeyPress);
 	}
 	
-	private void onKeyPress(KeyEvent key) {
+	/*private void onKeyPress(KeyEvent key) {
 		KeyCode keyCode = key.getCode();
 		int candidateTileIndex = 0;
 		
@@ -118,5 +140,5 @@ public class Game {
 		pacman.setVelocity(velocity);
 		Pane root = (Pane) stage.getScene().getRoot();
 		root.getChildren().add(pacman.getShape());
-	}
+	}*/
 }
