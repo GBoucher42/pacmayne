@@ -43,7 +43,18 @@ public class GameMap {
 	};
 	
 	
-	public void resetMap()
+	public int  resetMap()
+	{
+		return 0;
+		
+	}
+	
+	public void hide()
+	{
+		// TODO:
+	}
+	
+	public void show()
 	{
 		// TODO:
 	}
@@ -51,6 +62,7 @@ public class GameMap {
 	public boolean isTileBean()
 	{
 		// TODO:
+		
 		return true;
 	}
 	
