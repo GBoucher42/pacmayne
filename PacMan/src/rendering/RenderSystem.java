@@ -12,9 +12,6 @@ import static configs.GameConfig.GAME_WIDTH;;
 
 public class RenderSystem extends Application {
 	
-	public RenderSystem()
-	{}
-	
 	private Stage initStage(Stage primaryStage, int width, int height) {
 		try {
 			primaryStage.setTitle("PacMan");
