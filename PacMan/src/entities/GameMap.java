@@ -48,16 +48,6 @@ public class GameMap {
 		// TODO:
 	}
 	
-	public void hide()
-	{
-		// TODO:
-	}
-	
-	public void show()
-	{
-		// TODO:
-	}
-	
 	public boolean isTileBean()
 	{
 		// TODO:
