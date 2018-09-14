@@ -2,21 +2,27 @@ package rendering;
 
 import static configs.GameConfig.GAME_TILE_WIDTH_COUNT;
 import static configs.GameConfig.GAME_TOTAL_TILE_COUNT;
+import static configs.GameConfig.GAME_TILE_HEIGHT_COUNT;
+import static configs.GameConfig.TILE_SIZE;
 
 import java.util.Collection;
 import java.util.LinkedList;
 
+import entities.Animatable;
 import entities.Direction;
 import entities.EntityManager;
+import entities.GameEntity;
 import entities.GameMap;
 import entities.PacMan;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 public class Board extends Pane implements IBoardRenderer{
 
 	private PacMan pacman;
-	private GameMap map;
+	private GameMap map = new GameMap();
 	private Collection<Sprite> animatedSprites = new LinkedList<Sprite>();
 	
 	public Board()
@@ -26,14 +32,35 @@ public class Board extends Pane implements IBoardRenderer{
 	
 	public void drawMaze() 
 	{		
-		// TODO:
+		int i = 0;
+		for (int y = 0; y < GAME_TILE_HEIGHT_COUNT; ++y) {
+            for (int x = 0; x < GAME_TILE_WIDTH_COUNT; ++x) {
+            	if (map.tileGrid[i] == 0)
+            	{
+            		Rectangle wall = new Rectangle(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+            		wall.setFill(Color.BLUE);
+            		this.getChildren().add(wall);
+            	}
+               
+                i++;
+            }
+        }
 	}
 	
 	public void spawnAnimatables(EntityManager entityManager)
 	{
 		for (int i = 0; i < entityManager.count(); ++i)
-		{			
-			animatedSprites.add(new Sprite(entityManager.getEntity(i), i));
+		{		
+			GameEntity entity = entityManager.getEntity(i);
+			if (entity instanceof Animatable)
+			{
+				animatedSprites.add(new Sprite(entity, i));
+				
+				if (pacman == null && entity.getClass() == PacMan.class)
+				{
+					pacman = (PacMan) entity;
+				}
+			}				
 		}
 		
 		this.getChildren().addAll(animatedSprites);

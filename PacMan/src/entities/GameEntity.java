@@ -5,7 +5,8 @@ public abstract class GameEntity {
 	protected SpawnPoint spawnPoint;
 	protected int tileIndex;	
 	protected final String name;
-	double startX, startY, currentX, currentY;
+	final double startX, startY;
+	double currentX, currentY;
 	
 	public GameEntity(String name, double x, double y)
 	{

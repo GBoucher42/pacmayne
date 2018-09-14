@@ -25,21 +25,11 @@ import entities.PacMan;
 import entities.Velocity;
 
 public class Game {
-	
-	/*PacMan pacman;
-	Stage stage;
-	GameMap map;*/
+
 	IBoardRenderer board;
 	AudioRepository audioRepository = new AudioRepository();
 	EntityManager entityManager = new EntityManager();
 
-	/*public Game(Stage stage)
-	{
-		this.map = new GameMap();
-		this.stage = stage;
-		board = (Board) stage.getScene().getRoot();
-		init();
-	}*/
 	
 	public Game(IBoardRenderer board)
 	{
@@ -119,37 +109,6 @@ public class Game {
 			default:
 				break;
 		}
-	}
-	
-	private void drawMaze() {
-
-        short i = 0;
-        int x, y;
-        Pane root = (Pane) stage.getScene().getRoot();
-        
-        for (y = 0; y < GAME_TILE_HEIGHT_COUNT; y++) {
-            for (x = 0; x < GAME_TILE_WIDTH_COUNT; x++) {
-            	if (map.tileGrid[i] == 0)
-            	{
-            		Rectangle wall = new Rectangle(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-            		wall.setFill(Color.BLUE);
-            		root.getChildren().add(wall);
-            	}
-               
-                i++;
-            }
-        }
-    }
-	
-	private void addPacMan() {
-		pacman = new PacMan(0, 0);
-		Rectangle pacmanView = new Rectangle(TILE_SIZE, TILE_SIZE, TILE_SIZE, TILE_SIZE);
-		pacmanView.setFill(Color.YELLOW);
-		pacman.setShape(pacmanView);
-		Velocity velocity = new Velocity();
-		velocity.setSpeed(1);
-		pacman.setVelocity(velocity);
-		Pane root = (Pane) stage.getScene().getRoot();
-		root.getChildren().add(pacman.getShape());
 	}*/
+
 }

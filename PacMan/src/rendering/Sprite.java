@@ -12,7 +12,7 @@ import javafx.scene.shape.Rectangle;
 // Javafx wrapper around the game entity object
 public class Sprite extends StackPane{
 	
-	private static int id;
+	private final int id;
 	private GameEntity entity;
 	private ImageView image;
 	
