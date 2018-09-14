@@ -7,32 +7,60 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 import entities.Direction;
+import entities.EntityManager;
 import entities.GameMap;
 import entities.PacMan;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 
-public class Board extends Pane{
+public class Board extends Pane implements IBoardRenderer{
 
 	private PacMan pacman;
 	private GameMap map;
-	private Collection<Sprite> animatedSprites;
+	private Collection<Sprite> animatedSprites = new LinkedList<Sprite>();
 	
 	public Board()
 	{
 		this.setStyle("-fx-background-color: black;");
-		map = new GameMap();
-		pacman = new  PacMan(0, 0); // TODO: give correct coordinests
-		//this.getChildren().add(map);
-		animatedSprites = new LinkedList<Sprite>();
+	}
+	
+	public void drawMaze() 
+	{		
+		// TODO:
+	}
+	
+	public void spawnAnimatables(EntityManager entityManager)
+	{
+		for (int i = 0; i < entityManager.count(); ++i)
+		{			
+			animatedSprites.add(new Sprite(entityManager.getEntity(i), i));
+		}
 		
+		this.getChildren().addAll(animatedSprites);
+	}
+	
+	public void spawnStaticEntities(EntityManager entityManager)
+	{
+		
+	}
+	
+	// To be called by the game thread update() method
+	public void refreshView()
+	{
+		for (Sprite sprite : animatedSprites)
+		{
+			sprite.updatePosition();
+		}
+		
+		// TODO: force a refresh of the scene when the game thread updates
 	}
 	
 	public void onKeyPressed(KeyCode keyCode) {
 		int candidateTileIndex = 0;
 		
-		switch(keyCode) {
+		// TODO: adopt behavior to current state of state machine 
+		
+		/*switch(keyCode) {
 			case UP:
 				pacman.setDirection(Direction.UP);
 				candidateTileIndex = pacman.getTileIndex() - GAME_TILE_WIDTH_COUNT - 1;
@@ -73,6 +101,6 @@ public class Board extends Pane{
 				break;
 			default:
 				break;
-		}
+		}*/
 	}
 }

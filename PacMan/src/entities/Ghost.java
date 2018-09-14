@@ -6,9 +6,9 @@ public class Ghost extends Animatable{
 
 	private IGhostAIStrategy aiStrategy;
 	
-	public Ghost(String name, double x, double y)
+	public Ghost(String name, double x, double y, double initSpeed, Direction initDirection)
 	{
-		super(name, x, y);
+		super(name, x, y, initSpeed, initDirection);
 	}
 	
 	public void setAIStrategy(IGhostAIStrategy strategy)

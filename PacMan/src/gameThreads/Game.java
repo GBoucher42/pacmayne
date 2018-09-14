@@ -20,6 +20,7 @@ import static configs.GameConfig.GAME_TOTAL_TILE_COUNT;
 import entities.Direction;
 import entities.EntityManager;
 import entities.GameMap;
+import entities.Ghost;
 import entities.PacMan;
 import entities.Velocity;
 
@@ -50,11 +51,21 @@ public class Game {
 	{
 		//addPacMan();
 		//drawMaze();
+		createEntities();
 		board.drawMaze();
-		board.spawnAnimatables();
-		board.spawnStaticEntities();		
+		board.spawnAnimatables(entityManager);
+		board.spawnStaticEntities(entityManager);		
 		
 		// TODO: start thread
+	}
+
+	private void createEntities()
+	{
+		entityManager.addEntity(new PacMan(120, 204, 1.0, Direction.LEFT));
+		entityManager.addEntity(new Ghost("Inky", 133, 134, 1.0, Direction.UP));
+		entityManager.addEntity(new Ghost("Pinky", 124, 134, 1.0, Direction.UP));
+		entityManager.addEntity(new Ghost("Clyde", 106, 134, 1.0, Direction.UP));
+		entityManager.addEntity(new Ghost("Blinky", 115, 134, 1.0, Direction.UP));
 	}
 	
 	public void run()

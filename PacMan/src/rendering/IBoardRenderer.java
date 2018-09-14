@@ -1,10 +1,12 @@
 package rendering;
 
+import entities.EntityManager;
+
 public interface IBoardRenderer {
 
 	void drawMaze();
 	
-	void spawnAnimatables();
+	void spawnAnimatables(EntityManager entityManager);
 	
-	void spawnStaticEntities();
+	void spawnStaticEntities(EntityManager entityManager);
 }

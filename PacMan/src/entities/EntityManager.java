@@ -8,7 +8,9 @@ public class EntityManager {
 	
 	public void addEntity(GameEntity entity)
 	{
-		entities.add(entity);
+		if (!entities.contains(entity)) {
+			entities.add(entity);
+		}
 	}
 	
 	public GameEntity getEntity(int index)

@@ -1,11 +1,12 @@
 package entities;
 
 public abstract class Animatable extends GameEntity{
-	protected Velocity velocity;
+	protected Velocity velocity = new Velocity();
 	
-	public Animatable(String name, double x, double y) {
+	public Animatable(String name, double x, double y, double speed, Direction direction) {
 		super(name, x, y);
-		velocity = new Velocity();
+		setSpeed(speed);
+		setDirection(direction);
 	}
 
 	private boolean isMoving;

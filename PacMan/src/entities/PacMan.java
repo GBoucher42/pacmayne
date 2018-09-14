@@ -11,9 +11,9 @@ public class PacMan extends Animatable{
 	public final static int MAX_LIFE = 3;
 	private int lives = MAX_LIFE;
 	
-	public PacMan(double x, double y)
+	public PacMan(double x, double y, double initSpeed, Direction initDirection)
 	{
-		super("pacman", x, y);
+		super("pacman", x, y,  initSpeed, initDirection);
 		tileIndex = 30;
 	}
 	
