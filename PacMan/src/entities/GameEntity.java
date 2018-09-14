@@ -7,6 +7,7 @@ public abstract class GameEntity {
 	protected final String name;
 	final double startX, startY;
 	double currentX, currentY;
+
 	
 	public GameEntity(String name, double x, double y)
 	{
@@ -22,7 +23,7 @@ public abstract class GameEntity {
 	public int getTileIndex()
 	{
 		return tileIndex;
-	}
+	}	
 
 	public void setSpawnPoint(SpawnPoint spawnPoint) {
 		this.spawnPoint = spawnPoint;

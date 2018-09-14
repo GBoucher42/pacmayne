@@ -7,20 +7,21 @@ import audio.AudioRepository;
 import entities.Direction;
 import entities.EntityManager;
 import entities.PacMan;
+import javafx.animation.AnimationTimer;
 
 public class Game {
 
-	IBoardRenderer board;
-	AudioRepository audioRepository = new AudioRepository();
-	EntityManager entityManager = new EntityManager();
-
+	private IBoardRenderer board;
+	private AudioRepository audioRepository = new AudioRepository();
+	private EntityManager entityManager = new EntityManager();
+	private PacMan pacman;
 	
 	public Game(IBoardRenderer board)
 	{
 		this.board = board;
 		this.init();
 	}
-	
+
 	private void init()
 	{
 		createEntities();
@@ -31,7 +32,8 @@ public class Game {
 
 	private void createEntities()
 	{
-		entityManager.addEntity(new PacMan(25, 25, 1.0, Direction.LEFT));
+		pacman = new PacMan(25, 25, 1.0, Direction.LEFT);
+		entityManager.addEntity(pacman);
 		//entityManager.addEntity(new Ghost("Inky", 133, 134, 1.0, Direction.UP));
 		//entityManager.addEntity(new Ghost("Pinky", 124, 134, 1.0, Direction.UP));
 		//entityManager.addEntity(new Ghost("Clyde", 106, 134, 1.0, Direction.UP));
@@ -41,5 +43,20 @@ public class Game {
 	public void run()
 	{
 		// TODO: start game thread
+
+		new AnimationTimer()
+        {
+			int candidateTileIndex = 0;
+			long lastUpdate = 0;
+
+            public void handle(long currentNanoTime)
+            {
+            	if (currentNanoTime - lastUpdate < 100000000) {
+                    return;
+                }
+            	//pacman.moveOneFrameBySpeed();
+				lastUpdate = currentNanoTime;
+            }
+        }.start();
 	}
 }
