@@ -32,7 +32,7 @@ public class Game {
 
 	private void createEntities()
 	{
-		pacman = new PacMan(25, 25, 1.0, Direction.LEFT);
+		pacman = new PacMan(25, 25, 1.0, Direction.RIGHT);
 		entityManager.addEntity(pacman);
 		//entityManager.addEntity(new Ghost("Inky", 133, 134, 1.0, Direction.UP));
 		//entityManager.addEntity(new Ghost("Pinky", 124, 134, 1.0, Direction.UP));
@@ -46,7 +46,6 @@ public class Game {
 
 		new AnimationTimer()
         {
-			int candidateTileIndex = 0;
 			long lastUpdate = 0;
 
             public void handle(long currentNanoTime)
@@ -54,9 +53,15 @@ public class Game {
             	if (currentNanoTime - lastUpdate < 100000000) {
                     return;
                 }
-            	//pacman.moveOneFrameBySpeed();
+            	board.animate();
 				lastUpdate = currentNanoTime;
+				update();
             }
         }.start();
+	}
+	
+	private void update()
+	{
+		board.refreshView();
 	}
 }

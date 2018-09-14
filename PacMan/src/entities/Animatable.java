@@ -23,6 +23,7 @@ public abstract class Animatable extends GameEntity{
 	{
 		if (isMoving)
 		{
+			// TODO: move per frame instead of jumping tiles (requires game thread to be functionnal)
 			switch(velocity.getDirection())
 			{
 			case DOWN:

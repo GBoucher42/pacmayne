@@ -96,61 +96,33 @@ public class Board extends Pane implements IBoardRenderer{
 	
 	public void spawnStaticEntities(EntityManager entityManager)
 	{
-		
+		// TODO:
 	}
 	
-	// To be called by the game thread update() method
 	public void refreshView()
 	{
 		for (Sprite sprite : animatedSprites)
 		{
 			sprite.updatePosition();
+			detectGums(sprite.getEntity().getTileIndex() - 1);
 		}
-		
-		// TODO: force a refresh of the scene when the game thread updates
 	}
 	
 	public void onKeyPressed(KeyCode keyCode) {
-		int candidateTileIndex = 0;
-		pacman.setIsMoving(true);
 		// TODO: adopt behavior to current state of state machine 
 		
 		switch(keyCode) {
 			case UP:
 				pacman.setDirection(Direction.UP);
-				candidateTileIndex = pacman.getTileIndex() - GAME_TILE_WIDTH_COUNT - 1;
-				if (candidateTileIndex > 0 && map.tileGrid[candidateTileIndex] != 0){
-					pacman.moveOneFrameBySpeed();
-					detectGums(candidateTileIndex);
-				}
-
 				break;
 			case DOWN:
 				pacman.setDirection(Direction.DOWN);
-				candidateTileIndex = pacman.getTileIndex() + GAME_TILE_WIDTH_COUNT - 1;
-				if (candidateTileIndex < GAME_TOTAL_TILE_COUNT && map.tileGrid[candidateTileIndex] != 0){
-					pacman.moveOneFrameBySpeed();
-					detectGums(candidateTileIndex);
-				}
-				
 				break;
 			case LEFT:
 				pacman.setDirection(Direction.LEFT);
-				candidateTileIndex = pacman.getTileIndex() - 2;
-				if (candidateTileIndex > 0 && map.tileGrid[candidateTileIndex] != 0){
-					pacman.moveOneFrameBySpeed();
-					detectGums(candidateTileIndex);
-				}
-				
 				break;
 			case RIGHT:
 				pacman.setDirection(Direction.RIGHT);
-				candidateTileIndex = pacman.getTileIndex();
-				if (candidateTileIndex < GAME_TOTAL_TILE_COUNT && map.tileGrid[candidateTileIndex] != 0){
-					pacman.moveOneFrameBySpeed();
-					detectGums(candidateTileIndex);
-				}
-				
 				break;
 			case F:
 				pacman.setSpeed(2);
@@ -160,9 +132,52 @@ public class Board extends Pane implements IBoardRenderer{
 				break;
 			default:
 				break;
+		}		
+	}
+	
+	public void animate()
+	{
+		//TODO: Animate ALL animatable sprites if able/valid
+		if (detectCollision(pacman))
+		{
+			pacman.setIsMoving(true);
+			pacman.moveOneFrameBySpeed();
+		}
+		else
+		{
+			pacman.setIsMoving(false);
+		}
+	}
+	
+	private boolean detectCollision(Animatable animatable)
+	{
+		boolean willNotCollide = true;
+		int candidateTileIndex = pacman.getTileIndex() - GAME_TILE_WIDTH_COUNT - 1;
+		// TODO: BoundingBox checking
+		
+		switch(animatable.getVelocity().getDirection())
+		{
+		case DOWN:
+			candidateTileIndex = pacman.getTileIndex() + GAME_TILE_WIDTH_COUNT - 1;
+			willNotCollide = candidateTileIndex < GAME_TOTAL_TILE_COUNT && map.tileGrid[candidateTileIndex] != 0;
+			break;
+		case LEFT:
+			candidateTileIndex = pacman.getTileIndex() - 2;
+			willNotCollide = candidateTileIndex > 0 && map.tileGrid[candidateTileIndex] != 0;
+			break;
+		case RIGHT:
+			candidateTileIndex = pacman.getTileIndex();
+			willNotCollide = candidateTileIndex < GAME_TOTAL_TILE_COUNT && map.tileGrid[candidateTileIndex] != 0;
+			break;
+		case UP:
+			candidateTileIndex = pacman.getTileIndex() - GAME_TILE_WIDTH_COUNT - 1;
+			willNotCollide = candidateTileIndex > 0 && map.tileGrid[candidateTileIndex] != 0;
+			break;
+		default:
+			break;
 		}
 		
-		refreshView();
+		return willNotCollide;
 	}
 	
 	private void detectGums(int index) {

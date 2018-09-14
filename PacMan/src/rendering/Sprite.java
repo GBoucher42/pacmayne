@@ -48,6 +48,11 @@ public class Sprite extends StackPane{
 		setLayoutY(entity.getStartY());
 	}  
 	
+	public GameEntity getEntity()
+	{
+		return entity;
+	}
+	
 	public void show()
 	{
 		this.show();
