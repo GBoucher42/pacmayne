@@ -7,7 +7,7 @@ public class AudioRepository {
 		init();
 	}
 	
-	public void init()
+	private void init()
 	{
 		// TODO:
 	}
