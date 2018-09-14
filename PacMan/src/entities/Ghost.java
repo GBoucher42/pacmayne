@@ -2,7 +2,7 @@ package entities;
 
 import strategies.IGhostAIStrategy;
 
-public class Ghost extends GameEntity{
+public class Ghost extends Animatable{
 
 	private IGhostAIStrategy aiStrategy;
 	

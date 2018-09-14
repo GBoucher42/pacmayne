@@ -5,7 +5,7 @@ import static configs.GameConfig.TILE_SIZE;
 import javafx.scene.shape.Rectangle;
 import static configs.GameConfig.GAME_TILE_WIDTH_COUNT;
 
-public class PacMan extends GameEntity{
+public class PacMan extends Animatable{
 	private Rectangle shape;
 	
 	public final static int MAX_LIFE = 3;
