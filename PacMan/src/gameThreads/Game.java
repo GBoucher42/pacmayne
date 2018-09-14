@@ -20,6 +20,7 @@ public class Game {
 	{
 		this.board = board;
 		this.init();
+		System.out.println("Bonjour, c'est gabriel");
 	}
 
 	private void init()
