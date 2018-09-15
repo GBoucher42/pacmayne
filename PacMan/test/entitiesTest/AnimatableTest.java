@@ -81,9 +81,5 @@ class AnimatableTest {
 		animatable.setDirection(initDirection);
 	}
 	
-	@AfterAll
-	void afterAllTests() {
-		
-	}
 	
 }
