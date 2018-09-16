@@ -55,11 +55,11 @@ public class Sprite extends StackPane{
 	
 	public void show()
 	{
-		this.show();
+		this.setVisible(true);
 	}
 	
 	public void hide()
 	{
-		this.hide();
+		this.setVisible(false);
 	}
 }
