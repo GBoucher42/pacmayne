@@ -35,6 +35,7 @@ public class Board extends Pane implements IBoardRenderer{
 	private Text scoreText;
 	private Map<Integer, Shape> gums = new HashMap<>();
 	private Map<Integer, Shape> pacGums = new HashMap<>();
+	private Direction awaitingDirection;
 	int score;
 	
 	public Board()
@@ -119,16 +120,16 @@ public class Board extends Pane implements IBoardRenderer{
 		
 		switch(keyCode) {
 			case UP:
-				pacman.setDirection(Direction.UP);
+				awaitingDirection = Direction.UP;
 				break;
 			case DOWN:
-				pacman.setDirection(Direction.DOWN);
+				awaitingDirection = Direction.DOWN;
 				break;
 			case LEFT:
-				pacman.setDirection(Direction.LEFT);
+				awaitingDirection = Direction.LEFT;
 				break;
 			case RIGHT:
-				pacman.setDirection(Direction.RIGHT);
+				awaitingDirection = Direction.RIGHT;
 				break;
 			case F:
 				pacman.setSpeed(2);
@@ -144,49 +145,54 @@ public class Board extends Pane implements IBoardRenderer{
 	private void animate()
 	{
 		//TODO: Animate ALL animatable sprites if able/valid
-		if (detectCollision(pacman))
+		if(awaitingDirection != null && !detectCollision(pacman, awaitingDirection)) {
+			pacman.setDirection(awaitingDirection);
+			awaitingDirection = null;
+		}
+		if (detectCollision(pacman, pacman.getVelocity().getDirection()))
+		{
+			pacman.setIsMoving(false);
+			
+		}
+		else
 		{
 			pacman.setIsMoving(true);
 			pacman.moveOneFrameBySpeed();
 		}
-		else
-		{
-			pacman.setIsMoving(false);
-		}
 	}
 	
-	private boolean detectCollision(Animatable animatable)
+	private boolean detectCollision(Animatable animatable, Direction direction)
 	{
-		boolean willNotCollide = false;
+		boolean willCollide = false;
 		// TODO: BoundingBox checking
 		Tile  candidateTile;
-		switch(animatable.getVelocity().getDirection())
+		switch(direction)
 		{
 		case DOWN:
 			candidateTile = map.getTile((int)animatable.getCurrentY() + 1, (int)animatable.getCurrentX());
 			if (candidateTile != null)
-				willNotCollide = candidateTile.getType() != TileType.WALL;
+				willCollide = candidateTile.getType() == TileType.WALL;
 			break;
 		case LEFT:
 			candidateTile = map.getTile((int)animatable.getCurrentY(), (int)animatable.getCurrentX() - 1);
 			if (candidateTile != null)
-				willNotCollide = candidateTile.getType() != TileType.WALL;
+				willCollide = candidateTile.getType() == TileType.WALL;
 			break;
 		case RIGHT:
 			candidateTile = map.getTile((int)animatable.getCurrentY(), (int)animatable.getCurrentX() + 1);
 			if (candidateTile != null)
-				willNotCollide = candidateTile.getType() != TileType.WALL;
+				willCollide = candidateTile.getType() == TileType.WALL;
 			break;
 		case UP:
 			candidateTile = map.getTile((int)animatable.getCurrentY() - 1, (int)animatable.getCurrentX());
 			if (candidateTile != null)
-				willNotCollide = candidateTile.getType() != TileType.WALL;
+				willCollide = candidateTile.getType() == TileType.WALL;
 			break;
 		default:
 			break;
 		}
 		
-		return willNotCollide;
+		return willCollide;
 	}
 	
 	private void detectGums(int index) {
