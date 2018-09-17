@@ -2,6 +2,7 @@ package observer;
 
 import java.util.ArrayList;
 
+//DESIGN PATTERN : Observer
 public class Observable {
 
 	private ArrayList<IObserver> observerList = new ArrayList<IObserver>();

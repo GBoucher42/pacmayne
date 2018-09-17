@@ -1,5 +1,6 @@
 package states;
 
+//DESIGN PATTERN : State
 public class PacManKilledGameState implements IState {
 
 	@Override

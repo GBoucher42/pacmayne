@@ -1,5 +1,6 @@
 package states;
 
+//DESIGN PATTERN : State
 public class PauseGameState implements IState {
 
 	@Override
