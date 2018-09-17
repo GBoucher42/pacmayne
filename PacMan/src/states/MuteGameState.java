@@ -1,5 +1,6 @@
 package states;
 
+//DESIGN PATTERN : State
 public class MuteGameState implements IState {
 
 	@Override
