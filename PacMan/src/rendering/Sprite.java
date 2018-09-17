@@ -23,7 +23,7 @@ public class Sprite extends StackPane{
 		this.id = id;
 		this.entity = entity;
 		
-		Image img = new Image("file:ressource/sprites/pacman-r1.png");
+		Image img = this.updateAvatar(this.getImageName());
 		
 		image = new ImageView(img);
 		
@@ -56,6 +56,25 @@ public class Sprite extends StackPane{
 		setLayoutX(entity.getStartX());
 		setLayoutY(entity.getStartY());
 	}  
+	
+	public String getImageName() {
+		if(entity != null) {
+			String imgName = entity.getName().toString() + "-1" + "-right";
+			return imgName;
+		}
+		else return null;
+	}
+	
+	public Image updateAvatar(String imgName) {
+		String fileName = "";
+		switch(imgName) {
+		case "pacman-1-right":
+			fileName = "file:ressource/sprites/pacman-r1.png";
+			break;
+		default: return null;
+		}
+		return new Image(fileName);
+	}
 	
 	public GameEntity getEntity()
 	{
