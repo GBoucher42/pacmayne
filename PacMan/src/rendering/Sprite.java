@@ -4,10 +4,11 @@ package rendering;
 import entities.GameEntity;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
+
+import static configs.GameConfig.TILE_SIZE;
 
 // Javafx wrapper around the game entity object
 public class Sprite extends StackPane{
@@ -15,18 +16,26 @@ public class Sprite extends StackPane{
 	private final int id;
 	private GameEntity entity;
 	private ImageView image;
+	private ImageView[][] images;
 	
 	public Sprite(GameEntity entity, int id)
 	{
 		this.id = id;
 		this.entity = entity;
-		image = null;
+		
+		Image img = new Image("file:ressource/sprites/pacman-r1.png");
+		
+		image = new ImageView(img);
+		
+		// Scale image 
+		image.fitWidthProperty().bind(this.widthProperty());
+		image.fitHeightProperty().bind(this.heightProperty());
+		
+		image.translateXProperty().bind(this.widthProperty().subtract(image.getFitWidth()).divide(4));
+		image.translateYProperty().bind(this.heightProperty().subtract(image.getFitHeight()).divide(4));
+
 		// TODO: fetch image using entity name as key: GraphicRepository.GetImage(entity.getName()); 
-		
-		Rectangle rect = new Rectangle(entity.getCurrentX(), entity.getCurrentY(), 25, 25);
-		rect.setFill(Color.YELLOW);
-		this.getChildren().add(rect);
-		
+		this.getChildren().add(image);		
 		updatePosition();
 	}
 
@@ -38,8 +47,8 @@ public class Sprite extends StackPane{
 	
 	public void updatePosition()
 	{
-		setLayoutX(entity.getCurrentX());
-		setLayoutY(entity.getCurrentY());
+		setLayoutX(entity.getCurrentX() * TILE_SIZE);
+		setLayoutY(entity.getCurrentY() * TILE_SIZE);
 	}
 	
 	public void resetPosition()

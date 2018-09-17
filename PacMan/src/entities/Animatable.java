@@ -1,7 +1,6 @@
 package entities;
 
 import static configs.GameConfig.GAME_TILE_WIDTH_COUNT;
-import static configs.GameConfig.TILE_SIZE;
 
 public abstract class Animatable extends GameEntity{
 	private boolean isMoving;
@@ -27,19 +26,19 @@ public abstract class Animatable extends GameEntity{
 			switch(velocity.getDirection())
 			{
 			case DOWN:
-				setCurrentY(getCurrentY() + TILE_SIZE);
+				setCurrentY(getCurrentY() + 1);
 				tileIndex += GAME_TILE_WIDTH_COUNT;
 				break;
 			case LEFT:
-				setCurrentX(getCurrentX() - TILE_SIZE);
+				setCurrentX(getCurrentX() - 1);
 				--tileIndex;
 				break;
 			case RIGHT:
-				setCurrentX(getCurrentX() + TILE_SIZE);
+				setCurrentX(getCurrentX() + 1);
 				++tileIndex;
 				break;
 			case UP:
-				setCurrentY(getCurrentY() - TILE_SIZE);
+				setCurrentY(getCurrentY() - 1);
 				tileIndex -= GAME_TILE_WIDTH_COUNT;
 				break;
 			default:
