@@ -3,6 +3,8 @@ package entities;
 import static configs.GameConfig.GAME_TILE_HEIGHT_COUNT;
 import static configs.GameConfig.GAME_TILE_WIDTH_COUNT;
 
+
+// DESIGN PATTERN : Factory
 public class MazeFactory {
 	private static enum TileCode {
 		WALL, GUM, SUPERGUM, FRUIT;
@@ -83,5 +85,4 @@ public class MazeFactory {
 		}
 		
 		return maze;
-	}
 }
