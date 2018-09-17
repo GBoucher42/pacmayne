@@ -85,4 +85,5 @@ public class MazeFactory {
 		}
 		
 		return maze;
+	}
 }
