@@ -163,22 +163,22 @@ public class Board extends Pane implements IBoardRenderer{
 		switch(animatable.getVelocity().getDirection())
 		{
 		case DOWN:
-			candidateTile = map.getTile((int)animatable.getCurrentX(), (int)animatable.getCurrentY() + 1);
+			candidateTile = map.getTile((int)animatable.getCurrentY() + 1, (int)animatable.getCurrentX());
 			if (candidateTile != null)
 				willNotCollide = candidateTile.getType() == TileType.WALL ? false : true;
 			break;
 		case LEFT:
-			candidateTile = map.getTile((int)animatable.getCurrentX() - 1, (int)animatable.getCurrentY());
+			candidateTile = map.getTile((int)animatable.getCurrentY(), (int)animatable.getCurrentX() - 1);
 			if (candidateTile != null)
 				willNotCollide = candidateTile.getType() == TileType.WALL ? false : true;
 			break;
 		case RIGHT:
-			candidateTile = map.getTile((int)animatable.getCurrentX() + 1, (int)animatable.getCurrentY());
+			candidateTile = map.getTile((int)animatable.getCurrentY(), (int)animatable.getCurrentX() + 1);
 			if (candidateTile != null)
 				willNotCollide = candidateTile.getType() == TileType.WALL ? false : true;
 			break;
 		case UP:
-			candidateTile = map.getTile((int)animatable.getCurrentX(), (int)animatable.getCurrentY() - 1);
+			candidateTile = map.getTile((int)animatable.getCurrentY() - 1, (int)animatable.getCurrentX());
 			if (candidateTile != null)
 				willNotCollide = candidateTile.getType() == TileType.WALL ? false : true;
 			break;

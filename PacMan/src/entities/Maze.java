@@ -6,7 +6,7 @@ import static configs.GameConfig.GAME_TILE_WIDTH_COUNT;
 
 public class Maze {
 	
-	private Tile[][] tiles = new Tile[GAME_TILE_WIDTH_COUNT][GAME_TILE_HEIGHT_COUNT];
+	private Tile[][] tiles = new Tile[GAME_TILE_HEIGHT_COUNT][GAME_TILE_WIDTH_COUNT];
 	
 	public void addTile(Tile tile, int row, int column)
 	{

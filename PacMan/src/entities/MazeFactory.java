@@ -78,9 +78,7 @@ public class MazeFactory {
 				}
 				
 				// TODO: Cover other cases and set correct position for Collectable 
-				
-				//maze.addTile(newTile);
-				maze.addTile(newTile, j, i);
+				maze.addTile(newTile, i, j);
 			}
 		}
 		
