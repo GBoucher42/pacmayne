@@ -4,23 +4,23 @@ import java.util.ArrayList;
 
 public class EntityManager {
 	
-	private ArrayList<GameEntity> entities = new ArrayList<>();
+	private ArrayList<IGameEntity> entities = new ArrayList<>();
 	
-	public void addEntity(GameEntity entity)
+	public void addEntity(IGameEntity entity)
 	{
 		if (!entities.contains(entity)) {
 			entities.add(entity);
 		}
 	}
 	
-	public GameEntity getEntity(int index)
+	public IGameEntity getEntity(int index)
 	{
 		return entities.get(index);
 	}
 	
-	public GameEntity getEntity(String entityName)
+	public IGameEntity getEntity(String entityName)
 	{
-		for (GameEntity entity : entities)
+		for (IGameEntity entity : entities)
 		{
 			if (entity.getName().equals(entityName)) {
 				return entity;
@@ -30,7 +30,7 @@ public class EntityManager {
 		return null;
 	}
 	
-	public void deleteEntity(GameEntity entity)
+	public void deleteEntity(IGameEntity entity)
 	{
 		entities.remove(entity);
 	}

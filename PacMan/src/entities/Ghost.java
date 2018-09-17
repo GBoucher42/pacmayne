@@ -2,13 +2,13 @@ package entities;
 
 import strategies.IGhostAIStrategy;
 
-public class Ghost extends Animatable{
+public class Ghost extends GameEntity{
 
 	private IGhostAIStrategy aiStrategy;
 	
-	public Ghost(String name, double x, double y, double initSpeed, Direction initDirection)
+	public Ghost(String name, double x, double y, Animatable animatable)
 	{
-		super(name, x, y, initSpeed, initDirection);
+		super(name, x, y, animatable);
 	}
 	
 	public void setAIStrategy(IGhostAIStrategy strategy)

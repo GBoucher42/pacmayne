@@ -13,6 +13,7 @@ import entities.Animatable;
 import entities.Direction;
 import entities.EntityManager;
 import entities.GameEntity;
+import entities.IGameEntity;
 import entities.Maze;
 import entities.PacMan;
 import entities.Tile;
@@ -83,8 +84,8 @@ public class Board extends Pane implements IBoardRenderer{
 	{
 		for (int i = 0; i < entityManager.count(); ++i)
 		{		
-			GameEntity entity = entityManager.getEntity(i);
-			if (entity instanceof Animatable)
+			IGameEntity entity = entityManager.getEntity(i);
+			if (entity.getAnimatable() != null)
 			{
 				animatedSprites.add(new Sprite(entity, i));
 				
@@ -155,12 +156,12 @@ public class Board extends Pane implements IBoardRenderer{
 		}
 	}
 	
-	private boolean detectCollision(Animatable animatable)
+	private boolean detectCollision(GameEntity animatable)
 	{
 		boolean willNotCollide = false;
 		// TODO: BoundingBox checking
 		Tile  candidateTile;
-		switch(animatable.getVelocity().getDirection())
+		switch(animatable.getDirection())
 		{
 		case DOWN:
 			candidateTile = map.getTile((int)animatable.getCurrentY() + 1, (int)animatable.getCurrentX());

@@ -1,7 +1,13 @@
-package entities;
+package factories;
 
 import static configs.GameConfig.GAME_TILE_HEIGHT_COUNT;
 import static configs.GameConfig.GAME_TILE_WIDTH_COUNT;
+
+import entities.Gum;
+import entities.Maze;
+import entities.SuperGum;
+import entities.Tile;
+import entities.TileType;
 
 public class MazeFactory {
 	private static enum TileCode {

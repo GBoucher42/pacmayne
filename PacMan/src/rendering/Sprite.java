@@ -2,6 +2,7 @@ package rendering;
 
 
 import entities.GameEntity;
+import entities.IGameEntity;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.scene.image.Image;
@@ -14,11 +15,11 @@ import static configs.GameConfig.TILE_SIZE;
 public class Sprite extends StackPane{
 	
 	private final int id;
-	private GameEntity entity;
+	private IGameEntity entity;
 	private ImageView image;
 	private ImageView[][] images;
 	
-	public Sprite(GameEntity entity, int id)
+	public Sprite(IGameEntity entity, int id)
 	{
 		this.id = id;
 		this.entity = entity;
@@ -57,7 +58,7 @@ public class Sprite extends StackPane{
 		setLayoutY(entity.getStartY());
 	}  
 	
-	public GameEntity getEntity()
+	public IGameEntity getEntity()
 	{
 		return entity;
 	}
