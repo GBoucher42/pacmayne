@@ -4,6 +4,7 @@ package rendering;
 import entities.GameEntity;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 
@@ -21,7 +22,10 @@ public class Sprite extends StackPane{
 	{
 		this.id = id;
 		this.entity = entity;
-		image = new ImageView("file:///C:/Users/Adam/Desktop/School/S8/Agile/pacmayne/PacMan/ressource/sprites/pacman-r1.png");
+		
+		Image img = new Image("file:ressource/sprites/pacman-r1.png");
+		
+		image = new ImageView(img);
 		image.translateXProperty().bind(this.widthProperty().subtract(image.getFitWidth()).divide(4));
 		image.translateYProperty().bind(this.heightProperty().subtract(image.getFitHeight()).divide(4));
 
