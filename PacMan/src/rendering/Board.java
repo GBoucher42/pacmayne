@@ -1,8 +1,5 @@
 package rendering;
 
-import static configs.GameConfig.GAME_TILE_WIDTH_COUNT;
-import static configs.GameConfig.GAME_TOTAL_TILE_COUNT;
-import static configs.GameConfig.GAME_TILE_HEIGHT_COUNT;
 import static configs.GameConfig.GAME_HEIGHT;
 import static configs.GameConfig.GAME_WIDTH;
 import static configs.GameConfig.TILE_SIZE;
@@ -16,8 +13,10 @@ import entities.Animatable;
 import entities.Direction;
 import entities.EntityManager;
 import entities.GameEntity;
-import entities.GameMap;
+import entities.Maze;
 import entities.PacMan;
+import entities.Tile;
+import entities.TileType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -30,7 +29,7 @@ import javafx.scene.text.Text;
 public class Board extends Pane implements IBoardRenderer{
 
 	private PacMan pacman;
-	private GameMap map = new GameMap();
+	private Maze map;
 	private Collection<Sprite> animatedSprites = new LinkedList<Sprite>();
 	
 	private Text scoreText;
@@ -43,32 +42,38 @@ public class Board extends Pane implements IBoardRenderer{
 		this.setStyle("-fx-background-color: black;");
 	}
 	
-	public void drawMaze() 
+	public void drawMaze(Maze map) 
 	{		
-		// TODO: import maze image and slap it on the board instead of drawing shitty rectangles
-		int i = 0;
-		for (int y = 0; y < GAME_TILE_HEIGHT_COUNT; y++) {
-            for (int x = 0; x < GAME_TILE_WIDTH_COUNT; x++) {
-            	if (map.tileGrid[i] == 0) {            		
-            		Rectangle wall = new Rectangle(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-            		wall.setFill(Color.BLUE);
-            		this.getChildren().add(wall);
-            	} else if (map.tileGrid[i] == 2) {
-            		Circle gum = new Circle(x * TILE_SIZE + TILE_SIZE/2, y * TILE_SIZE+ TILE_SIZE/2, TILE_SIZE/2);
-            		gum.setFill(Color.WHITE);
-            		this.getChildren().add(gum);
-            		pacGums.put(i, gum);
-            	} else {
-            		Circle gum = new Circle(x * TILE_SIZE + TILE_SIZE/2, y * TILE_SIZE+ TILE_SIZE/2, TILE_SIZE/4);
-            		gum.setFill(Color.WHITE);
-            		this.getChildren().add(gum);
-            		gums.put(i, gum);
-            	}
-               
-                i++;
-            }
-        }
-        
+		this.map = map;
+		int j = 0;
+		Tile[][] tiles = map.getTiles();
+		for (int i = 0; i < tiles.length; ++i)
+		{
+			for (int k = 0; k < tiles[0].length; ++k)
+			{
+				if (tiles[i][k].getType() == TileType.WALL)
+				{
+					Rectangle wall = new Rectangle(tiles[i][k].getX() * TILE_SIZE, tiles[i][k].getY() * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+	        		wall.setFill(Color.BLUE);
+	        		this.getChildren().add(wall);
+				} else {
+					// TODO: these classes should contain their image that we simply display
+					 if (tiles[i][k].isTileSuperGum()) {
+			        		Circle gum = new Circle(tiles[i][k].getX() * TILE_SIZE + TILE_SIZE / 2, tiles[i][k].getY() * TILE_SIZE + TILE_SIZE / 2, TILE_SIZE / 2);
+			        		gum.setFill(Color.WHITE);
+			        		this.getChildren().add(gum);
+			        		pacGums.put(j, gum);
+					 } else if (tiles[i][k].isTileGum()){
+			        		Circle gum = new Circle(tiles[i][k].getX() * TILE_SIZE + TILE_SIZE / 2, tiles[i][k].getY() * TILE_SIZE + TILE_SIZE / 2, TILE_SIZE / 4);
+			        		gum.setFill(Color.WHITE);
+			        		this.getChildren().add(gum);
+			        		gums.put(j, gum);
+					 }
+				}
+				++j;
+			}
+		}
+
         scoreText = new Text(GAME_WIDTH /2 - 50 , GAME_HEIGHT /2, "Score: 0");
         scoreText.setFont(new Font(20));
         this.getChildren().add(scoreText);
@@ -101,6 +106,7 @@ public class Board extends Pane implements IBoardRenderer{
 	
 	public void refreshView()
 	{
+		animate();
 		for (Sprite sprite : animatedSprites)
 		{
 			sprite.updatePosition();
@@ -135,7 +141,7 @@ public class Board extends Pane implements IBoardRenderer{
 		}		
 	}
 	
-	public void animate()
+	private void animate()
 	{
 		//TODO: Animate ALL animatable sprites if able/valid
 		if (detectCollision(pacman))
@@ -151,27 +157,30 @@ public class Board extends Pane implements IBoardRenderer{
 	
 	private boolean detectCollision(Animatable animatable)
 	{
-		boolean willNotCollide = true;
-		int candidateTileIndex = pacman.getTileIndex() - GAME_TILE_WIDTH_COUNT - 1;
+		boolean willNotCollide = false;
 		// TODO: BoundingBox checking
-		
+		Tile  candidateTile;
 		switch(animatable.getVelocity().getDirection())
 		{
 		case DOWN:
-			candidateTileIndex = pacman.getTileIndex() + GAME_TILE_WIDTH_COUNT - 1;
-			willNotCollide = candidateTileIndex < GAME_TOTAL_TILE_COUNT && map.tileGrid[candidateTileIndex] != 0;
+			candidateTile = map.getTile((int)animatable.getCurrentY() + 1, (int)animatable.getCurrentX());
+			if (candidateTile != null)
+				willNotCollide = candidateTile.getType() != TileType.WALL;
 			break;
 		case LEFT:
-			candidateTileIndex = pacman.getTileIndex() - 2;
-			willNotCollide = candidateTileIndex > 0 && map.tileGrid[candidateTileIndex] != 0;
+			candidateTile = map.getTile((int)animatable.getCurrentY(), (int)animatable.getCurrentX() - 1);
+			if (candidateTile != null)
+				willNotCollide = candidateTile.getType() != TileType.WALL;
 			break;
 		case RIGHT:
-			candidateTileIndex = pacman.getTileIndex();
-			willNotCollide = candidateTileIndex < GAME_TOTAL_TILE_COUNT && map.tileGrid[candidateTileIndex] != 0;
+			candidateTile = map.getTile((int)animatable.getCurrentY(), (int)animatable.getCurrentX() + 1);
+			if (candidateTile != null)
+				willNotCollide = candidateTile.getType() != TileType.WALL;
 			break;
 		case UP:
-			candidateTileIndex = pacman.getTileIndex() - GAME_TILE_WIDTH_COUNT - 1;
-			willNotCollide = candidateTileIndex > 0 && map.tileGrid[candidateTileIndex] != 0;
+			candidateTile = map.getTile((int)animatable.getCurrentY() - 1, (int)animatable.getCurrentX());
+			if (candidateTile != null)
+				willNotCollide = candidateTile.getType() != TileType.WALL;
 			break;
 		default:
 			break;

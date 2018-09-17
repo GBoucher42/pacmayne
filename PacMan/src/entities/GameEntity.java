@@ -2,7 +2,6 @@ package entities;
 
 public abstract class GameEntity {
 
-	protected SpawnPoint spawnPoint;
 	protected int tileIndex;	
 	protected final String name;
 	final double startX, startY;
@@ -18,16 +17,10 @@ public abstract class GameEntity {
 		currentY = y;
 	}
 	
-	public abstract void update();
-	
 	public int getTileIndex()
 	{
 		return tileIndex;
 	}	
-
-	public void setSpawnPoint(SpawnPoint spawnPoint) {
-		this.spawnPoint = spawnPoint;
-	}
 
 	public String getName()
 	{
