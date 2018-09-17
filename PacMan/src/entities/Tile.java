@@ -15,6 +15,16 @@ public class Tile {
 		this.type = type;
 	}
 	
+	public boolean isTileGum()
+	{
+		return item != null && item.isTileGum();
+	}
+	
+	public boolean isTileSuperGum()
+	{
+		return item != null && item.isTileSuperGum();
+	}
+	
 	public Collectable getCollectable()
 	{
 		return item;

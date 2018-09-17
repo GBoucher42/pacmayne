@@ -34,28 +34,6 @@ public class Maze {
 		// TODO:
 	}
 	
-	public boolean isTileGum(int row, int column)
-	{
-		if (row >= 0 && row < tiles.length && column >= 0 && column < tiles[0].length)
-		{
-			Gum gum = (Gum) tiles[row][column].getCollectable();
-			return gum != null;
-		}
-		
-		return false;
-	}
-	
-	public boolean isTileSuperGum(int row, int column)
-	{
-		if (row >= 0 && row < tiles.length && column >= 0 && column < tiles[0].length)
-		{
-			SuperGum gum = (SuperGum) tiles[row][column].getCollectable();
-			return gum != null;
-		}
-		
-		return false;
-	}
-	
 	public boolean isOverBound()
 	{
 		// TODO:

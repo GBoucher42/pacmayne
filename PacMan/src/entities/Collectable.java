@@ -19,4 +19,11 @@ public abstract class Collectable {
 		return value;
 	}
 
+	public boolean isTileSuperGum() {
+		return false;
+	}
+
+	public boolean isTileGum() {
+		return false;
+	}
 }

@@ -8,6 +8,12 @@ public class Gum extends Collectable{
 	}
 	
 	@Override
+	public boolean isTileGum()
+	{
+		return true;
+	}
+	
+	@Override
 	public void consume() {
 		// TODO Auto-generated method stub
 		

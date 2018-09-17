@@ -8,6 +8,12 @@ public class SuperGum extends Gum{
 	}
 
 	@Override
+	public boolean isTileSuperGum()
+	{
+		return true;
+	}
+	
+	@Override
 	public void consume() {
 		// TODO Auto-generated method stub
 		
