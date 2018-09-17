@@ -63,12 +63,12 @@ public class Board extends Pane implements IBoardRenderer{
 			        		gum.setFill(Color.WHITE);
 			        		this.getChildren().add(gum);
 			        		pacGums.put(j, gum);
-			        	} else if (tiles[i][k].isTileGum()){
+					 } else if (tiles[i][k].isTileGum()){
 			        		Circle gum = new Circle(tiles[i][k].getX() * TILE_SIZE + TILE_SIZE / 2, tiles[i][k].getY() * TILE_SIZE + TILE_SIZE / 2, TILE_SIZE / 4);
 			        		gum.setFill(Color.WHITE);
 			        		this.getChildren().add(gum);
 			        		gums.put(j, gum);
-			        	}
+					 }
 				}
 				++j;
 			}
