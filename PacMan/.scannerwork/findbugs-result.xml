@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<BugCollection version="3.1.0-RC6" sequence="0" timestamp="1536936737079" analysisTimestamp="1537014711333" release="">
+  <Project>
+    <Jar>C:\Users\Ganbriel\Documents\Universit&#233;\session8\pacmayne\PacMan\bin\application\Main.class</Jar>
+    <Jar>C:\Users\Ganbriel\Documents\Universit&#233;\session8\pacmayne\PacMan\bin\audio\AudioRepository.class</Jar>
+    <Jar>C:\Users\Ganbriel\Documents\Universit&#233;\session8\pacmayne\PacMan\bin\configs\GameConfig.class</Jar>
+    <Jar>C:\Users\Ganbriel\Documents\Universit&#233;\session8\pacmayne\PacMan\bin\entities\Animatable.class</Jar>
+    <Jar>C:\Users\Ganbriel\Documents\Universit&#233;\session8\pacmayne\PacMan\bin\entities\CollisionDetection.class</Jar>
+    <Jar>C:\Users\Ganbriel\Documents\Universit&#233;\session8\pacmayne\PacMan\bin\entities\Direction.class</Jar>
+    <Jar>C:\Users\Ganbriel\Documents\Universit&#233;\session8\pacmayne\PacMan\bin\entities\EntityManager.class</Jar>
+    <Jar>C:\Users\Ganbriel\Documents\Universit&#233;\session8\pacmayne\PacMan\bin\entities\GameEntity.class</Jar>
+    <Jar>C:\Users\Ganbriel\Documents\Universit&#233;\session8\pacmayne\PacMan\bin\entities\GameMap.class</Jar>
+    <Jar>C:\Users\Ganbriel\Documents\Universit&#233;\session8\pacmayne\PacMan\bin\entities\Ghost.class</Jar>
+    <Jar>C:\Users\Ganbriel\Documents\Universit&#233;\session8\pacmayne\PacMan\bin\entities\GhostScheduler.class</Jar>
+    <Jar>C:\Users\Ganbriel\Documents\Universit&#233;\session8\pacmayne\PacMan\bin\entities\PacMan.class</Jar>
+    <Jar>C:\Users\Ganbriel\Documents\Universit&#233;\session8\pacmayne\PacMan\bin\entities\SpawnPoint.class</Jar>
+    <Jar>C:\Users\Ganbriel\Documents\Universit&#233;\session8\pacmayne\PacMan\bin\entities\Velocity.class</Jar>
+    <Jar>C:\Users\Ganbriel\Documents\Universit&#233;\session8\pacmayne\PacMan\bin\gameThreads\Game.class</Jar>
+    <Jar>C:\Users\Ganbriel\Documents\Universit&#233;\session8\pacmayne\PacMan\bin\gameThreads\Game$1.class</Jar>
+    <Jar>C:\Users\Ganbriel\Documents\Universit&#233;\session8\pacmayne\PacMan\bin\gameThreads\GameTime.class</Jar>
+    <Jar>C:\Users\Ganbriel\Documents\Universit&#233;\session8\pacmayne\PacMan\bin\observer\IObserver.class</Jar>
+    <Jar>C:\Users\Ganbriel\Documents\Universit&#233;\session8\pacmayne\PacMan\bin\observer\Observable.class</Jar>
+    <Jar>C:\Users\Ganbriel\Documents\Universit&#233;\session8\pacmayne\PacMan\bin\rendering\Board.class</Jar>
+    <Jar>C:\Users\Ganbriel\Documents\Universit&#233;\session8\pacmayne\PacMan\bin\rendering\HUD.class</Jar>
+    <Jar>C:\Users\Ganbriel\Documents\Universit&#233;\session8\pacmayne\PacMan\bin\rendering\IBoardRenderer.class</Jar>
+    <Jar>C:\Users\Ganbriel\Documents\Universit&#233;\session8\pacmayne\PacMan\bin\rendering\RenderingSystem.class</Jar>
+    <Jar>C:\Users\Ganbriel\Documents\Universit&#233;\session8\pacmayne\PacMan\bin\rendering\Sprite.class</Jar>
+    <Jar>C:\Users\Ganbriel\Documents\Universit&#233;\session8\pacmayne\PacMan\bin\states\ControlMenuState.class</Jar>
+    <Jar>C:\Users\Ganbriel\Documents\Universit&#233;\session8\pacmayne\PacMan\bin\states\GhostKilledGameState.class</Jar>
+    <Jar>C:\Users\Ganbriel\Documents\Universit&#233;\session8\pacmayne\PacMan\bin\states\IState.class</Jar>
+    <Jar>C:\Users\Ganbriel\Documents\Universit&#233;\session8\pacmayne\PacMan\bin\states\InPlayGameState.class</Jar>
+    <Jar>C:\Users\Ganbriel\Documents\Universit&#233;\session8\pacmayne\PacMan\bin\states\MenuGameState.class</Jar>
+    <Jar>C:\Users\Ganbriel\Documents\Universit&#233;\session8\pacmayne\PacMan\bin\states\MuteGameState.class</Jar>
+    <Jar>C:\Users\Ganbriel\Documents\Universit&#233;\session8\pacmayne\PacMan\bin\states\PacManKilledGameState.class</Jar>
+    <Jar>C:\Users\Ganbriel\Documents\Universit&#233;\session8\pacmayne\PacMan\bin\states\PauseGameState.class</Jar>
+    <Jar>C:\Users\Ganbriel\Documents\Universit&#233;\session8\pacmayne\PacMan\bin\states\StageClearedGameState.class</Jar>
+    <Jar>C:\Users\Ganbriel\Documents\Universit&#233;\session8\pacmayne\PacMan\bin\states\StageIntroGameState.class</Jar>
+    <Jar>C:\Users\Ganbriel\Documents\Universit&#233;\session8\pacmayne\PacMan\bin\states\StateMachine.class</Jar>
+    <Jar>C:\Users\Ganbriel\Documents\Universit&#233;\session8\pacmayne\PacMan\bin\strategies\GhostAIAmbusher.class</Jar>
+    <Jar>C:\Users\Ganbriel\Documents\Universit&#233;\session8\pacmayne\PacMan\bin\strategies\GhostAIChaser.class</Jar>
+    <Jar>C:\Users\Ganbriel\Documents\Universit&#233;\session8\pacmayne\PacMan\bin\strategies\GhostAIRandom.class</Jar>
+    <Jar>C:\Users\Ganbriel\Documents\Universit&#233;\session8\pacmayne\PacMan\bin\strategies\GhostAIStupid.class</Jar>
+    <Jar>C:\Users\Ganbriel\Documents\Universit&#233;\session8\pacmayne\PacMan\bin\strategies\IGhostAIStrategy.class</Jar>
+    <AuxClasspathEntry>C:\Users\Ganbriel\Documents\Universit&#233;\session8\pacmayne\PacMan\bin</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\Ganbriel\Documents\Universit&#233;\session8\pacmayne\PacMan\.scannerwork\findbugs\annotations.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\Ganbriel\Documents\Universit&#233;\session8\pacmayne\PacMan\.scannerwork\findbugs\jsr305.jar</AuxClasspathEntry>
+    <WrkDir>C:\Users\Ganbriel\Documents\Universit&#233;\session8\pacmayne\PacMan\.scannerwork</WrkDir>
+  </Project>
+  <Errors errors="0" missingClasses="1">
+    <MissingClass>handle</MissingClass>
+  </Errors>
+  <FindBugsSummary timestamp="Fri, 14 Sep 2018 10:52:17 -0400" total_classes="40" referenced_classes="298" total_bugs="0" total_size="658" num_packages="9" java_version="1.8.0_121" vm_version="25.121-b13" cpu_seconds="25.98" clock_seconds="8.88" peak_mbytes="414.90" alloc_mbytes="2709.50" gc_seconds="0.38">
+    <FileStats path="application/Main.java" bugCount="0" size="6"/>
+    <FileStats path="audio/AudioRepository.java" bugCount="0" size="7"/>
+    <FileStats path="configs/GameConfig.java" bugCount="0" size="9"/>
+    <FileStats path="entities/Animatable.java" bugCount="0" size="46"/>
+    <FileStats path="entities/CollisionDetection.java" bugCount="0" size="9"/>
+    <FileStats path="entities/Direction.java" bugCount="0" size="13"/>
+    <FileStats path="entities/EntityManager.java" bugCount="0" size="24"/>
+    <FileStats path="entities/GameEntity.java" bugCount="0" size="38"/>
+    <FileStats path="entities/GameMap.java" bugCount="0" size="44"/>
+    <FileStats path="entities/Ghost.java" bugCount="0" size="18"/>
+    <FileStats path="entities/GhostScheduler.java" bugCount="0" size="9"/>
+    <FileStats path="entities/PacMan.java" bugCount="0" size="20"/>
+    <FileStats path="entities/SpawnPoint.java" bugCount="0" size="3"/>
+    <FileStats path="entities/Velocity.java" bugCount="0" size="15"/>
+    <FileStats path="gameThreads/Game.java" bugCount="0" size="47"/>
+    <FileStats path="gameThreads/GameTime.java" bugCount="0" size="11"/>
+    <FileStats path="observer/IObserver.java" bugCount="0" size="3"/>
+    <FileStats path="observer/Observable.java" bugCount="0" size="20"/>
+    <FileStats path="rendering/Board.java" bugCount="0" size="122"/>
+    <FileStats path="rendering/HUD.java" bugCount="0" size="3"/>
+    <FileStats path="rendering/IBoardRenderer.java" bugCount="0" size="6"/>
+    <FileStats path="rendering/RenderingSystem.java" bugCount="0" size="20"/>
+    <FileStats path="rendering/Sprite.java" bugCount="0" size="54"/>
+    <FileStats path="states/ControlMenuState.java" bugCount="0" size="9"/>
+    <FileStats path="states/GhostKilledGameState.java" bugCount="0" size="9"/>
+    <FileStats path="states/IState.java" bugCount="0" size="4"/>
+    <FileStats path="states/InPlayGameState.java" bugCount="0" size="9"/>
+    <FileStats path="states/MenuGameState.java" bugCount="0" size="9"/>
+    <FileStats path="states/MuteGameState.java" bugCount="0" size="9"/>
+    <FileStats path="states/PacManKilledGameState.java" bugCount="0" size="9"/>
+    <FileStats path="states/PauseGameState.java" bugCount="0" size="9"/>
+    <FileStats path="states/StageClearedGameState.java" bugCount="0" size="9"/>
+    <FileStats path="states/StageIntroGameState.java" bugCount="0" size="9"/>
+    <FileStats path="states/StateMachine.java" bugCount="0" size="13"/>
+    <FileStats path="strategies/GhostAIAmbusher.java" bugCount="0" size="3"/>
+    <FileStats path="strategies/GhostAIChaser.java" bugCount="0" size="3"/>
+    <FileStats path="strategies/GhostAIRandom.java" bugCount="0" size="3"/>
+    <FileStats path="strategies/GhostAIStupid.java" bugCount="0" size="3"/>
+    <FileStats path="strategies/IGhostAIStrategy.java" bugCount="0" size="1"/>
+    <PackageStats package="application" total_bugs="0" total_types="1" total_size="6">
+      <ClassStats class="application.Main" sourceFile="Main.java" interface="false" size="6" bugs="0"/>
+    </PackageStats>
+    <PackageStats package="audio" total_bugs="0" total_types="1" total_size="7">
+      <ClassStats class="audio.AudioRepository" sourceFile="AudioRepository.java" interface="false" size="7" bugs="0"/>
+    </PackageStats>
+    <PackageStats package="configs" total_bugs="0" total_types="1" total_size="9">
+      <ClassStats class="configs.GameConfig" sourceFile="GameConfig.java" interface="false" size="9" bugs="0"/>
+    </PackageStats>
+    <PackageStats package="entities" total_bugs="0" total_types="11" total_size="239">
+      <ClassStats class="entities.Animatable" sourceFile="Animatable.java" interface="false" size="46" bugs="0"/>
+      <ClassStats class="entities.CollisionDetection" sourceFile="CollisionDetection.java" interface="false" size="9" bugs="0"/>
+      <ClassStats class="entities.Direction" sourceFile="Direction.java" interface="false" size="13" bugs="0"/>
+      <ClassStats class="entities.EntityManager" sourceFile="EntityManager.java" interface="false" size="24" bugs="0"/>
+      <ClassStats class="entities.GameEntity" sourceFile="GameEntity.java" interface="false" size="38" bugs="0"/>
+      <ClassStats class="entities.GameMap" sourceFile="GameMap.java" interface="false" size="44" bugs="0"/>
+      <ClassStats class="entities.Ghost" sourceFile="Ghost.java" interface="false" size="18" bugs="0"/>
+      <ClassStats class="entities.GhostScheduler" sourceFile="GhostScheduler.java" interface="false" size="9" bugs="0"/>
+      <ClassStats class="entities.PacMan" sourceFile="PacMan.java" interface="false" size="20" bugs="0"/>
+      <ClassStats class="entities.SpawnPoint" sourceFile="SpawnPoint.java" interface="false" size="3" bugs="0"/>
+      <ClassStats class="entities.Velocity" sourceFile="Velocity.java" interface="false" size="15" bugs="0"/>
+    </PackageStats>
+    <PackageStats package="gameThreads" total_bugs="0" total_types="3" total_size="58">
+      <ClassStats class="gameThreads.Game" sourceFile="Game.java" interface="false" size="33" bugs="0"/>
+      <ClassStats class="gameThreads.Game$1" sourceFile="Game.java" interface="false" size="14" bugs="0"/>
+      <ClassStats class="gameThreads.GameTime" sourceFile="GameTime.java" interface="false" size="11" bugs="0"/>
+    </PackageStats>
+    <PackageStats package="observer" total_bugs="0" total_types="2" total_size="23">
+      <ClassStats class="observer.IObserver" sourceFile="IObserver.java" interface="true" size="3" bugs="0"/>
+      <ClassStats class="observer.Observable" sourceFile="Observable.java" interface="false" size="20" bugs="0"/>
+    </PackageStats>
+    <PackageStats package="rendering" total_bugs="0" total_types="5" total_size="205">
+      <ClassStats class="rendering.Board" sourceFile="Board.java" interface="false" size="122" bugs="0"/>
+      <ClassStats class="rendering.HUD" sourceFile="HUD.java" interface="false" size="3" bugs="0"/>
+      <ClassStats class="rendering.IBoardRenderer" sourceFile="IBoardRenderer.java" interface="true" size="6" bugs="0"/>
+      <ClassStats class="rendering.RenderingSystem" sourceFile="RenderingSystem.java" interface="false" size="20" bugs="0"/>
+      <ClassStats class="rendering.Sprite" sourceFile="Sprite.java" interface="false" size="54" bugs="0"/>
+    </PackageStats>
+    <PackageStats package="states" total_bugs="0" total_types="11" total_size="98">
+      <ClassStats class="states.ControlMenuState" sourceFile="ControlMenuState.java" interface="false" size="9" bugs="0"/>
+      <ClassStats class="states.GhostKilledGameState" sourceFile="GhostKilledGameState.java" interface="false" size="9" bugs="0"/>
+      <ClassStats class="states.IState" sourceFile="IState.java" interface="true" size="4" bugs="0"/>
+      <ClassStats class="states.InPlayGameState" sourceFile="InPlayGameState.java" interface="false" size="9" bugs="0"/>
+      <ClassStats class="states.MenuGameState" sourceFile="MenuGameState.java" interface="false" size="9" bugs="0"/>
+      <ClassStats class="states.MuteGameState" sourceFile="MuteGameState.java" interface="false" size="9" bugs="0"/>
+      <ClassStats class="states.PacManKilledGameState" sourceFile="PacManKilledGameState.java" interface="false" size="9" bugs="0"/>
+      <ClassStats class="states.PauseGameState" sourceFile="PauseGameState.java" interface="false" size="9" bugs="0"/>
+      <ClassStats class="states.StageClearedGameState" sourceFile="StageClearedGameState.java" interface="false" size="9" bugs="0"/>
+      <ClassStats class="states.StageIntroGameState" sourceFile="StageIntroGameState.java" interface="false" size="9" bugs="0"/>
+      <ClassStats class="states.StateMachine" sourceFile="StateMachine.java" interface="false" size="13" bugs="0"/>
+    </PackageStats>
+    <PackageStats package="strategies" total_bugs="0" total_types="5" total_size="13">
+      <ClassStats class="strategies.GhostAIAmbusher" sourceFile="GhostAIAmbusher.java" interface="false" size="3" bugs="0"/>
+      <ClassStats class="strategies.GhostAIChaser" sourceFile="GhostAIChaser.java" interface="false" size="3" bugs="0"/>
+      <ClassStats class="strategies.GhostAIRandom" sourceFile="GhostAIRandom.java" interface="false" size="3" bugs="0"/>
+      <ClassStats class="strategies.GhostAIStupid" sourceFile="GhostAIStupid.java" interface="false" size="3" bugs="0"/>
+      <ClassStats class="strategies.IGhostAIStrategy" sourceFile="IGhostAIStrategy.java" interface="true" size="1" bugs="0"/>
+    </PackageStats>
+    <FindBugsProfile>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.ClassInfoAnalysisEngine" totalMilliseconds="954" invocations="1557" avgMicrosecondsPerInvocation="612" maxMicrosecondsPerInvocation="117937" standardDeviationMicrosecondsPerInvocation="4531"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.ClassDataAnalysisEngine" totalMilliseconds="864" invocations="1564" avgMicrosecondsPerInvocation="552" maxMicrosecondsPerInvocation="27256" standardDeviationMicrosecondsPerInvocation="1013"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.FieldItemSummary" totalMilliseconds="499" invocations="298" avgMicrosecondsPerInvocation="1674" maxMicrosecondsPerInvocation="59566" standardDeviationMicrosecondsPerInvocation="5760"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.bcel.UnconditionalValueDerefDataflowFactory" totalMilliseconds="490" invocations="163" avgMicrosecondsPerInvocation="3009" maxMicrosecondsPerInvocation="390679" standardDeviationMicrosecondsPerInvocation="30710"/>
+      <ClassProfile name="edu.umd.cs.findbugs.ba.npe.NullDerefAndRedundantComparisonFinder" totalMilliseconds="450" invocations="163" avgMicrosecondsPerInvocation="2761" maxMicrosecondsPerInvocation="342224" standardDeviationMicrosecondsPerInvocation="26974"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.FindNoSideEffectMethods" totalMilliseconds="438" invocations="298" avgMicrosecondsPerInvocation="1472" maxMicrosecondsPerInvocation="120493" standardDeviationMicrosecondsPerInvocation="7249"/>
+      <ClassProfile name="edu.umd.cs.findbugs.OpcodeStack$JumpInfoFactory" totalMilliseconds="199" invocations="608" avgMicrosecondsPerInvocation="328" maxMicrosecondsPerInvocation="13348" standardDeviationMicrosecondsPerInvocation="817"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.FindRefComparison$SpecialTypeAnalysis" totalMilliseconds="192" invocations="83" avgMicrosecondsPerInvocation="2317" maxMicrosecondsPerInvocation="146803" standardDeviationMicrosecondsPerInvocation="16019"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.bcel.ValueNumberDataflowFactory" totalMilliseconds="161" invocations="165" avgMicrosecondsPerInvocation="980" maxMicrosecondsPerInvocation="74319" standardDeviationMicrosecondsPerInvocation="6127"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.NoteDirectlyRelevantTypeQualifiers" totalMilliseconds="154" invocations="298" avgMicrosecondsPerInvocation="518" maxMicrosecondsPerInvocation="52023" standardDeviationMicrosecondsPerInvocation="3142"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.bcel.TypeDataflowFactory" totalMilliseconds="154" invocations="163" avgMicrosecondsPerInvocation="945" maxMicrosecondsPerInvocation="77897" standardDeviationMicrosecondsPerInvocation="6251"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.RuntimeExceptionCapture" totalMilliseconds="139" invocations="40" avgMicrosecondsPerInvocation="3496" maxMicrosecondsPerInvocation="135438" standardDeviationMicrosecondsPerInvocation="21128"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.ExplicitSerialization" totalMilliseconds="139" invocations="298" avgMicrosecondsPerInvocation="467" maxMicrosecondsPerInvocation="120484" standardDeviationMicrosecondsPerInvocation="6990"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.DumbMethods" totalMilliseconds="135" invocations="40" avgMicrosecondsPerInvocation="3386" maxMicrosecondsPerInvocation="85288" standardDeviationMicrosecondsPerInvocation="14569"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.OverridingEqualsNotSymmetrical" totalMilliseconds="122" invocations="298" avgMicrosecondsPerInvocation="411" maxMicrosecondsPerInvocation="49357" standardDeviationMicrosecondsPerInvocation="2999"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.bcel.IsNullValueDataflowFactory" totalMilliseconds="109" invocations="163" avgMicrosecondsPerInvocation="673" maxMicrosecondsPerInvocation="32561" standardDeviationMicrosecondsPerInvocation="2818"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.bcel.CFGFactory" totalMilliseconds="105" invocations="174" avgMicrosecondsPerInvocation="608" maxMicrosecondsPerInvocation="30520" standardDeviationMicrosecondsPerInvocation="2721"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.bcel.JavaClassAnalysisEngine" totalMilliseconds="105" invocations="394" avgMicrosecondsPerInvocation="266" maxMicrosecondsPerInvocation="29157" standardDeviationMicrosecondsPerInvocation="1630"/>
+      <ClassProfile name="edu.umd.cs.findbugs.util.TopologicalSort" totalMilliseconds="94" invocations="1503" avgMicrosecondsPerInvocation="62" maxMicrosecondsPerInvocation="6767" standardDeviationMicrosecondsPerInvocation="299"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.FindNullDeref" totalMilliseconds="78" invocations="40" avgMicrosecondsPerInvocation="1974" maxMicrosecondsPerInvocation="67271" standardDeviationMicrosecondsPerInvocation="10465"/>
+      <ClassProfile name="com.h3xstream.findsecbugs.taintanalysis.TaintDataflowEngine" totalMilliseconds="76" invocations="163" avgMicrosecondsPerInvocation="469" maxMicrosecondsPerInvocation="17762" standardDeviationMicrosecondsPerInvocation="1655"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.BuildObligationPolicyDatabase" totalMilliseconds="75" invocations="298" avgMicrosecondsPerInvocation="253" maxMicrosecondsPerInvocation="4825" standardDeviationMicrosecondsPerInvocation="545"/>
+    </FindBugsProfile>
+  </FindBugsSummary>
+  <ClassFeatures></ClassFeatures>
+  <History></History>
+</BugCollection>
