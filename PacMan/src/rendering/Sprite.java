@@ -26,6 +26,11 @@ public class Sprite extends StackPane{
 		Image img = new Image("file:ressource/sprites/pacman-r1.png");
 		
 		image = new ImageView(img);
+		
+		// Scale image 
+		image.fitWidthProperty().bind(this.widthProperty());
+		image.fitHeightProperty().bind(this.heightProperty());
+		
 		image.translateXProperty().bind(this.widthProperty().subtract(image.getFitWidth()).divide(4));
 		image.translateYProperty().bind(this.heightProperty().subtract(image.getFitHeight()).divide(4));
 

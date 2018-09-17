@@ -165,22 +165,22 @@ public class Board extends Pane implements IBoardRenderer{
 		case DOWN:
 			candidateTile = map.getTile((int)animatable.getCurrentY() + 1, (int)animatable.getCurrentX());
 			if (candidateTile != null)
-				willNotCollide = candidateTile.getType() == TileType.WALL ? false : true;
+				willNotCollide = candidateTile.getType() != TileType.WALL;
 			break;
 		case LEFT:
 			candidateTile = map.getTile((int)animatable.getCurrentY(), (int)animatable.getCurrentX() - 1);
 			if (candidateTile != null)
-				willNotCollide = candidateTile.getType() == TileType.WALL ? false : true;
+				willNotCollide = candidateTile.getType() != TileType.WALL;
 			break;
 		case RIGHT:
 			candidateTile = map.getTile((int)animatable.getCurrentY(), (int)animatable.getCurrentX() + 1);
 			if (candidateTile != null)
-				willNotCollide = candidateTile.getType() == TileType.WALL ? false : true;
+				willNotCollide = candidateTile.getType() != TileType.WALL;
 			break;
 		case UP:
 			candidateTile = map.getTile((int)animatable.getCurrentY() - 1, (int)animatable.getCurrentX());
 			if (candidateTile != null)
-				willNotCollide = candidateTile.getType() == TileType.WALL ? false : true;
+				willNotCollide = candidateTile.getType() != TileType.WALL;
 			break;
 		default:
 			break;
