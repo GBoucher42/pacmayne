@@ -1,12 +1,16 @@
-package entities;
+package factories;
 
 import static configs.GameConfig.GAME_TILE_HEIGHT_COUNT;
 import static configs.GameConfig.GAME_TILE_WIDTH_COUNT;
 
-import factories.GameEntityFactory;
+import entities.Collectable;
+import entities.GameEntityType;
+import entities.Gum;
+import entities.Maze;
+import entities.SuperGum;
+import entities.Tile;
+import entities.TileType;
 
-
-// DESIGN PATTERN : Factory
 public class MazeFactory {
 	private static enum TileCode {
 		WALL, GUM, SUPERGUM, FRUIT;
@@ -84,7 +88,7 @@ public class MazeFactory {
 				{
 					newTile.setCollectable((Collectable) GameEntityFactory.createGameEntity(GameEntityType.FRUIT, j, i));
 				}
-				
+			
 				maze.addTile(newTile, i, j);
 			}
 		}
