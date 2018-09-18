@@ -2,6 +2,8 @@ package configs;
 
 public class GameConfig {
 	
+    public static final int WindowHeight=700;
+    public static final int WindowWidth=525;
 	public static final int TILE_SIZE = 19;
 	public static final int GAME_TILE_WIDTH_COUNT = 28;
 	public static final int GAME_TILE_HEIGHT_COUNT = 31;

@@ -43,7 +43,6 @@ public class Board extends BorderPane implements IBoardRenderer{
 	private PacMan pacman;
 	private Maze map;
 	private Collection<Sprite> animatedSprites = new LinkedList<Sprite>();
-	
 	private Label scoreText;
 	private Map<Integer, Shape> gums = new HashMap<>();
 	private Map<Integer, Shape> pacGums = new HashMap<>();
@@ -80,52 +79,51 @@ public class Board extends BorderPane implements IBoardRenderer{
 			        		Circle gum = new Circle(tiles[i][k].getX() * TILE_SIZE + TILE_SIZE / 2, tiles[i][k].getY() * TILE_SIZE + TILE_SIZE / 2, TILE_SIZE / 2);
 			        		gum.setFill(Color.WHITE);
 			        		pane.getChildren().add(gum);
-			        		this.setCenter(pane);
-			        		pacGums.put(j, gum);
+			                pacGums.put(j, gum);
 					 } else if (tiles[i][k].isTileGum()){
 			        		Circle gum = new Circle(tiles[i][k].getX() * TILE_SIZE + TILE_SIZE / 2, tiles[i][k].getY() * TILE_SIZE + TILE_SIZE / 2, TILE_SIZE / 4);
 			        		gum.setFill(Color.WHITE);
-			        		pane.getChildren().add(gum);
-			        		this.setCenter(pane);
-			        		gums.put(j, gum);
+			        	    pane.getChildren().add(gum);
+			        	    gums.put(j, gum);
 					 }
 				}
 				++j;
 			}
 		}
 
-        scoreText = new Label(); 
-        scoreText.setStyle("-fx-font-size: 32px;"
-        		+ "-fx-font-family: \"Comic Sans MS\";"
-                + "-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );"
-        		+ "-fx-font-weight: bold");
-        scoreText.setTextFill(Color.RED);
+       footer();
+       header();
        
-        scoreText.setText("Score: 0");
-        //scoreText.setFont(new Font(20));
-        scoreText.setAlignment(Pos.CENTER);
-        paneFooter.getChildren().add(scoreText);
        
-        paneFooter.setStyle("-fx-background-color: black;");
-        paneFooter.setPrefSize(700,50);        
-        this.setBottom(paneFooter);
-      
-
-       
-        //Image imgl= new Image("");
-		   	
-        Image image = new Image("file:ressource/sprites/logo.png");
-	
-        imglogo = new ImageView();
-        imglogo.setImage(image);
-        imglogo.setFitHeight(75);
-        paneHeader.getChildren().add(imglogo);
-       paneHeader.setStyle("-fx-background-color: black;");
-        
-        paneHeader.setPrefSize(700,75);   
-        this.setTop(paneHeader);
 	}
 	
+    void header() {
+	 
+    Image image = new Image("file:ressource/sprites/logo.png");
+    imglogo = new ImageView();
+    imglogo.setImage(image);
+    imglogo.setFitHeight(75);
+    paneHeader.getChildren().add(imglogo);
+    paneHeader.setStyle("-fx-background-color: black;");
+    paneHeader.setPrefSize(700,75);   
+    this.setTop(paneHeader);
+}
+	void footer() {
+		 scoreText = new Label(); 
+	        scoreText.setStyle("-fx-font-size: 32px;"
+	        		+ "-fx-font-family: \"Comic Sans MS\";"
+	                + "-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );"
+	        		+ "-fx-font-weight: bold");
+	        scoreText.setTextFill(Color.RED);
+	        scoreText.setText("Score: 0");
+	        //scoreText.setFont(new Font(20));
+	        scoreText.setAlignment(Pos.CENTER);
+	        paneFooter.getChildren().add(scoreText);
+	        paneFooter.setStyle("-fx-background-color: black;");
+	        paneFooter.setPrefSize(700,50);        
+	        this.setBottom(paneFooter);
+	      
+	}
 	public void spawnAnimatables(EntityManager entityManager)
 	{
 		for (int i = 0; i < entityManager.count(); ++i)
@@ -144,7 +142,7 @@ public class Board extends BorderPane implements IBoardRenderer{
 		}
 		
 		pane.getChildren().addAll(animatedSprites);
-		this.setCenter(pane);
+		
 	}
 	
 	public void spawnStaticEntities(EntityManager entityManager)
@@ -247,7 +245,6 @@ public class Board extends BorderPane implements IBoardRenderer{
 	
 	private void eatGum(int index) {
 		pane.getChildren().remove(gums.get(index));
-		this.setCenter(pane);
 		gums.remove(index);
 		score+=10;
 		updateScore();
@@ -255,7 +252,6 @@ public class Board extends BorderPane implements IBoardRenderer{
 	
 	private void eatPacGum(int index) {
 		pane.getChildren().remove(pacGums.get(index));
-		this.setCenter(pane);
 		pacGums.remove(index);
 		score+=50;
 		updateScore();
