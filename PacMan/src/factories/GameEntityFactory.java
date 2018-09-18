@@ -14,12 +14,13 @@ public class GameEntityFactory {
 	public static IGameEntity createGameEntity(GameEntityType type, int x, int y)
 	{
 		GameEntity entity = null;
-		Animatable anim = new Animatable();
+		Animatable anim;
 		
 		switch(type)
 		{
 		case PACMAN:
 			// TODO: relay the fetching of images to the ImageRepository instead
+			anim = new Animatable("ressource/sprites/pacman-r1.png");
 			anim.addAnimation(Direction.RIGHT, new ArrayList<String>() {{ add("ressource/sprites/pacman-r1.png"); add("ressource/sprites/pacman-r2.png"); }});
 			anim.addAnimation(Direction.LEFT, new ArrayList<String>() {{ add("ressource/sprites/pacman-l1.png"); add("ressource/sprites/pacman-l2.png"); }});
 			anim.addAnimation(Direction.UP, new ArrayList<String>() {{ add("ressource/sprites/pacman-u1.png"); add("ressource/sprites/pacman-u2.png"); }});

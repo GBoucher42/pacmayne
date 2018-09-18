@@ -6,7 +6,13 @@ import java.util.Map;
 
 public class Animatable{
 	private Animation currentAnimation;
+	private String defaultProp;
 	private Map<Direction, Animation> animationGroup = new HashMap<Direction, Animation>();
+	
+	public Animatable(String defaultProp)
+	{
+		this.defaultProp = defaultProp;
+	}
 	
 	public void startCurrentAnimation()
 	{
@@ -16,6 +22,11 @@ public class Animatable{
 	public void stopCurrentAnimation()
 	{
 		// TODO:
+	}
+	
+	public boolean hasAnimation()
+	{
+		return animationGroup.size() > 0;
 	}
 	
 	public void setCurrentAnimation(Direction direction)
@@ -33,7 +44,7 @@ public class Animatable{
 	
 	public String getNextImage()
 	{
-		return currentAnimation.getNextImage();
+		return hasAnimation() ? currentAnimation.getNextImage() : defaultProp;
 	}
 	
 	private class Animation {
