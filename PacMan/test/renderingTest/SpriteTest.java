@@ -21,7 +21,7 @@ public class SpriteTest {
 	
 
 	
-	@BeforeAll
+	/*@BeforeAll
 	public void setup() {
 		pacman = new PacMan(initX, initY, initSpeed, initDirection);
 		sprite = new Sprite(pacman, 1);
@@ -75,5 +75,5 @@ public class SpriteTest {
 		pacman.setCurrentY(initY);
 		pacman.setSpeed(initSpeed);
 		pacman.setDirection(initDirection);
-	}
+	}*/
 }

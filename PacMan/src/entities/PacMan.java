@@ -1,14 +1,14 @@
 package entities;
 
-public class PacMan extends Animatable{
+public class PacMan extends GameEntity{
 	
 	public final static int MAX_LIFE = 3;
 	private int lives = MAX_LIFE;
 	private boolean hasPower = false;
 	
-	public PacMan(double x, double y, double initSpeed, Direction initDirection)
+	public PacMan(int x, int y, Animatable animatable)
 	{
-		super("pacman", x, y,  initSpeed, initDirection);
+		super("pacman", x, y, animatable);
 		tileIndex = 30;
 	}
 	

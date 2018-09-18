@@ -24,6 +24,51 @@ public class Maze {
 		return null;
 	}
 	
+	public CollisionType validateMove(IGameEntity entity, Direction direction)
+	{
+		CollisionType collisionType = CollisionType.NONE;
+		int entityX = entity.getCurrentX();
+		int entityY = entity.getCurrentY();
+		
+		switch(direction)
+		{
+		case DOWN:
+			if (entityY >= GAME_TILE_HEIGHT_COUNT - 1) {
+				collisionType = CollisionType.OVERBOUND;
+			} else if (tiles[entityY + 1][entityX].isWall()){
+				collisionType = CollisionType.COLLIDEWALL;
+			}
+			break;
+		case LEFT:
+			if (entityX <= 0) {
+				collisionType = CollisionType.OVERBOUND;
+			} else if (tiles[entityY][entityX - 1].isWall()){
+				collisionType = CollisionType.COLLIDEWALL;
+			}
+			break;
+		case RIGHT:
+			if (entityX >= GAME_TILE_WIDTH_COUNT - 1) {
+				collisionType = CollisionType.OVERBOUND;
+			} else if (tiles[entityY][entityX + 1].isWall()){
+				collisionType = CollisionType.COLLIDEWALL;
+			}
+			break;
+		case UP:
+			if (entityY <= 0) {
+				collisionType = CollisionType.OVERBOUND;
+			} else if (tiles[entityY - 1][entityX].isWall()){
+				collisionType = CollisionType.COLLIDEWALL;
+			}
+			break;
+		case NONE:
+			break;
+		default:
+			break;
+		}
+		
+		return collisionType;
+	}
+	
 	public Tile[][] getTiles()
 	{
 		return tiles;
@@ -32,11 +77,5 @@ public class Maze {
 	public void resetMap()
 	{
 		// TODO:
-	}
-	
-	public boolean isOverBound()
-	{
-		// TODO:
-		return true;
 	}
 }

@@ -3,8 +3,16 @@ package entities;
 public class Velocity {
 
 	private double speed;
-	
 	private Direction direction;
+	
+	public Velocity() {
+		this(Direction.RIGHT, 0.0);
+	}
+	
+	public Velocity(Direction direction, double speed) {
+		this.direction = direction;
+		this.speed = speed;
+	}
 	
 	public double getSpeed()
 	{
