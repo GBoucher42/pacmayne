@@ -69,7 +69,7 @@ public abstract class GameEntity implements IGameEntity {
 	{
 		return animatable;
 	}
-	
+
 	public int getTileIndex()
 	{
 		return tileIndex;

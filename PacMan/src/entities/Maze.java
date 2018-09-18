@@ -24,13 +24,13 @@ public class Maze {
 		return null;
 	}
 	
-	public CollisionType validateMove(IGameEntity entity)
+	public CollisionType validateMove(IGameEntity entity, Direction direction)
 	{
 		CollisionType collisionType = CollisionType.NONE;
 		int entityX = entity.getCurrentX();
 		int entityY = entity.getCurrentY();
 		
-		switch(entity.getDirection())
+		switch(direction)
 		{
 		case DOWN:
 			if (entityY >= GAME_TILE_HEIGHT_COUNT - 1) {

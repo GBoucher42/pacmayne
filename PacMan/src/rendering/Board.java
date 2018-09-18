@@ -33,10 +33,11 @@ public class Board extends Pane implements IBoardRenderer{
 	private PacMan pacman;
 	private Maze map;
 	private Collection<Sprite> movingSprites = new LinkedList<Sprite>();
-	private Collection<Sprite> staticSprites = new LinkedList<Sprite>();
-	
+	private Collection<Sprite> staticSprites = new LinkedList<Sprite>();	
+
+	private Direction awaitingDirection;
+	private int score;
 	private Text scoreText;
-	int score;
 	
 	public Board()
 	{
@@ -46,7 +47,7 @@ public class Board extends Pane implements IBoardRenderer{
 	public void drawMaze(Maze map) 
 	{		
 		this.map = map;
-		Tile[][] tiles = map.getTiles();
+		Tile[][] tiles = map.getTiles();	
 		
 		for (int i = 0; i < tiles.length; ++i)
 		{
@@ -136,16 +137,16 @@ public class Board extends Pane implements IBoardRenderer{
 		
 		switch(keyCode) {
 			case UP:
-				pacman.setDirection(Direction.UP);
+				awaitingDirection = Direction.UP;
 				break;
 			case DOWN:
-				pacman.setDirection(Direction.DOWN);
+				awaitingDirection = Direction.DOWN;
 				break;
 			case LEFT:
-				pacman.setDirection(Direction.LEFT);
+				awaitingDirection = Direction.LEFT;
 				break;
 			case RIGHT:
-				pacman.setDirection(Direction.RIGHT);
+				awaitingDirection = Direction.RIGHT;
 				break;
 			case F:
 				pacman.setSpeed(2);
@@ -161,7 +162,19 @@ public class Board extends Pane implements IBoardRenderer{
 	private void animate()
 	{
 		//TODO: Animate ALL animatable sprites if able/valid
-		CollisionType type = map.validateMove(pacman);
+		CollisionType type;
+		
+		if (awaitingDirection != null) {
+			type = map.validateMove(pacman, awaitingDirection);
+			
+			if (type != CollisionType.COLLIDEWALL) {
+				pacman.setDirection(awaitingDirection);
+				awaitingDirection = null;
+			}
+		} 
+
+		type = map.validateMove(pacman, pacman.getDirection());			
+		
 		if (type == CollisionType.NONE)
 		{
 			pacman.setIsMoving(true);
@@ -172,6 +185,21 @@ public class Board extends Pane implements IBoardRenderer{
 		} else if (type == CollisionType.OVERBOUND) {
 			// TODO: tunnel
 		}
+		
+		/*if(awaitingDirection != null && !detectCollision(pacman, awaitingDirection)) {
+			pacman.setDirection(awaitingDirection);
+			awaitingDirection = null;
+		}
+		if (detectCollision(pacman, pacman.getVelocity().getDirection()))
+		{
+			pacman.setIsMoving(false);
+			
+		}
+		else
+		{
+			pacman.setIsMoving(true);
+			pacman.moveOneFrameBySpeed();
+		}*/
 	}
 	
 	private void updateScore(int value) {

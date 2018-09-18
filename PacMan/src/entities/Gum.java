@@ -10,6 +10,7 @@ public class Gum extends Collectable{
 	protected Gum(int scoreValue, int x, int y, Animatable animatable, String name) 
 	{
 		super(scoreValue, x, y, animatable, name);
+
 	}
 	
 	@Override

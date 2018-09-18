@@ -10,7 +10,6 @@ import entities.EntityManager;
 import entities.GameEntityType;
 import entities.IGameEntity;
 import entities.Maze;
-import entities.PacMan;
 import factories.GameEntityFactory;
 import factories.MazeFactory;
 import javafx.animation.AnimationTimer;

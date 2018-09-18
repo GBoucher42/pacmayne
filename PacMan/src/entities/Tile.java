@@ -14,7 +14,6 @@ public class Tile {
 		this.y = y;
 		this.type = type;
 	}
-	
 
 	public void consumeCollectable() {
 		this.item = null;
