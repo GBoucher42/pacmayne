@@ -4,6 +4,10 @@ import static configs.GameConfig.GAME_HEIGHT;
 import static configs.GameConfig.GAME_WIDTH;
 import static configs.GameConfig.TILE_SIZE;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -17,7 +21,15 @@ import entities.Maze;
 import entities.PacMan;
 import entities.Tile;
 import entities.TileType;
+import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -26,21 +38,25 @@ import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-public class Board extends Pane implements IBoardRenderer{
+public class Board extends BorderPane implements IBoardRenderer{
 
 	private PacMan pacman;
 	private Maze map;
 	private Collection<Sprite> animatedSprites = new LinkedList<Sprite>();
 	
-	private Text scoreText;
+	private Label scoreText;
 	private Map<Integer, Shape> gums = new HashMap<>();
 	private Map<Integer, Shape> pacGums = new HashMap<>();
-	private Direction awaitingDirection;
 	int score;
+	Pane pane =new Pane();
+	Pane paneHeader =new Pane();
+	Pane paneFooter= new Pane();
+	@FXML private ImageView imglogo ;
 	
 	public Board()
 	{
-		this.setStyle("-fx-background-color: black;");
+		pane.setStyle("-fx-background-color: black;");
+		
 	}
 	
 	public void drawMaze(Maze map) 
@@ -56,18 +72,21 @@ public class Board extends Pane implements IBoardRenderer{
 				{
 					Rectangle wall = new Rectangle(tiles[i][k].getX() * TILE_SIZE, tiles[i][k].getY() * TILE_SIZE, TILE_SIZE, TILE_SIZE);
 	        		wall.setFill(Color.BLUE);
-	        		this.getChildren().add(wall);
+	        		pane.getChildren().add(wall);
+	        		this.setCenter(pane);
 				} else {
 					// TODO: these classes should contain their image that we simply display
 					 if (tiles[i][k].isTileSuperGum()) {
 			        		Circle gum = new Circle(tiles[i][k].getX() * TILE_SIZE + TILE_SIZE / 2, tiles[i][k].getY() * TILE_SIZE + TILE_SIZE / 2, TILE_SIZE / 2);
 			        		gum.setFill(Color.WHITE);
-			        		this.getChildren().add(gum);
+			        		pane.getChildren().add(gum);
+			        		this.setCenter(pane);
 			        		pacGums.put(j, gum);
 					 } else if (tiles[i][k].isTileGum()){
 			        		Circle gum = new Circle(tiles[i][k].getX() * TILE_SIZE + TILE_SIZE / 2, tiles[i][k].getY() * TILE_SIZE + TILE_SIZE / 2, TILE_SIZE / 4);
 			        		gum.setFill(Color.WHITE);
-			        		this.getChildren().add(gum);
+			        		pane.getChildren().add(gum);
+			        		this.setCenter(pane);
 			        		gums.put(j, gum);
 					 }
 				}
@@ -75,9 +94,36 @@ public class Board extends Pane implements IBoardRenderer{
 			}
 		}
 
-        scoreText = new Text(GAME_WIDTH /2 - 50 , GAME_HEIGHT /2, "Score: 0");
-        scoreText.setFont(new Font(20));
-        this.getChildren().add(scoreText);
+        scoreText = new Label(); 
+        scoreText.setStyle("-fx-font-size: 32px;"
+        		+ "-fx-font-family: \"Comic Sans MS\";"
+                + "-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );"
+        		+ "-fx-font-weight: bold");
+        scoreText.setTextFill(Color.RED);
+       
+        scoreText.setText("Score: 0");
+        //scoreText.setFont(new Font(20));
+        scoreText.setAlignment(Pos.CENTER);
+        paneFooter.getChildren().add(scoreText);
+       
+        paneFooter.setStyle("-fx-background-color: black;");
+        paneFooter.setPrefSize(700,50);        
+        this.setBottom(paneFooter);
+      
+
+       
+        //Image imgl= new Image("");
+		   	
+        Image image = new Image("file:ressource/sprites/logo.png");
+	
+        imglogo = new ImageView();
+        imglogo.setImage(image);
+        imglogo.setFitHeight(75);
+        paneHeader.getChildren().add(imglogo);
+       paneHeader.setStyle("-fx-background-color: black;");
+        
+        paneHeader.setPrefSize(700,75);   
+        this.setTop(paneHeader);
 	}
 	
 	public void spawnAnimatables(EntityManager entityManager)
@@ -97,7 +143,8 @@ public class Board extends Pane implements IBoardRenderer{
 			}				
 		}
 		
-		this.getChildren().addAll(animatedSprites);
+		pane.getChildren().addAll(animatedSprites);
+		this.setCenter(pane);
 	}
 	
 	public void spawnStaticEntities(EntityManager entityManager)
@@ -120,16 +167,16 @@ public class Board extends Pane implements IBoardRenderer{
 		
 		switch(keyCode) {
 			case UP:
-				awaitingDirection = Direction.UP;
+				pacman.setDirection(Direction.UP);
 				break;
 			case DOWN:
-				awaitingDirection = Direction.DOWN;
+				pacman.setDirection(Direction.DOWN);
 				break;
 			case LEFT:
-				awaitingDirection = Direction.LEFT;
+				pacman.setDirection(Direction.LEFT);
 				break;
 			case RIGHT:
-				awaitingDirection = Direction.RIGHT;
+				pacman.setDirection(Direction.RIGHT);
 				break;
 			case F:
 				pacman.setSpeed(2);
@@ -145,54 +192,49 @@ public class Board extends Pane implements IBoardRenderer{
 	private void animate()
 	{
 		//TODO: Animate ALL animatable sprites if able/valid
-		if(awaitingDirection != null && !detectCollision(pacman, awaitingDirection)) {
-			pacman.setDirection(awaitingDirection);
-			awaitingDirection = null;
-		}
-		if (detectCollision(pacman, pacman.getVelocity().getDirection()))
-		{
-			pacman.setIsMoving(false);
-			
-		}
-		else
+		if (detectCollision(pacman))
 		{
 			pacman.setIsMoving(true);
 			pacman.moveOneFrameBySpeed();
 		}
+		else
+		{
+			pacman.setIsMoving(false);
+		}
 	}
 	
-	private boolean detectCollision(Animatable animatable, Direction direction)
+	private boolean detectCollision(Animatable animatable)
 	{
-		boolean willCollide = false;
+		boolean willNotCollide = false;
 		// TODO: BoundingBox checking
 		Tile  candidateTile;
-		switch(direction)
+		switch(animatable.getVelocity().getDirection())
 		{
 		case DOWN:
 			candidateTile = map.getTile((int)animatable.getCurrentY() + 1, (int)animatable.getCurrentX());
 			if (candidateTile != null)
-				willCollide = candidateTile.getType() == TileType.WALL;
+				willNotCollide = candidateTile.getType() != TileType.WALL;
 			break;
 		case LEFT:
 			candidateTile = map.getTile((int)animatable.getCurrentY(), (int)animatable.getCurrentX() - 1);
 			if (candidateTile != null)
-				willCollide = candidateTile.getType() == TileType.WALL;
+				willNotCollide = candidateTile.getType() != TileType.WALL;
 			break;
 		case RIGHT:
 			candidateTile = map.getTile((int)animatable.getCurrentY(), (int)animatable.getCurrentX() + 1);
 			if (candidateTile != null)
-				willCollide = candidateTile.getType() == TileType.WALL;
+				willNotCollide = candidateTile.getType() != TileType.WALL;
 			break;
 		case UP:
 			candidateTile = map.getTile((int)animatable.getCurrentY() - 1, (int)animatable.getCurrentX());
 			if (candidateTile != null)
-				willCollide = candidateTile.getType() == TileType.WALL;
+				willNotCollide = candidateTile.getType() != TileType.WALL;
 			break;
 		default:
 			break;
 		}
 		
-		return willCollide;
+		return willNotCollide;
 	}
 	
 	private void detectGums(int index) {
@@ -204,17 +246,20 @@ public class Board extends Pane implements IBoardRenderer{
 	}
 	
 	private void eatGum(int index) {
-		this.getChildren().remove(gums.get(index));
+		pane.getChildren().remove(gums.get(index));
+		this.setCenter(pane);
 		gums.remove(index);
 		score+=10;
 		updateScore();
 	}
 	
 	private void eatPacGum(int index) {
-		this.getChildren().remove(pacGums.get(index));
+		pane.getChildren().remove(pacGums.get(index));
+		this.setCenter(pane);
 		pacGums.remove(index);
 		score+=50;
 		updateScore();
+		
 	}
 	
 	private void updateScore() {

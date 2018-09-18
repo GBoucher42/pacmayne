@@ -2,7 +2,7 @@ package configs;
 
 public class GameConfig {
 	
-	public static final int TILE_SIZE = 25;
+	public static final int TILE_SIZE = 19;
 	public static final int GAME_TILE_WIDTH_COUNT = 28;
 	public static final int GAME_TILE_HEIGHT_COUNT = 31;
 	public static final int GAME_WIDTH = TILE_SIZE * GAME_TILE_WIDTH_COUNT;
