@@ -20,6 +20,5 @@ public abstract class Collectable extends GameEntity {
 
 	public boolean isTileGum() {
 		return false;
-	}
-	
+	}	
 }

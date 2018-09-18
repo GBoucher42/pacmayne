@@ -84,8 +84,11 @@ public class MazeFactory {
 				{
 					newTile.setCollectable((Collectable) GameEntityFactory.createGameEntity(GameEntityType.SUPERGUM, j, i));
 				}
-				
-				// TODO: Cover other cases and set correct position for Collectable 
+				else if (tileCode == TileCode.FRUIT)
+				{
+					newTile.setCollectable((Collectable) GameEntityFactory.createGameEntity(GameEntityType.FRUIT, j, i));
+				}
+			
 				maze.addTile(newTile, i, j);
 			}
 		}

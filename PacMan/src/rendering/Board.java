@@ -82,6 +82,7 @@ public class Board extends Pane implements IBoardRenderer{
 				if (pacman == null && entity.getClass() == PacMan.class)
 				{
 					pacman = (PacMan) entity;
+					consumeGums();
 				}
 			}				
 		}
@@ -111,11 +112,22 @@ public class Board extends Pane implements IBoardRenderer{
 	}
 	
 	private void consumeGums() {
-		Tile spriteTile = map.getTile(pacman.getCurrentY(), pacman.getCurrentX());
-		if (spriteTile.hasCollectable()) {
+		Tile tile = map.getTile(pacman.getCurrentY(), pacman.getCurrentX());
+		if (tile.hasCollectable()) {
 			
-			updateScore(spriteTile.getCollectable().getScoreValue());	
-			spriteTile.consumeCollectable();
+			Sprite spriteToRemove = null;
+			for (Sprite sprite : staticSprites) {
+				if (sprite.getEntity().getCurrentX() == tile.getX() && sprite.getEntity().getCurrentY() == tile.getY()) {
+					spriteToRemove = sprite;
+					continue;
+				}				
+			}
+			
+			staticSprites.remove(spriteToRemove);
+			this.getChildren().remove(spriteToRemove);
+		
+			updateScore(tile.getCollectable().getScoreValue());	
+			tile.consumeCollectable();
 		}
 	}
 	
