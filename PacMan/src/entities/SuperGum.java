@@ -11,10 +11,4 @@ public class SuperGum extends Gum{
 	{
 		return true;
 	}
-	
-	@Override
-	public void consume() {
-		// TODO Auto-generated method stub
-		
-	}
 }

@@ -6,11 +6,4 @@ public class Fruit extends Collectable{
 	{
 		super(scoreValue, x, y, animatable, Fruit.class.getName());
 	}
-	
-	@Override
-	public void consume() {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

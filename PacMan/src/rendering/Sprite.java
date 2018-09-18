@@ -1,7 +1,6 @@
 package rendering;
 
 
-import entities.GameEntity;
 import entities.IGameEntity;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
@@ -21,9 +20,10 @@ public class Sprite extends StackPane{
 	
 	public Sprite(IGameEntity entity, int id)
 	{
+		this.setWidth(TILE_SIZE);
+		this.setHeight(TILE_SIZE);
 		this.id = id;
 		this.entity = entity;
-		entity.getAnimatable().setCurrentAnimation(entity.getDirection());
 		String imgPath = entity.getAnimatable().getNextImage();
 		
 		Image img = new Image("file:" + imgPath);
@@ -35,8 +35,7 @@ public class Sprite extends StackPane{
 		
 		image.translateXProperty().bind(this.widthProperty().subtract(image.getFitWidth()).divide(4));
 		image.translateYProperty().bind(this.heightProperty().subtract(image.getFitHeight()).divide(4));
-
-		// TODO: fetch image using entity name as key: GraphicRepository.GetImage(entity.getName()); 
+		
 		this.getChildren().add(image);		
 		updatePosition();
 	}
@@ -50,7 +49,7 @@ public class Sprite extends StackPane{
 		image.setImage(new Image("file:" + imgPath));
 	}
 
-	// TODO: use bounds to detect collision with other sprites and walls (?)
+	// TODO: use bounds to detect collision with other ghosts
 	public Bounds getBounds(){
 		BoundingBox box = new BoundingBox(this.getLayoutX() + 4, this.getLayoutY() + 4, 8, 8);
 		return (Bounds)box;

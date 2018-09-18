@@ -9,8 +9,6 @@ public abstract class Collectable extends GameEntity {
 		value = scoreValue;
 	}
 	
-	public abstract void consume();
-	
 	public int getScoreValue()
 	{
 		return value;
@@ -23,4 +21,5 @@ public abstract class Collectable extends GameEntity {
 	public boolean isTileGum() {
 		return false;
 	}
+	
 }

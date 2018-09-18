@@ -17,10 +17,4 @@ public class Gum extends Collectable{
 	{
 		return true;
 	}
-	
-	@Override
-	public void consume() {
-		// TODO Auto-generated method stub
-		
-	}
 }

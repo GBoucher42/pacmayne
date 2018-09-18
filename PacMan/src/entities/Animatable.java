@@ -31,7 +31,9 @@ public class Animatable{
 	
 	public void setCurrentAnimation(Direction direction)
 	{
-		currentAnimation = animationGroup.get(direction);
+		if (animationGroup.containsKey(direction)) {
+			currentAnimation = animationGroup.get(direction);
+		}		
 	}
 	
 	public void addAnimation(Direction direction, ArrayList<String> images)
@@ -39,11 +41,15 @@ public class Animatable{
 		if (!animationGroup.containsKey(direction)) {
 			Animation anim = new Animation(images);
 			animationGroup.put(direction, anim);
+			
+			if (currentAnimation == null) {
+				currentAnimation = anim;
+			}
 		}
 	}
 	
 	public String getNextImage()
-	{
+	{		
 		return hasAnimation() ? currentAnimation.getNextImage() : defaultProp;
 	}
 	
@@ -59,6 +65,10 @@ public class Animatable{
 		public String getNextImage()
 		{
 			int index = (imageIndex++) % images.size();
+			if(imageIndex == images.size()) {
+				imageIndex = 0;
+			}
+			
 			return images.get(index);
 		}
 	}

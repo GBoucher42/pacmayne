@@ -15,6 +15,11 @@ public class Tile {
 		this.type = type;
 	}
 	
+
+	public void consumeCollectable() {
+		this.item = null;
+	}
+	
 	public boolean isWall() {
 		return type == TileType.WALL;
 	}
@@ -27,6 +32,10 @@ public class Tile {
 	public boolean isTileSuperGum()
 	{
 		return item != null && item.isTileSuperGum();
+	}
+	
+	public boolean hasCollectable() {
+		return item != null;
 	}
 	
 	public Collectable getCollectable()

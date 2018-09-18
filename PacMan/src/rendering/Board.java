@@ -32,11 +32,10 @@ public class Board extends Pane implements IBoardRenderer{
 
 	private PacMan pacman;
 	private Maze map;
-	private Collection<Sprite> animatedSprites = new LinkedList<Sprite>();
+	private Collection<Sprite> movingSprites = new LinkedList<Sprite>();
+	private Collection<Sprite> staticSprites = new LinkedList<Sprite>();
 	
 	private Text scoreText;
-	private Map<Integer, Shape> gums = new HashMap<>();
-	private Map<Integer, Shape> pacGums = new HashMap<>();
 	int score;
 	
 	public Board()
@@ -47,8 +46,8 @@ public class Board extends Pane implements IBoardRenderer{
 	public void drawMaze(Maze map) 
 	{		
 		this.map = map;
-		int j = 0;
 		Tile[][] tiles = map.getTiles();
+		
 		for (int i = 0; i < tiles.length; ++i)
 		{
 			for (int k = 0; k < tiles[0].length; ++k)
@@ -59,25 +58,15 @@ public class Board extends Pane implements IBoardRenderer{
 	        		wall.setFill(Color.BLUE);
 	        		this.getChildren().add(wall);
 				} else {
-					// TODO: these classes should contain their image that we simply display
-					 if (tiles[i][k].isTileSuperGum()) {
-			        		Circle gum = new Circle(tiles[i][k].getX() * TILE_SIZE + TILE_SIZE / 2, tiles[i][k].getY() * TILE_SIZE + TILE_SIZE / 2, TILE_SIZE / 2);
-			        		gum.setFill(Color.WHITE);
-			        		this.getChildren().add(gum);
-			        		pacGums.put(j, gum);
-					 } else if (tiles[i][k].isTileGum()){
-			        		Circle gum = new Circle(tiles[i][k].getX() * TILE_SIZE + TILE_SIZE / 2, tiles[i][k].getY() * TILE_SIZE + TILE_SIZE / 2, TILE_SIZE / 4);
-			        		gum.setFill(Color.WHITE);
-			        		this.getChildren().add(gum);
-			        		gums.put(j, gum);
-					 }
+					Sprite sprite = new Sprite(tiles[i][k].getCollectable(), 1);					
+					staticSprites.add(sprite);					
 				}
-				++j;
 			}
 		}
 
         scoreText = new Text(GAME_WIDTH /2 - 50 , GAME_HEIGHT /2, "Score: 0");
         scoreText.setFont(new Font(20));
+        this.getChildren().addAll(staticSprites);
         this.getChildren().add(scoreText);
 	}
 	
@@ -88,17 +77,16 @@ public class Board extends Pane implements IBoardRenderer{
 			IGameEntity entity = entityManager.getEntity(i);
 			if (entity.getAnimatable() != null)
 			{
-				animatedSprites.add(new Sprite(entity, i));
+				movingSprites.add(new Sprite(entity, i));
 				
 				if (pacman == null && entity.getClass() == PacMan.class)
 				{
 					pacman = (PacMan) entity;
-					eatGum(pacman.getTileIndex()-1);
 				}
 			}				
 		}
 		
-		this.getChildren().addAll(animatedSprites);
+		this.getChildren().addAll(movingSprites);
 	}
 	
 	public void spawnStaticEntities(EntityManager entityManager)
@@ -109,11 +97,25 @@ public class Board extends Pane implements IBoardRenderer{
 	public void refreshView()
 	{
 		animate();
-		for (Sprite sprite : animatedSprites)
+		for (Sprite sprite : staticSprites)
+		{
+			sprite.updateAvatar();
+		}
+		
+		for (Sprite sprite : movingSprites)
 		{
 			sprite.updateAvatar();
 			sprite.updatePosition();
-			detectGums(sprite.getEntity().getTileIndex() - 1);
+			consumeGums();
+		}
+	}
+	
+	private void consumeGums() {
+		Tile spriteTile = map.getTile(pacman.getCurrentY(), pacman.getCurrentX());
+		if (spriteTile.hasCollectable()) {
+			
+			updateScore(spriteTile.getCollectable().getScoreValue());	
+			spriteTile.consumeCollectable();
 		}
 	}
 	
@@ -160,29 +162,8 @@ public class Board extends Pane implements IBoardRenderer{
 		}
 	}
 	
-	private void detectGums(int index) {
-		if(gums.containsKey(index)) {
-			eatGum(index);
-		} else if(pacGums.containsKey(index)) {
-			eatPacGum(index);
-		}
-	}
-	
-	private void eatGum(int index) {
-		this.getChildren().remove(gums.get(index));
-		gums.remove(index);
-		score+=10;
-		updateScore();
-	}
-	
-	private void eatPacGum(int index) {
-		this.getChildren().remove(pacGums.get(index));
-		pacGums.remove(index);
-		score+=50;
-		updateScore();
-	}
-	
-	private void updateScore() {
+	private void updateScore(int value) {
+		score += value;
 		scoreText.setText("Score: " + score);
 	}
 }

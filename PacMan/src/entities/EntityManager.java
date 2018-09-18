@@ -32,6 +32,7 @@ public class EntityManager {
 	
 	public void deleteEntity(IGameEntity entity)
 	{
+		// TODO: should fire an event caught by the board for it to delete the associated sprite
 		entities.remove(entity);
 	}
 	
