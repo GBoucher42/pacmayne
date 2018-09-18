@@ -60,6 +60,7 @@ public class Sprite extends StackPane{
 		setLayoutY(entity.getCurrentY() * TILE_SIZE);
 	}
 	
+	
 	public void resetPosition()
 	{
 		setLayoutX(entity.getStartX());
@@ -80,4 +81,6 @@ public class Sprite extends StackPane{
 	{
 		this.setVisible(false);
 	}
+	
+	
 }
