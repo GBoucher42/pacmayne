@@ -2,6 +2,7 @@ package rendering;
 
 
 import entities.GameEntity;
+import image.ImageRepository;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.scene.image.Image;
@@ -22,22 +23,23 @@ public class Sprite extends StackPane{
 	{
 		this.id = id;
 		this.entity = entity;
-		
-		Image img = this.updateAvatar(this.getImageName());
-		
-		image = new ImageView(img);
-		
-		// Scale image 
+		image = new ImageView();
 		image.fitWidthProperty().bind(this.widthProperty());
 		image.fitHeightProperty().bind(this.heightProperty());
 		
 		image.translateXProperty().bind(this.widthProperty().subtract(image.getFitWidth()).divide(4));
 		image.translateYProperty().bind(this.heightProperty().subtract(image.getFitHeight()).divide(4));
-
+		
+		updateAvatar();
+		
+		
+		
 		// TODO: fetch image using entity name as key: GraphicRepository.GetImage(entity.getName()); 
 		this.getChildren().add(image);		
 		updatePosition();
 	}
+	
+	
 
 	// TODO: use bounds to detect collision with other sprites and walls (?)
 	public Bounds getBounds(){
@@ -51,29 +53,18 @@ public class Sprite extends StackPane{
 		setLayoutY(entity.getCurrentY() * TILE_SIZE);
 	}
 	
+	
 	public void resetPosition()
 	{
 		setLayoutX(entity.getStartX());
 		setLayoutY(entity.getStartY());
 	}  
 	
-	public String getImageName() {
-		if(entity != null) {
-			String imgName = entity.getName().toString() + "-1" + "-right";
-			return imgName;
-		}
-		else return null;
-	}
-	
-	public Image updateAvatar(String imgName) {
-		String fileName = "";
-		switch(imgName) {
-		case "pacman-1-right":
-			fileName = "file:ressource/sprites/pacman-r1.png";
-			break;
-		default: return null;
-		}
-		return new Image(fileName);
+	public void updateAvatar() {
+		Image img = ImageRepository.updateAvatar(ImageRepository.getImageName(entity));
+		
+		
+		image.setImage(img);
 	}
 	
 	public GameEntity getEntity()
@@ -90,4 +81,6 @@ public class Sprite extends StackPane{
 	{
 		this.setVisible(false);
 	}
+	
+	
 }

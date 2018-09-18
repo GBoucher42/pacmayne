@@ -1,52 +1,56 @@
 package image;
 
+import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
+
+import entities.Animatable;
 import entities.Direction;
 import entities.GameEntity;
 import entities.Velocity;
+import javafx.scene.image.Image;
+import rendering.Sprite;
 
-public class ImageRepository {
-	public String nameFile = "";
-	protected Velocity velocity = new Velocity();
+public class ImageRepository extends Sprite {
+	
+	public ImageRepository(GameEntity entity, int id) {
+		super(entity, id);
+		// TODO Auto-generated constructor stub
+	}
+
 	
 	
-	public String getImageName(GameEntity gameEntity) {
-		Direction direction = velocity.getDirection();
+	public static String getImageName(GameEntity gameEntity) {
+		StringBuilder nameFile = new StringBuilder();
+		Animatable anim = (Animatable) gameEntity; 
 		
-		//Récupération première partie du nom
-		if(gameEntity != null) {
-			nameFile += gameEntity.getName().toString();
-		} else {
+		if(gameEntity == null || anim == null) {
 			return null;
 		}
+		Direction direction = anim.getVelocity().getDirection();
+		
+		//Récupération première partie du nom
+		nameFile.append(gameEntity.getName());
 		
 		//Récupération de la deuxième partie du nom
-		nameFile += "-1";
+		nameFile.append("-1-");
 		
 		
 		//récupération 3ème partie du nom
-		switch(direction) {
-			case UP:
-				nameFile += "-up";
-				System.out.println(nameFile);
-				break;
-			case DOWN: 
-				nameFile += "-down";
-				System.out.println(nameFile);
-				break;
-			case RIGHT: 
-				nameFile += "-right";
-				System.out.println(nameFile);
-				break;
-			case LEFT: 
-				nameFile += "-left";
-				System.out.println(nameFile);
-				break;
-			default:
-				nameFile = "";
-				break;
-		}
-		return nameFile;
+		nameFile.append(direction.toString().toLowerCase());
+		return nameFile.toString();
 	}
+	
+	public static Image updateAvatar(String imgName) {
+		try {
+			String str = "file:ressource/sprites/" + imgName + ".png";
+			return new Image(str);
+		} catch (Exception e) {
+			System.err.println(e);
+			return null;
+		}
+		
+	}
+	
 	
 
 }

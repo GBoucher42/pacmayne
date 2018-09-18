@@ -110,6 +110,7 @@ public class Board extends Pane implements IBoardRenderer{
 		animate();
 		for (Sprite sprite : animatedSprites)
 		{
+			sprite.updateAvatar();
 			sprite.updatePosition();
 			detectGums(sprite.getEntity().getTileIndex() - 1);
 		}
