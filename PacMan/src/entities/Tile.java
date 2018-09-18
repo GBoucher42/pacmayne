@@ -15,8 +15,14 @@ public class Tile {
 		this.type = type;
 	}
 
-	public void consumeCollectable() {
-		this.item = null;
+	public int consumeCollectable() {
+		int result = 0;
+		if (hasCollectable()) {
+			result = item.getScoreValue();
+			this.item = null;
+		}
+		
+		return result;
 	}
 	
 	public boolean isWall() {

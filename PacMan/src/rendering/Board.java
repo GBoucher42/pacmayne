@@ -9,11 +9,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-import entities.Animatable;
 import entities.CollisionType;
 import entities.Direction;
 import entities.EntityManager;
-import entities.GameEntity;
 import entities.IGameEntity;
 import entities.Maze;
 import entities.PacMan;
@@ -22,9 +20,7 @@ import entities.TileType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
@@ -33,7 +29,7 @@ public class Board extends Pane implements IBoardRenderer{
 	private PacMan pacman;
 	private Maze map;
 	private Collection<Sprite> movingSprites = new LinkedList<Sprite>();
-	private Collection<Sprite> staticSprites = new LinkedList<Sprite>();	
+	private Map<Tile, Sprite> staticSprites = new HashMap<Tile, Sprite>();
 
 	private Direction awaitingDirection;
 	private int score;
@@ -60,14 +56,16 @@ public class Board extends Pane implements IBoardRenderer{
 	        		this.getChildren().add(wall);
 				} else {
 					Sprite sprite = new Sprite(tiles[i][k].getCollectable(), 1);					
-					staticSprites.add(sprite);					
+					//staticSprites.add(sprite);
+					staticSprites.put(tiles[i][k], sprite);
 				}
 			}
 		}
 
         scoreText = new Text(GAME_WIDTH /2 - 50 , GAME_HEIGHT /2, "Score: 0");
         scoreText.setFont(new Font(20));
-        this.getChildren().addAll(staticSprites);
+        //this.getChildren().addAll(staticSprites);
+        this.getChildren().addAll(staticSprites.values());
         this.getChildren().add(scoreText);
 	}
 	
@@ -99,7 +97,7 @@ public class Board extends Pane implements IBoardRenderer{
 	public void refreshView()
 	{
 		animate();
-		for (Sprite sprite : staticSprites)
+		for (Sprite sprite : staticSprites.values())
 		{
 			sprite.updateAvatar();
 		}
@@ -115,20 +113,10 @@ public class Board extends Pane implements IBoardRenderer{
 	private void consumeGums() {
 		Tile tile = map.getTile(pacman.getCurrentY(), pacman.getCurrentX());
 		if (tile.hasCollectable()) {
-			
-			Sprite spriteToRemove = null;
-			for (Sprite sprite : staticSprites) {
-				if (sprite.getEntity().getCurrentX() == tile.getX() && sprite.getEntity().getCurrentY() == tile.getY()) {
-					spriteToRemove = sprite;
-					continue;
-				}				
-			}
-			
-			staticSprites.remove(spriteToRemove);
-			this.getChildren().remove(spriteToRemove);
-		
-			updateScore(tile.getCollectable().getScoreValue());	
-			tile.consumeCollectable();
+			updateScore(tile.consumeCollectable());	
+			Sprite spriteToRemove = staticSprites.get(tile);
+			staticSprites.remove(tile);			
+			this.getChildren().remove(spriteToRemove);		
 		}
 	}
 	
@@ -167,7 +155,7 @@ public class Board extends Pane implements IBoardRenderer{
 		if (awaitingDirection != null) {
 			type = map.validateMove(pacman, awaitingDirection);
 			
-			if (type != CollisionType.COLLIDEWALL) {
+			if (type != CollisionType.COLLIDEWALL) { 
 				pacman.setDirection(awaitingDirection);
 				awaitingDirection = null;
 			}
