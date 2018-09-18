@@ -31,12 +31,6 @@ public class Ghost extends Animatable{
 		// TODO:
 	}
 	
-	@Override
-	public void update() {
-		// TODO Auto-generated method stub
-		
-	}
-	
 	public void setStandBy()
 	{
 		// TODO:

@@ -1,5 +1,6 @@
 package states;
 
+//DESIGN PATTERN : State
 public interface IState {
 	void onEnter();
 	

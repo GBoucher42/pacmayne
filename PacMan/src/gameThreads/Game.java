@@ -6,6 +6,8 @@ import audio.AudioRepository;
 
 import entities.Direction;
 import entities.EntityManager;
+import entities.Maze;
+import entities.MazeFactory;
 import entities.PacMan;
 import javafx.animation.AnimationTimer;
 
@@ -15,6 +17,7 @@ public class Game {
 	private AudioRepository audioRepository = new AudioRepository();
 	private EntityManager entityManager = new EntityManager();
 	private PacMan pacman;
+	Maze map;
 	
 	public Game(IBoardRenderer board)
 	{
@@ -25,14 +28,21 @@ public class Game {
 	private void init()
 	{
 		createEntities();
-		board.drawMaze();
+		
+		try {
+			map = MazeFactory.BuildMaze();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		board.drawMaze(map);
 		board.spawnAnimatables(entityManager);
 		board.spawnStaticEntities(entityManager);		
 	}
 
 	private void createEntities()
 	{
-		pacman = new PacMan(25, 25, 1.0, Direction.RIGHT);
+		pacman = new PacMan(1, 1, 1.0, Direction.RIGHT);
 		entityManager.addEntity(pacman);
 		//entityManager.addEntity(new Ghost("Inky", 133, 134, 1.0, Direction.UP));
 		//entityManager.addEntity(new Ghost("Pinky", 124, 134, 1.0, Direction.UP));
@@ -42,8 +52,6 @@ public class Game {
 	
 	public void run()
 	{
-		// TODO: start game thread
-
 		new AnimationTimer()
         {
 			long lastUpdate = 0;
@@ -52,8 +60,7 @@ public class Game {
             {
             	if (currentNanoTime - lastUpdate < 100000000) {
                     return;
-                }
-            	board.animate();
+                }            	
 				lastUpdate = currentNanoTime;
 				update();
             }
