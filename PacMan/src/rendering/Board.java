@@ -55,8 +55,7 @@ public class Board extends Pane implements IBoardRenderer{
 	        		wall.setFill(Color.BLUE);
 	        		this.getChildren().add(wall);
 				} else {
-					Sprite sprite = new Sprite(tiles[i][k].getCollectable(), 1);					
-					//staticSprites.add(sprite);
+					Sprite sprite = new Sprite(tiles[i][k].getCollectable(), 1);
 					staticSprites.put(tiles[i][k], sprite);
 				}
 			}
@@ -64,7 +63,6 @@ public class Board extends Pane implements IBoardRenderer{
 
         scoreText = new Text(GAME_WIDTH /2 - 50 , GAME_HEIGHT /2, "Score: 0");
         scoreText.setFont(new Font(20));
-        //this.getChildren().addAll(staticSprites);
         this.getChildren().addAll(staticSprites.values());
         this.getChildren().add(scoreText);
 	}
@@ -173,21 +171,6 @@ public class Board extends Pane implements IBoardRenderer{
 		} else if (type == CollisionType.OVERBOUND) {
 			// TODO: tunnel
 		}
-		
-		/*if(awaitingDirection != null && !detectCollision(pacman, awaitingDirection)) {
-			pacman.setDirection(awaitingDirection);
-			awaitingDirection = null;
-		}
-		if (detectCollision(pacman, pacman.getVelocity().getDirection()))
-		{
-			pacman.setIsMoving(false);
-			
-		}
-		else
-		{
-			pacman.setIsMoving(true);
-			pacman.moveOneFrameBySpeed();
-		}*/
 	}
 	
 	private void updateScore(int value) {
