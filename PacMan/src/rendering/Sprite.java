@@ -23,10 +23,12 @@ public class Sprite extends StackPane{
 	{
 		this.id = id;
 		this.entity = entity;
+		entity.getAnimatable().setCurrentAnimation(entity.getDirection());
+		String imgPath = entity.getAnimatable().getNextImage();
 		
-		Image img = new Image("file:ressource/sprites/pacman-r1.png");
-		
+		Image img = new Image("file:" + imgPath);
 		image = new ImageView(img);
+		
 		// Scale image 
 		image.fitWidthProperty().bind(this.widthProperty());
 		image.fitHeightProperty().bind(this.heightProperty());
@@ -37,6 +39,15 @@ public class Sprite extends StackPane{
 		// TODO: fetch image using entity name as key: GraphicRepository.GetImage(entity.getName()); 
 		this.getChildren().add(image);		
 		updatePosition();
+	}
+	
+	public void updateAvatar()
+	{
+		entity.getAnimatable().setCurrentAnimation(entity.getDirection());
+		String imgPath = entity.getAnimatable().getNextImage();
+		
+		 // TODO: store all images in a map and access them instead of creating a new Image every time
+		image.setImage(new Image("file:" + imgPath));
 	}
 
 	// TODO: use bounds to detect collision with other sprites and walls (?)
