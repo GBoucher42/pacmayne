@@ -4,6 +4,7 @@ import static configs.GameConfig.GAME_HEIGHT;
 import static configs.GameConfig.GAME_WIDTH;
 import static configs.GameConfig.TILE_SIZE;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -19,10 +20,13 @@ import entities.Tile;
 import entities.TileType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaPlayer.Status;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.media.Media;
 
 public class Board extends Pane implements IBoardRenderer{
 
@@ -34,10 +38,17 @@ public class Board extends Pane implements IBoardRenderer{
 	private Direction awaitingDirection;
 	private int score;
 	private Text scoreText;
+	MediaPlayer pacmanEatingPlayer;
 	
 	public Board()
 	{
 		this.setStyle("-fx-background-color: black;");
+	}
+	
+	public void loadSounds() {
+		String musicFile = "ressource/audio/pacman-eating.wav"; 
+		Media sound = new Media(new File(musicFile).toURI().toString());
+		pacmanEatingPlayer = new MediaPlayer(sound);
 	}
 	
 	public void drawMaze(Maze map) 
@@ -110,11 +121,17 @@ public class Board extends Pane implements IBoardRenderer{
 	
 	private void consumeGums() {
 		Tile tile = map.getTile(pacman.getCurrentY(), pacman.getCurrentX());
+		if(tile == null) { // when you pass through the tunnels
+			return;
+		}
 		if (tile.hasCollectable()) {
 			updateScore(tile.consumeCollectable());	
+			playEatingAudio();
 			Sprite spriteToRemove = staticSprites.get(tile);
 			staticSprites.remove(tile);			
-			this.getChildren().remove(spriteToRemove);		
+			this.getChildren().remove(spriteToRemove);	
+		} else {
+			stopEatingAudio();
 		}
 	}
 	
@@ -169,7 +186,19 @@ public class Board extends Pane implements IBoardRenderer{
 		{
 			pacman.setIsMoving(false);
 		} else if (type == CollisionType.OVERBOUND) {
-			// TODO: tunnel
+			pacman.passTunnel();
+		}
+	}
+	
+	private void playEatingAudio() {
+		if(!Status.PLAYING.equals(pacmanEatingPlayer.getStatus())) {
+			pacmanEatingPlayer.play();
+		}
+	}
+	
+	private void stopEatingAudio() {
+		if(Status.PLAYING.equals(pacmanEatingPlayer.getStatus())) {
+			pacmanEatingPlayer.stop();
 		}
 	}
 	

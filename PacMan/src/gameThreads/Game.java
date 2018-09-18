@@ -39,6 +39,7 @@ public class Game {
 		}
 		
 		board.drawMaze(map);
+		board.loadSounds();
 		board.spawnAnimatables(entityManager);
 		board.spawnStaticEntities(entityManager);		
 	}

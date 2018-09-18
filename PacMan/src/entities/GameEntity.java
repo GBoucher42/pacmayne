@@ -1,6 +1,7 @@
 package entities;
 
 import static configs.GameConfig.GAME_TILE_WIDTH_COUNT;
+import static configs.GameConfig.GAME_TILE_HEIGHT_COUNT;
 
 public abstract class GameEntity implements IGameEntity {
 
@@ -62,6 +63,33 @@ public abstract class GameEntity implements IGameEntity {
 			default:
 				break;
 			}
+		}
+	}
+	
+	public void passTunnel() {
+		switch(velocity.getDirection())
+		{
+		case DOWN:
+			setCurrentY(getCurrentY() - GAME_TILE_HEIGHT_COUNT);
+			tileIndex -= GAME_TILE_HEIGHT_COUNT;
+			break;
+		case LEFT:
+			setCurrentX(getCurrentX() + GAME_TILE_WIDTH_COUNT);
+			tileIndex += GAME_TILE_WIDTH_COUNT;
+			break;
+		case RIGHT:
+			setCurrentX(getCurrentX() - GAME_TILE_WIDTH_COUNT);
+			tileIndex -= GAME_TILE_WIDTH_COUNT;
+			break;
+		case UP:
+			setCurrentY(getCurrentY() -+ GAME_TILE_HEIGHT_COUNT);
+			tileIndex += GAME_TILE_HEIGHT_COUNT;
+			break;
+		case NONE:
+			isMoving = false;
+			break;
+		default:
+			break;
 		}
 	}
 	
