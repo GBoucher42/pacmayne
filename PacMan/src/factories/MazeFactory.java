@@ -3,6 +3,8 @@ package factories;
 import static configs.GameConfig.GAME_TILE_HEIGHT_COUNT;
 import static configs.GameConfig.GAME_TILE_WIDTH_COUNT;
 
+import entities.Collectable;
+import entities.GameEntityType;
 import entities.Gum;
 import entities.Maze;
 import entities.SuperGum;
@@ -76,11 +78,11 @@ public class MazeFactory {
 				
 				if (tileCode == TileCode.GUM)
 				{
-					newTile.setCollectable(new Gum(10, j, i));
+					newTile.setCollectable((Collectable) GameEntityFactory.createGameEntity(GameEntityType.GUM, j, i));
 				}
 				else if (tileCode == TileCode.SUPERGUM)
 				{
-					newTile.setCollectable(new SuperGum(50, j, i));
+					newTile.setCollectable((Collectable) GameEntityFactory.createGameEntity(GameEntityType.SUPERGUM, j, i));
 				}
 				
 				// TODO: Cover other cases and set correct position for Collectable 

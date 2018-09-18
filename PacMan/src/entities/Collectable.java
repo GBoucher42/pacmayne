@@ -1,14 +1,11 @@
 package entities;
 
-public abstract class Collectable {
+public abstract class Collectable extends GameEntity {
 	private int value;
-	private int x;
-	private int y;
 	
-	public Collectable(int scoreValue, int x, int y)
+	public Collectable(int scoreValue, int x, int y, Animatable animatable, String name)
 	{
-		this.x = x;
-		this.y = y;
+		super(name, x, y, animatable);		
 		value = scoreValue;
 	}
 	

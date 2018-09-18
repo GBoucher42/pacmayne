@@ -6,8 +6,10 @@ import entities.Animatable;
 import entities.Direction;
 import entities.GameEntity;
 import entities.GameEntityType;
+import entities.Gum;
 import entities.IGameEntity;
 import entities.PacMan;
+import entities.SuperGum;
 
 public class GameEntityFactory {
 	
@@ -36,8 +38,12 @@ public class GameEntityFactory {
 		case INKY:
 			break;
 		case GUM:
+			anim = new Animatable("ressource/sprites/ball-r1.png");
+			entity = new Gum(10, x, y, anim);
 			break;
 		case SUPERGUM:
+			anim = new Animatable("ressource/sprites/ball-r1.png");
+			entity = new SuperGum(50, x, y, anim);
 			break;
 		case FRUIT:
 			break;
