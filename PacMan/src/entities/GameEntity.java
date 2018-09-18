@@ -7,16 +7,16 @@ public abstract class GameEntity implements IGameEntity {
 	protected int tileIndex;	
 	protected final String name;
 	protected Velocity velocity;
-	protected final double startX, startY;
+	protected final int startX, startY;
 	protected boolean isMoving;
-	protected double currentX, currentY;
+	protected int currentX, currentY;
 	protected Animatable animatable;
 	
-	public GameEntity(String name, double x, double y, Animatable animatable) {
+	public GameEntity(String name, int x, int y, Animatable animatable) {
 		this(name, x, y, animatable, new Velocity());
 	}
 	
-	public GameEntity(String name, double x, double y, Animatable animatable, Velocity velocity)
+	public GameEntity(String name, int x, int y, Animatable animatable, Velocity velocity)
 	{
 		this.name = name;
 		startX = x;
@@ -80,32 +80,32 @@ public abstract class GameEntity implements IGameEntity {
 		return this.name;
 	}
 	
-	public double getStartX()
+	public int getStartX()
 	{
 		return startX;
 	}
 	
-	public double getStartY()
+	public int getStartY()
 	{
 		return startY;
 	}
 	
-	public double getCurrentX()
+	public int getCurrentX()
 	{
 		return currentX;
 	}
 	
-	public double getCurrentY()
+	public int getCurrentY()
 	{
 		return currentY;
 	}
 	
-	public void setCurrentX(double x)
+	public void setCurrentX(int x)
 	{
 		this.currentX = x;
 	}
 	
-	public void setCurrentY(double y)
+	public void setCurrentY(int y)
 	{
 		this.currentY = y;
 	}

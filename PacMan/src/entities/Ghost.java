@@ -6,7 +6,7 @@ public class Ghost extends GameEntity{
 
 	private IGhostAIStrategy aiStrategy;
 	
-	public Ghost(String name, double x, double y, Animatable animatable)
+	public Ghost(String name, int x, int y, Animatable animatable)
 	{
 		super(name, x, y, animatable);
 	}

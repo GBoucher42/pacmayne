@@ -11,17 +11,17 @@ public interface IGameEntity {
 	
 	String getName();
 	
-	double getStartX();
+	int getStartX();
 	
-	double getStartY();
+	int getStartY();
 	
-	double getCurrentX();
+	int getCurrentX();
 	
-	double getCurrentY();
+	int getCurrentY();
 	
-	void setCurrentX(double x);
+	void setCurrentX(int x);
 	
-	void setCurrentY(double y);
+	void setCurrentY(int y);
 	
 	void setSpeed(double speed);
 	

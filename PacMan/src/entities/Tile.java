@@ -15,6 +15,10 @@ public class Tile {
 		this.type = type;
 	}
 	
+	public boolean isWall() {
+		return type == TileType.WALL;
+	}
+	
 	public boolean isTileGum()
 	{
 		return item != null && item.isTileGum();

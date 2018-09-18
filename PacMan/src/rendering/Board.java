@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import java.util.Map;
 
 import entities.Animatable;
+import entities.CollisionType;
 import entities.Direction;
 import entities.EntityManager;
 import entities.GameEntity;
@@ -145,49 +146,17 @@ public class Board extends Pane implements IBoardRenderer{
 	private void animate()
 	{
 		//TODO: Animate ALL animatable sprites if able/valid
-		if (detectCollision(pacman))
+		CollisionType type = map.validateMove(pacman);
+		if (type == CollisionType.NONE)
 		{
 			pacman.setIsMoving(true);
 			pacman.moveOneFrameBySpeed();
-		}
-		else
+		} else if (type == CollisionType.COLLIDEWALL)
 		{
 			pacman.setIsMoving(false);
+		} else if (type == CollisionType.OVERBOUND) {
+			// TODO: tunnel
 		}
-	}
-	
-	private boolean detectCollision(GameEntity animatable)
-	{
-		boolean willNotCollide = false;
-		// TODO: BoundingBox checking
-		Tile  candidateTile;
-		switch(animatable.getDirection())
-		{
-		case DOWN:
-			candidateTile = map.getTile((int)animatable.getCurrentY() + 1, (int)animatable.getCurrentX());
-			if (candidateTile != null)
-				willNotCollide = candidateTile.getType() != TileType.WALL;
-			break;
-		case LEFT:
-			candidateTile = map.getTile((int)animatable.getCurrentY(), (int)animatable.getCurrentX() - 1);
-			if (candidateTile != null)
-				willNotCollide = candidateTile.getType() != TileType.WALL;
-			break;
-		case RIGHT:
-			candidateTile = map.getTile((int)animatable.getCurrentY(), (int)animatable.getCurrentX() + 1);
-			if (candidateTile != null)
-				willNotCollide = candidateTile.getType() != TileType.WALL;
-			break;
-		case UP:
-			candidateTile = map.getTile((int)animatable.getCurrentY() - 1, (int)animatable.getCurrentX());
-			if (candidateTile != null)
-				willNotCollide = candidateTile.getType() != TileType.WALL;
-			break;
-		default:
-			break;
-		}
-		
-		return willNotCollide;
 	}
 	
 	private void detectGums(int index) {

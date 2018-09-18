@@ -12,6 +12,7 @@ public class GameEntityFactory {
 	{
 		GameEntity entity = null;
 		Animatable anim = new Animatable();
+		
 		switch(type)
 		{
 		case PACMAN:

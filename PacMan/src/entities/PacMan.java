@@ -6,7 +6,7 @@ public class PacMan extends GameEntity{
 	private int lives = MAX_LIFE;
 	private boolean hasPower = false;
 	
-	public PacMan(double x, double y, Animatable animatable)
+	public PacMan(int x, int y, Animatable animatable)
 	{
 		super("pacman", x, y, animatable);
 		tileIndex = 30;
