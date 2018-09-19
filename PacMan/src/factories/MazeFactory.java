@@ -5,12 +5,9 @@ import static configs.GameConfig.GAME_TILE_WIDTH_COUNT;
 
 import entities.Collectable;
 import entities.GameEntityType;
-import entities.Gum;
 import entities.Maze;
-import entities.SuperGum;
 import entities.Tile;
 import entities.TileType;
-import entities.TileWall;
 
 public class MazeFactory {
 	private static enum TileCode {

@@ -1,11 +1,9 @@
 package gameThreads;
 
-import rendering.IBoardRenderer;
-
-
-import audio.AudioRepository;
 import static configs.GameConfig.PACMAN_SPAWN_POINT_X;
 import static configs.GameConfig.PACMAN_SPAWN_POINT_Y;
+
+import audio.AudioRepository;
 import entities.EntityManager;
 import entities.GameEntityType;
 import entities.IGameEntity;
@@ -13,6 +11,7 @@ import entities.Maze;
 import factories.GameEntityFactory;
 import factories.MazeFactory;
 import javafx.animation.AnimationTimer;
+import rendering.IBoardRenderer;
 
 public class Game {
 

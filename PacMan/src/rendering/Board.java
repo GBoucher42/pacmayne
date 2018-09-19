@@ -2,7 +2,6 @@ package rendering;
 
 import static configs.GameConfig.GAME_HEIGHT;
 import static configs.GameConfig.GAME_WIDTH;
-import static configs.GameConfig.TILE_SIZE;
 
 import java.io.File;
 import java.util.Collection;
@@ -18,17 +17,13 @@ import entities.Maze;
 import entities.PacMan;
 import entities.Tile;
 import entities.TileType;
-import entities.TileWall;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaPlayer.Status;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.media.Media;
 
 public class Board extends Pane implements IBoardRenderer{
 
