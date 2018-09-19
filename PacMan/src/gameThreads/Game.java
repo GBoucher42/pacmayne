@@ -47,31 +47,33 @@ public class Game {
 	{
 		pacman = GameEntityFactory.createGameEntity(GameEntityType.PACMAN, PACMAN_SPAWN_POINT_X, PACMAN_SPAWN_POINT_Y);
 		entityManager.addEntity(pacman);
-		//entityManager.addEntity(new Ghost("Inky", 133, 134, 1.0, Direction.UP));
+		//entityManager.addEntity(GameEntityFactory.createGameEntity(GameEntityType.INKY, PACMAN_SPAWN_POINT_X, PACMAN_SPAWN_POINT_Y));
 		//entityManager.addEntity(new Ghost("Pinky", 124, 134, 1.0, Direction.UP));
 		//entityManager.addEntity(new Ghost("Clyde", 106, 134, 1.0, Direction.UP));
 		//entityManager.addEntity(new Ghost("Blinky", 115, 134, 1.0, Direction.UP));
 	}
-	
+
 	public void run()
 	{
 		new AnimationTimer()
         {
-			long lastUpdate = 0;
-
-            public void handle(long currentNanoTime)
-            {
-            	if (currentNanoTime - lastUpdate < 100000000) {
-                    return;
-                }            	
-				lastUpdate = currentNanoTime;
-				update();
+			long lastUpdate = 0 ;
+            public void handle(long now)
+            {            
+            	if (now - lastUpdate >= 30_000_000) {
+            		update();
+                	render();
+                	lastUpdate = System.nanoTime();
+            	}
             }
         }.start();
 	}
 	
-	private void update()
-	{
+	private void update() {
+		board.animate();
+	}
+	
+	private void render() {
 		board.refreshView();
 	}
 }
