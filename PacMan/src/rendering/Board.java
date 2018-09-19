@@ -62,17 +62,17 @@ public class Board extends Pane implements IBoardRenderer{
 		{
 			for (int k = 0; k < tiles[0].length; ++k)
 			{
-				if (tiles[i][k].getType() == TileType.WALL)
-				{
-					Rectangle wall = new Rectangle(tiles[i][k].getX() * TILE_SIZE, tiles[i][k].getY() * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-	        		wall.setFill(Color.BLUE);
-					//Image wall = getSpriteTile(tiles[i][k].getType());
-					//wall.s
-	        		this.getChildren().add(wall);
-				} else {
-					Sprite sprite = new Sprite(tiles[i][k].getCollectable(), 1);
+				Sprite sprite = null;
+				try {
+					// TODO: handle when 0
+					sprite = tiles[i][k].getType() == TileType.WALL ? new Sprite(tiles[i][k].getGameEntity(), 1) : new Sprite(tiles[i][k].getCollectable(), 1);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}				 
+				
+				if (sprite != null) {
 					staticSprites.put(tiles[i][k], sprite);
-				}
+				}				
 			}
 		}
 
