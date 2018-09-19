@@ -61,7 +61,7 @@ public class Game {
 
             public void handle(long currentNanoTime)
             {
-            	if (currentNanoTime - lastUpdate < 200000000) {
+            	if (currentNanoTime - lastUpdate < 100000000) {
                     return;
                 }            	
 				lastUpdate = currentNanoTime;
