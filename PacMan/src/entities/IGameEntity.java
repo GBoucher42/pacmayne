@@ -7,8 +7,6 @@ public interface IGameEntity {
 	
 	Animatable getAnimatable();
 	
-	int getTileIndex();
-	
 	String getName();
 	
 	int getStartX();

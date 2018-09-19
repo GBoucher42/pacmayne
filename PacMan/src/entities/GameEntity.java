@@ -5,7 +5,6 @@ import static configs.GameConfig.GAME_TILE_HEIGHT_COUNT;
 
 public abstract class GameEntity implements IGameEntity {
 
-	protected int tileIndex;	
 	protected final String name;
 	protected Velocity velocity;
 	protected final int startX, startY;
@@ -43,19 +42,15 @@ public abstract class GameEntity implements IGameEntity {
 			{
 			case DOWN:
 				setCurrentY(getCurrentY() + 1);
-				tileIndex += GAME_TILE_WIDTH_COUNT;
 				break;
 			case LEFT:
 				setCurrentX(getCurrentX() - 1);
-				--tileIndex;
 				break;
 			case RIGHT:
 				setCurrentX(getCurrentX() + 1);
-				++tileIndex;
 				break;
 			case UP:
 				setCurrentY(getCurrentY() - 1);
-				tileIndex -= GAME_TILE_WIDTH_COUNT;
 				break;
 			case NONE:
 				isMoving = false;
@@ -71,19 +66,15 @@ public abstract class GameEntity implements IGameEntity {
 		{
 		case DOWN:
 			setCurrentY(getCurrentY() - GAME_TILE_HEIGHT_COUNT);
-			tileIndex -= GAME_TILE_HEIGHT_COUNT;
 			break;
 		case LEFT:
 			setCurrentX(getCurrentX() + GAME_TILE_WIDTH_COUNT);
-			tileIndex += GAME_TILE_WIDTH_COUNT;
 			break;
 		case RIGHT:
 			setCurrentX(getCurrentX() - GAME_TILE_WIDTH_COUNT);
-			tileIndex -= GAME_TILE_WIDTH_COUNT;
 			break;
 		case UP:
 			setCurrentY(getCurrentY() -+ GAME_TILE_HEIGHT_COUNT);
-			tileIndex += GAME_TILE_HEIGHT_COUNT;
 			break;
 		case NONE:
 			isMoving = false;
@@ -97,11 +88,6 @@ public abstract class GameEntity implements IGameEntity {
 	{
 		return animatable;
 	}
-
-	public int getTileIndex()
-	{
-		return tileIndex;
-	}	
 
 	public String getName()
 	{

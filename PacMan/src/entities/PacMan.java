@@ -9,7 +9,10 @@ public class PacMan extends GameEntity{
 	public PacMan(int x, int y, Animatable animatable)
 	{
 		super("pacman", x, y, animatable);
-		tileIndex = 30;
+	}
+	
+	public PacMan(int x, int y, Animatable animatable, Velocity vel) {
+		super("pacman", x, y, animatable, vel);
 	}
 	
 	public void startMoving()

@@ -6,7 +6,7 @@ public class Velocity {
 	private Direction direction;
 	
 	public Velocity() {
-		this(Direction.RIGHT, 0.0);
+		this(Direction.NONE, 0.0);
 	}
 	
 	public Velocity(Direction direction, double speed) {

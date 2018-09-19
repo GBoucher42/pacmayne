@@ -2,7 +2,6 @@ package rendering;
 
 import static configs.GameConfig.GAME_HEIGHT;
 import static configs.GameConfig.GAME_WIDTH;
-import static configs.GameConfig.TILE_SIZE;
 
 import java.io.File;
 import java.util.Collection;
@@ -20,13 +19,11 @@ import entities.Tile;
 import entities.TileType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaPlayer.Status;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.media.Media;
 
 public class Board extends Pane implements IBoardRenderer{
 
@@ -60,15 +57,17 @@ public class Board extends Pane implements IBoardRenderer{
 		{
 			for (int k = 0; k < tiles[0].length; ++k)
 			{
-				if (tiles[i][k].getType() == TileType.WALL)
-				{
-					Rectangle wall = new Rectangle(tiles[i][k].getX() * TILE_SIZE, tiles[i][k].getY() * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-	        		wall.setFill(Color.BLUE);
-	        		this.getChildren().add(wall);
-				} else {
-					Sprite sprite = new Sprite(tiles[i][k].getCollectable(), 1);
+				Sprite sprite = null;
+				try {
+					// TODO: handle when 0
+					sprite = tiles[i][k].getType() == TileType.WALL ? new Sprite(tiles[i][k].getGameEntity(), 1) : new Sprite(tiles[i][k].getCollectable(), 1);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}				 
+				
+				if (sprite != null) {
 					staticSprites.put(tiles[i][k], sprite);
-				}
+				}				
 			}
 		}
 
