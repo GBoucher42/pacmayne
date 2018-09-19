@@ -75,17 +75,10 @@ public class Board extends BorderPane implements IBoardRenderer{
 		{
 			for (int k = 0; k < tiles[0].length; ++k)
 			{
-				Sprite sprite = null;
-				try {
-					// TODO: handle when 0
-					sprite = tiles[i][k].getType() == TileType.WALL ? new Sprite(tiles[i][k].getGameEntity(), 1) : new Sprite(tiles[i][k].getCollectable(), 1);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}				 
-				
-				if (sprite != null) {
+				if (tiles[i][k].getType() != TileType.VOID) {
+					Sprite sprite = tiles[i][k].getType() == TileType.WALL ? new Sprite(tiles[i][k].getGameEntity(), 1) : new Sprite(tiles[i][k].getCollectable(), 1);				
 					staticSprites.put(tiles[i][k], sprite);
-				}				
+				}								
 			}
 		}
 
