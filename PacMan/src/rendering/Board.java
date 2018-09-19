@@ -2,7 +2,6 @@ package rendering;
 
 import static configs.GameConfig.GAME_HEIGHT;
 import static configs.GameConfig.GAME_WIDTH;
-import static configs.GameConfig.TILE_SIZE;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,10 +12,10 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-import entities.Animatable;
+import entities.CollisionType;
 import entities.Direction;
 import entities.EntityManager;
-import entities.GameEntity;
+import entities.IGameEntity;
 import entities.Maze;
 import entities.PacMan;
 import entities.Tile;
@@ -31,10 +30,10 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaPlayer.Status;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
@@ -42,15 +41,17 @@ public class Board extends BorderPane implements IBoardRenderer{
 
 	private PacMan pacman;
 	private Maze map;
-	private Collection<Sprite> animatedSprites = new LinkedList<Sprite>();
+	private Collection<Sprite> movingSprites = new LinkedList<Sprite>();
+	private Map<Tile, Sprite> staticSprites = new HashMap<Tile, Sprite>();
+
+	private Direction awaitingDirection;
+	private int score;
+	MediaPlayer pacmanEatingPlayer;
 	private Label scoreText;
-	private Map<Integer, Shape> gums = new HashMap<>();
-	private Map<Integer, Shape> pacGums = new HashMap<>();
-	int score;
-	Pane pane =new Pane();
-	Pane paneHeader =new Pane();
-	Pane paneFooter= new Pane();
 	@FXML private ImageView imglogo ;
+	Pane paneFooter= new Pane();
+	Pane paneHeader =new Pane();
+	Pane pane =new Pane();
 	
 	public Board()
 	{
@@ -58,42 +59,39 @@ public class Board extends BorderPane implements IBoardRenderer{
 		
 	}
 	
+	public void loadSounds() {
+		String musicFile = "ressource/audio/pacman-eating.wav"; 
+		Media sound = new Media(new File(musicFile).toURI().toString());
+		pacmanEatingPlayer = new MediaPlayer(sound);
+	}
+	
 	public void drawMaze(Maze map) 
-	{		
+	{	
+		this.setCenter(pane);
 		this.map = map;
-		int j = 0;
-		Tile[][] tiles = map.getTiles();
+		Tile[][] tiles = map.getTiles();	
+		
 		for (int i = 0; i < tiles.length; ++i)
 		{
 			for (int k = 0; k < tiles[0].length; ++k)
 			{
-				if (tiles[i][k].getType() == TileType.WALL)
-				{
-					Rectangle wall = new Rectangle(tiles[i][k].getX() * TILE_SIZE, tiles[i][k].getY() * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-	        		wall.setFill(Color.BLUE);
-	        		pane.getChildren().add(wall);
-	        		this.setCenter(pane);
-				} else {
-					 if (tiles[i][k].isTileSuperGum()) {
-			        		Circle gum = new Circle(tiles[i][k].getX() * TILE_SIZE + TILE_SIZE / 2, tiles[i][k].getY() * TILE_SIZE + TILE_SIZE / 2, TILE_SIZE / 2);
-			        		gum.setFill(Color.WHITE);
-			        		pane.getChildren().add(gum);
-			                pacGums.put(j, gum);
-					 } else if (tiles[i][k].isTileGum()){
-			        		Circle gum = new Circle(tiles[i][k].getX() * TILE_SIZE + TILE_SIZE / 2, tiles[i][k].getY() * TILE_SIZE + TILE_SIZE / 2, TILE_SIZE / 4);
-			        		gum.setFill(Color.WHITE);
-			        	    pane.getChildren().add(gum);
-			        	    gums.put(j, gum);
-					 }
-				}
-				++j;
+				Sprite sprite = null;
+				try {
+					// TODO: handle when 0
+					sprite = tiles[i][k].getType() == TileType.WALL ? new Sprite(tiles[i][k].getGameEntity(), 1) : new Sprite(tiles[i][k].getCollectable(), 1);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}				 
+				
+				if (sprite != null) {
+					staticSprites.put(tiles[i][k], sprite);
+				}				
 			}
 		}
 
-       footer();
+       pane.getChildren().addAll(staticSprites.values());
+       	footer();
        header();
-       
-       
 	}
 	
     void header() {
@@ -126,21 +124,20 @@ public class Board extends BorderPane implements IBoardRenderer{
 	{
 		for (int i = 0; i < entityManager.count(); ++i)
 		{		
-			GameEntity entity = entityManager.getEntity(i);
-			if (entity instanceof Animatable)
+			IGameEntity entity = entityManager.getEntity(i);
+			if (entity.getAnimatable() != null)
 			{
-				animatedSprites.add(new Sprite(entity, i));
+				movingSprites.add(new Sprite(entity, i));
 				
 				if (pacman == null && entity.getClass() == PacMan.class)
 				{
 					pacman = (PacMan) entity;
-					eatGum(pacman.getTileIndex()-1);
+					consumeGums();
 				}
 			}				
 		}
 		
-		pane.getChildren().addAll(animatedSprites);
-		
+		pane.getChildren().addAll(movingSprites);
 	}
 	
 	public void spawnStaticEntities(EntityManager entityManager)
@@ -151,10 +148,32 @@ public class Board extends BorderPane implements IBoardRenderer{
 	public void refreshView()
 	{
 		animate();
-		for (Sprite sprite : animatedSprites)
+		for (Sprite sprite : staticSprites.values())
 		{
+			sprite.updateAvatar();
+		}
+		
+		for (Sprite sprite : movingSprites)
+		{
+			sprite.updateAvatar();
 			sprite.updatePosition();
-			detectGums(sprite.getEntity().getTileIndex() - 1);
+			consumeGums();
+		}
+	}
+	
+	private void consumeGums() {
+		Tile tile = map.getTile(pacman.getCurrentY(), pacman.getCurrentX());
+		if(tile == null) { // when you pass through the tunnels
+			return;
+		}
+		if (tile.hasCollectable()) {
+			updateScore(tile.consumeCollectable());	
+			playEatingAudio();
+			Sprite spriteToRemove = staticSprites.get(tile);
+			staticSprites.remove(tile);			
+			pane.getChildren().remove(spriteToRemove);	
+		} else {
+			stopEatingAudio();
 		}
 	}
 	
@@ -163,16 +182,16 @@ public class Board extends BorderPane implements IBoardRenderer{
 		
 		switch(keyCode) {
 			case UP:
-				pacman.setDirection(Direction.UP);
+				awaitingDirection = Direction.UP;
 				break;
 			case DOWN:
-				pacman.setDirection(Direction.DOWN);
+				awaitingDirection = Direction.DOWN;
 				break;
 			case LEFT:
-				pacman.setDirection(Direction.LEFT);
+				awaitingDirection = Direction.LEFT;
 				break;
 			case RIGHT:
-				pacman.setDirection(Direction.RIGHT);
+				awaitingDirection = Direction.RIGHT;
 				break;
 			case F:
 				pacman.setSpeed(2);
@@ -188,75 +207,45 @@ public class Board extends BorderPane implements IBoardRenderer{
 	private void animate()
 	{
 		//TODO: Animate ALL animatable sprites if able/valid
-		if (detectCollision(pacman))
+		CollisionType type;
+		
+		if (awaitingDirection != null) {
+			type = map.validateMove(pacman, awaitingDirection);
+			
+			if (type != CollisionType.COLLIDEWALL) { 
+				pacman.setDirection(awaitingDirection);
+				awaitingDirection = null;
+			}
+		} 
+
+		type = map.validateMove(pacman, pacman.getDirection());			
+		
+		if (type == CollisionType.NONE)
 		{
 			pacman.setIsMoving(true);
 			pacman.moveOneFrameBySpeed();
-		}
-		else
+		} else if (type == CollisionType.COLLIDEWALL)
 		{
 			pacman.setIsMoving(false);
+		} else if (type == CollisionType.OVERBOUND) {
+			pacman.passTunnel();
 		}
 	}
 	
-	private boolean detectCollision(Animatable animatable)
-	{
-		boolean willNotCollide = false;
-		// TODO: BoundingBox checking
-		Tile  candidateTile;
-		switch(animatable.getVelocity().getDirection())
-		{
-		case DOWN:
-			candidateTile = map.getTile((int)animatable.getCurrentY() + 1, (int)animatable.getCurrentX());
-			if (candidateTile != null)
-				willNotCollide = candidateTile.getType() != TileType.WALL;
-			break;
-		case LEFT:
-			candidateTile = map.getTile((int)animatable.getCurrentY(), (int)animatable.getCurrentX() - 1);
-			if (candidateTile != null)
-				willNotCollide = candidateTile.getType() != TileType.WALL;
-			break;
-		case RIGHT:
-			candidateTile = map.getTile((int)animatable.getCurrentY(), (int)animatable.getCurrentX() + 1);
-			if (candidateTile != null)
-				willNotCollide = candidateTile.getType() != TileType.WALL;
-			break;
-		case UP:
-			candidateTile = map.getTile((int)animatable.getCurrentY() - 1, (int)animatable.getCurrentX());
-			if (candidateTile != null)
-				willNotCollide = candidateTile.getType() != TileType.WALL;
-			break;
-		default:
-			break;
-		}
-		
-		return willNotCollide;
-	}
-	
-	private void detectGums(int index) {
-		if(gums.containsKey(index)) {
-			eatGum(index);
-		} else if(pacGums.containsKey(index)) {
-			eatPacGum(index);
+	private void playEatingAudio() {
+		if(!Status.PLAYING.equals(pacmanEatingPlayer.getStatus())) {
+			pacmanEatingPlayer.play();
 		}
 	}
 	
-	private void eatGum(int index) {
-		pane.getChildren().remove(gums.get(index));
-		gums.remove(index);
-		score+=10;
-		updateScore();
+	private void stopEatingAudio() {
+		if(Status.PLAYING.equals(pacmanEatingPlayer.getStatus())) {
+			pacmanEatingPlayer.stop();
+		}
 	}
 	
-	private void eatPacGum(int index) {
-		pane.getChildren().remove(pacGums.get(index));
-		pacGums.remove(index);
-		score+=50;
-		updateScore();
-		
-	}
-	
-	private void updateScore() {
+	private void updateScore(int value) {
+		score += value;
 		scoreText.setText("Score: " + score);
 	}
 }
