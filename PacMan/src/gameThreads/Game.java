@@ -2,13 +2,16 @@ package gameThreads;
 
 import rendering.IBoardRenderer;
 
-import audio.AudioRepository;
 
-import entities.Direction;
+import audio.AudioRepository;
+import static configs.GameConfig.PACMAN_SPAWN_POINT_X;
+import static configs.GameConfig.PACMAN_SPAWN_POINT_Y;
 import entities.EntityManager;
+import entities.GameEntityType;
+import entities.IGameEntity;
 import entities.Maze;
-import entities.MazeFactory;
-import entities.PacMan;
+import factories.GameEntityFactory;
+import factories.MazeFactory;
 import javafx.animation.AnimationTimer;
 
 public class Game {
@@ -16,7 +19,7 @@ public class Game {
 	private IBoardRenderer board;
 	private AudioRepository audioRepository = new AudioRepository();
 	private EntityManager entityManager = new EntityManager();
-	private PacMan pacman;
+	private IGameEntity pacman;
 	Maze map;
 	
 	public Game(IBoardRenderer board)
@@ -36,13 +39,14 @@ public class Game {
 		}
 		
 		board.drawMaze(map);
+		board.loadSounds();
 		board.spawnAnimatables(entityManager);
 		board.spawnStaticEntities(entityManager);		
 	}
 
 	private void createEntities()
 	{
-		pacman = new PacMan(1, 1, 1.0, Direction.RIGHT);
+		pacman = GameEntityFactory.createGameEntity(GameEntityType.PACMAN, PACMAN_SPAWN_POINT_X, PACMAN_SPAWN_POINT_Y);
 		entityManager.addEntity(pacman);
 		//entityManager.addEntity(new Ghost("Inky", 133, 134, 1.0, Direction.UP));
 		//entityManager.addEntity(new Ghost("Pinky", 124, 134, 1.0, Direction.UP));

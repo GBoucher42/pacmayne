@@ -4,50 +4,58 @@ import static configs.GameConfig.GAME_HEIGHT;
 import static configs.GameConfig.GAME_WIDTH;
 import static configs.GameConfig.TILE_SIZE;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-import entities.Animatable;
+import entities.CollisionType;
 import entities.Direction;
 import entities.EntityManager;
-import entities.GameEntity;
+import entities.IGameEntity;
 import entities.Maze;
 import entities.PacMan;
 import entities.Tile;
 import entities.TileType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaPlayer.Status;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.media.Media;
 
 public class Board extends Pane implements IBoardRenderer{
 
 	private PacMan pacman;
 	private Maze map;
-	private Collection<Sprite> animatedSprites = new LinkedList<Sprite>();
-	
-	private Text scoreText;
-	private Map<Integer, Shape> gums = new HashMap<>();
-	private Map<Integer, Shape> pacGums = new HashMap<>();
+	private Collection<Sprite> movingSprites = new LinkedList<Sprite>();
+	private Map<Tile, Sprite> staticSprites = new HashMap<Tile, Sprite>();
+
 	private Direction awaitingDirection;
-	int score;
+	private int score;
+	private Text scoreText;
+	MediaPlayer pacmanEatingPlayer;
 	
 	public Board()
 	{
 		this.setStyle("-fx-background-color: black;");
 	}
 	
+	public void loadSounds() {
+		String musicFile = "ressource/audio/pacman-eating.wav"; 
+		Media sound = new Media(new File(musicFile).toURI().toString());
+		pacmanEatingPlayer = new MediaPlayer(sound);
+	}
+	
 	public void drawMaze(Maze map) 
 	{		
 		this.map = map;
-		int j = 0;
-		Tile[][] tiles = map.getTiles();
+		Tile[][] tiles = map.getTiles();	
+		
 		for (int i = 0; i < tiles.length; ++i)
 		{
 			for (int k = 0; k < tiles[0].length; ++k)
@@ -58,25 +66,15 @@ public class Board extends Pane implements IBoardRenderer{
 	        		wall.setFill(Color.BLUE);
 	        		this.getChildren().add(wall);
 				} else {
-					// TODO: these classes should contain their image that we simply display
-					 if (tiles[i][k].isTileSuperGum()) {
-			        		Circle gum = new Circle(tiles[i][k].getX() * TILE_SIZE + TILE_SIZE / 2, tiles[i][k].getY() * TILE_SIZE + TILE_SIZE / 2, TILE_SIZE / 2);
-			        		gum.setFill(Color.WHITE);
-			        		this.getChildren().add(gum);
-			        		pacGums.put(j, gum);
-					 } else if (tiles[i][k].isTileGum()){
-			        		Circle gum = new Circle(tiles[i][k].getX() * TILE_SIZE + TILE_SIZE / 2, tiles[i][k].getY() * TILE_SIZE + TILE_SIZE / 2, TILE_SIZE / 4);
-			        		gum.setFill(Color.WHITE);
-			        		this.getChildren().add(gum);
-			        		gums.put(j, gum);
-					 }
+					Sprite sprite = new Sprite(tiles[i][k].getCollectable(), 1);
+					staticSprites.put(tiles[i][k], sprite);
 				}
-				++j;
 			}
 		}
 
         scoreText = new Text(GAME_WIDTH /2 - 50 , GAME_HEIGHT /2, "Score: 0");
         scoreText.setFont(new Font(20));
+        this.getChildren().addAll(staticSprites.values());
         this.getChildren().add(scoreText);
 	}
 	
@@ -84,20 +82,20 @@ public class Board extends Pane implements IBoardRenderer{
 	{
 		for (int i = 0; i < entityManager.count(); ++i)
 		{		
-			GameEntity entity = entityManager.getEntity(i);
-			if (entity instanceof Animatable)
+			IGameEntity entity = entityManager.getEntity(i);
+			if (entity.getAnimatable() != null)
 			{
-				animatedSprites.add(new Sprite(entity, i));
+				movingSprites.add(new Sprite(entity, i));
 				
 				if (pacman == null && entity.getClass() == PacMan.class)
 				{
 					pacman = (PacMan) entity;
-					eatGum(pacman.getTileIndex()-1);
+					consumeGums();
 				}
 			}				
 		}
 		
-		this.getChildren().addAll(animatedSprites);
+		this.getChildren().addAll(movingSprites);
 	}
 	
 	public void spawnStaticEntities(EntityManager entityManager)
@@ -108,10 +106,32 @@ public class Board extends Pane implements IBoardRenderer{
 	public void refreshView()
 	{
 		animate();
-		for (Sprite sprite : animatedSprites)
+		for (Sprite sprite : staticSprites.values())
 		{
+			sprite.updateAvatar();
+		}
+		
+		for (Sprite sprite : movingSprites)
+		{
+			sprite.updateAvatar();
 			sprite.updatePosition();
-			detectGums(sprite.getEntity().getTileIndex() - 1);
+			consumeGums();
+		}
+	}
+	
+	private void consumeGums() {
+		Tile tile = map.getTile(pacman.getCurrentY(), pacman.getCurrentX());
+		if(tile == null) { // when you pass through the tunnels
+			return;
+		}
+		if (tile.hasCollectable()) {
+			updateScore(tile.consumeCollectable());	
+			playEatingAudio();
+			Sprite spriteToRemove = staticSprites.get(tile);
+			staticSprites.remove(tile);			
+			this.getChildren().remove(spriteToRemove);	
+		} else {
+			stopEatingAudio();
 		}
 	}
 	
@@ -145,79 +165,45 @@ public class Board extends Pane implements IBoardRenderer{
 	private void animate()
 	{
 		//TODO: Animate ALL animatable sprites if able/valid
-		if(awaitingDirection != null && !detectCollision(pacman, awaitingDirection)) {
-			pacman.setDirection(awaitingDirection);
-			awaitingDirection = null;
-		}
-		if (detectCollision(pacman, pacman.getVelocity().getDirection()))
-		{
-			pacman.setIsMoving(false);
+		CollisionType type;
+		
+		if (awaitingDirection != null) {
+			type = map.validateMove(pacman, awaitingDirection);
 			
-		}
-		else
+			if (type != CollisionType.COLLIDEWALL) { 
+				pacman.setDirection(awaitingDirection);
+				awaitingDirection = null;
+			}
+		} 
+
+		type = map.validateMove(pacman, pacman.getDirection());			
+		
+		if (type == CollisionType.NONE)
 		{
 			pacman.setIsMoving(true);
 			pacman.moveOneFrameBySpeed();
-		}
-	}
-	
-	private boolean detectCollision(Animatable animatable, Direction direction)
-	{
-		boolean willCollide = false;
-		// TODO: BoundingBox checking
-		Tile  candidateTile;
-		switch(direction)
+		} else if (type == CollisionType.COLLIDEWALL)
 		{
-		case DOWN:
-			candidateTile = map.getTile((int)animatable.getCurrentY() + 1, (int)animatable.getCurrentX());
-			if (candidateTile != null)
-				willCollide = candidateTile.getType() == TileType.WALL;
-			break;
-		case LEFT:
-			candidateTile = map.getTile((int)animatable.getCurrentY(), (int)animatable.getCurrentX() - 1);
-			if (candidateTile != null)
-				willCollide = candidateTile.getType() == TileType.WALL;
-			break;
-		case RIGHT:
-			candidateTile = map.getTile((int)animatable.getCurrentY(), (int)animatable.getCurrentX() + 1);
-			if (candidateTile != null)
-				willCollide = candidateTile.getType() == TileType.WALL;
-			break;
-		case UP:
-			candidateTile = map.getTile((int)animatable.getCurrentY() - 1, (int)animatable.getCurrentX());
-			if (candidateTile != null)
-				willCollide = candidateTile.getType() == TileType.WALL;
-			break;
-		default:
-			break;
-		}
-		
-		return willCollide;
-	}
-	
-	private void detectGums(int index) {
-		if(gums.containsKey(index)) {
-			eatGum(index);
-		} else if(pacGums.containsKey(index)) {
-			eatPacGum(index);
+			pacman.setIsMoving(false);
+		} else if (type == CollisionType.OVERBOUND) {
+			pacman.passTunnel();
 		}
 	}
 	
-	private void eatGum(int index) {
-		this.getChildren().remove(gums.get(index));
-		gums.remove(index);
-		score+=10;
-		updateScore();
+	private void playEatingAudio() {
+		if(!Status.PLAYING.equals(pacmanEatingPlayer.getStatus())) {
+			pacmanEatingPlayer.play();
+		}
 	}
 	
-	private void eatPacGum(int index) {
-		this.getChildren().remove(pacGums.get(index));
-		pacGums.remove(index);
-		score+=50;
-		updateScore();
+	private void stopEatingAudio() {
+		if(Status.PLAYING.equals(pacmanEatingPlayer.getStatus())) {
+			pacmanEatingPlayer.stop();
+		}
 	}
 	
-	private void updateScore() {
+	private void updateScore(int value) {
+		score += value;
 		scoreText.setText("Score: " + score);
 	}
 }
