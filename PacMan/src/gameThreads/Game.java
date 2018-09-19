@@ -2,11 +2,18 @@ package gameThreads;
 
 import static configs.GameConfig.PACMAN_SPAWN_POINT_X;
 import static configs.GameConfig.PACMAN_SPAWN_POINT_Y;
+import static configs.GameConfig.BLINKY_SPAWN_POINT_X;
+import static configs.GameConfig.BLINKY_SPAWN_POINT_Y;
+import static configs.GameConfig.CLYDE_SPAWN_POINT_X;
+import static configs.GameConfig.CLYDE_SPAWN_POINT_Y;
+import static configs.GameConfig.INKY_SPAWN_POINT_X;
+import static configs.GameConfig.INKY_SPAWN_POINT_Y;
+import static configs.GameConfig.PINKY_SPAWN_POINT_X;
+import static configs.GameConfig.PINKY_SPAWN_POINT_Y;
 
 import audio.AudioRepository;
 import entities.EntityManager;
 import entities.GameEntityType;
-import entities.IGameEntity;
 import entities.Maze;
 import factories.GameEntityFactory;
 import factories.MazeFactory;
@@ -18,7 +25,6 @@ public class Game {
 	private IBoardRenderer board;
 	private AudioRepository audioRepository = new AudioRepository();
 	private EntityManager entityManager = new EntityManager();
-	private IGameEntity pacman;
 	Maze map;
 	
 	public Game(IBoardRenderer board)
@@ -45,25 +51,24 @@ public class Game {
 
 	private void createEntities()
 	{
-		pacman = GameEntityFactory.createGameEntity(GameEntityType.PACMAN, PACMAN_SPAWN_POINT_X, PACMAN_SPAWN_POINT_Y);
-		entityManager.addEntity(pacman);
-		//entityManager.addEntity(GameEntityFactory.createGameEntity(GameEntityType.INKY, PACMAN_SPAWN_POINT_X, PACMAN_SPAWN_POINT_Y));
-		//entityManager.addEntity(new Ghost("Pinky", 124, 134, 1.0, Direction.UP));
-		//entityManager.addEntity(new Ghost("Clyde", 106, 134, 1.0, Direction.UP));
-		//entityManager.addEntity(new Ghost("Blinky", 115, 134, 1.0, Direction.UP));
+		entityManager.addEntity(GameEntityFactory.createGameEntity(GameEntityType.PACMAN, PACMAN_SPAWN_POINT_X, PACMAN_SPAWN_POINT_Y));
+		entityManager.addEntity(GameEntityFactory.createGameEntity(GameEntityType.INKY, INKY_SPAWN_POINT_X, INKY_SPAWN_POINT_Y));
+		entityManager.addEntity(GameEntityFactory.createGameEntity(GameEntityType.PINKY, PINKY_SPAWN_POINT_X, PINKY_SPAWN_POINT_Y));
+		entityManager.addEntity(GameEntityFactory.createGameEntity(GameEntityType.BLINKY, BLINKY_SPAWN_POINT_X, BLINKY_SPAWN_POINT_Y));
+		entityManager.addEntity(GameEntityFactory.createGameEntity(GameEntityType.CLYDE, CLYDE_SPAWN_POINT_X, CLYDE_SPAWN_POINT_Y));
 	}
 
 	public void run()
 	{
 		new AnimationTimer()
         {
-			long lastUpdate = 0 ;
+			long lastUpdate = System.nanoTime();
             public void handle(long now)
             {            
             	if (now - lastUpdate >= 30_000_000) {
+            		lastUpdate = System.nanoTime();
             		update();
-                	render();
-                	lastUpdate = System.nanoTime();
+                	render();                	
             	}
             }
         }.start();
