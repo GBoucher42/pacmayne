@@ -43,6 +43,7 @@ public class Board extends BorderPane implements IBoardRenderer{
 	private Maze map;
 	private Collection<Sprite> movingSprites = new LinkedList<Sprite>();
 	private Map<Tile, Sprite> staticSprites = new HashMap<Tile, Sprite>();
+	private boolean isRunning = true;
 
 	private Direction awaitingDirection;
 	private int score;
@@ -172,8 +173,11 @@ public class Board extends BorderPane implements IBoardRenderer{
 	
 	public void onKeyPressed(KeyCode keyCode) {
 		// TODO: adopt behavior to current state of state machine 
-		
-		switch(keyCode) {
+		if(keyCode == keyCode.P) {
+			isRunning = !isRunning;
+		}
+		if(isRunning) {
+			switch(keyCode) {
 			case UP:
 				awaitingDirection = Direction.UP;
 				break;
@@ -194,11 +198,16 @@ public class Board extends BorderPane implements IBoardRenderer{
 				break;
 			default:
 				break;
-		}		
+			}		
+		}
+		
 	}
 	
 	private void animate()
 	{
+		if(isRunning) {
+			
+		
 		//TODO: Animate ALL animatable sprites if able/valid
 		CollisionType type;
 		
@@ -222,6 +231,7 @@ public class Board extends BorderPane implements IBoardRenderer{
 			pacman.setIsMoving(false);
 		} else if (type == CollisionType.OVERBOUND) {
 			pacman.passTunnel();
+		}
 		}
 	}
 	
