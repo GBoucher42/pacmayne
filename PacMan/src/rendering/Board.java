@@ -18,6 +18,8 @@ import entities.Maze;
 import entities.PacMan;
 import entities.Tile;
 import entities.TileType;
+import entities.TileWall;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.MediaPlayer;
@@ -64,6 +66,8 @@ public class Board extends Pane implements IBoardRenderer{
 				{
 					Rectangle wall = new Rectangle(tiles[i][k].getX() * TILE_SIZE, tiles[i][k].getY() * TILE_SIZE, TILE_SIZE, TILE_SIZE);
 	        		wall.setFill(Color.BLUE);
+					//Image wall = getSpriteTile(tiles[i][k].getType());
+					//wall.s
 	        		this.getChildren().add(wall);
 				} else {
 					Sprite sprite = new Sprite(tiles[i][k].getCollectable(), 1);
@@ -206,4 +210,123 @@ public class Board extends Pane implements IBoardRenderer{
 		score += value;
 		scoreText.setText("Score: " + score);
 	}
+	
+	private Image getSpriteTile(TileWall tileWall) {
+		if(tileWall != null) {
+			return null;
+		}
+		String str = "";
+		switch(tileWall) {
+		case WALL2: 
+			str = "file:ressource/sprites/maze/wall-2.png";
+			break;
+		case WALL3: 
+			str = "file:ressource/sprites/maze/wall-3.png";
+			break;
+		case WALL4: 
+			str = "file:ressource/sprites/maze/wall-4.png";
+			break;
+		case WALL5: 
+			str = "file:ressource/sprites/maze/wall-5.png";
+			break;
+		case WALL6: 
+			str = "file:ressource/sprites/maze/wall-6.png";
+			break;
+		case WALL7: 
+			str = "file:ressource/sprites/maze/wall-7.png";
+			break;
+		case WALL8: 
+			str = "file:ressource/sprites/maze/wall-8.png";
+			break;
+		case WALL9: 
+			str = "file:ressource/sprites/maze/wall-9.png";
+			break;
+		case WALL10: 
+			str = "file:ressource/sprites/maze/wall-10.png";
+			break;
+		case WALL11: 
+			str = "file:ressource/sprites/maze/wall-11.png";
+			break;
+		case WALL12: 
+			str = "file:ressource/sprites/maze/wall-12.png";
+			break;
+		case WALL13: 
+			str = "file:ressource/sprites/maze/wall-13.png";
+			break;
+		case WALL14: 
+			str = "file:ressource/sprites/maze/wall-14.png";
+			break;
+		case WALL15: 
+			str = "file:ressource/sprites/maze/wall-15.png";
+			break;
+		case WALL16: 
+			str = "file:ressource/sprites/maze/wall-16.png";
+			break;
+		case WALL17: 
+			str = "file:ressource/sprites/maze/wall-17.png";
+			break;
+		case WALL18: 
+			str = "file:ressource/sprites/maze/wall-18.png";
+			break;
+		case WALL19: 
+			str = "file:ressource/sprites/maze/wall-19.png";
+			break;
+		case WALL20: 
+			str = "file:ressource/sprites/maze/wall-20.png";
+			break;
+		case WALL21: 
+			str = "file:ressource/sprites/maze/wall-21.png";
+			break;
+		case WALL22: 
+			str = "file:ressource/sprites/maze/wall-22.png";
+			break;
+		case WALL23: 
+			str = "file:ressource/sprites/maze/wall-23.png";
+			break;
+		case WALL24: 
+			str = "file:ressource/sprites/maze/wall-24.png";
+			break;
+		case WALL25: 
+			str = "file:ressource/sprites/maze/wall-25.png";
+			break;
+		case WALL26: 
+			str = "file:ressource/sprites/maze/wall-26.png";
+			break;
+		case WALL27: 
+			str = "file:ressource/sprites/maze/wall-27.png";
+			break;
+		case WALL28: 
+			str = "file:ressource/sprites/maze/wall-28.png";
+			break;
+		case WALL29: 
+			str = "file:ressource/sprites/maze/wall-29.png";
+			break;
+		case WALL30: 
+			str = "file:ressource/sprites/maze/wall-30.png";
+			break;
+		case WALL31: 
+			str = "file:ressource/sprites/maze/wall-31.png";
+			break;
+		case WALL32: 
+			str = "file:ressource/sprites/maze/wall-32.png";
+			break;
+		case WALL33: 
+			str = "file:ressource/sprites/maze/wall-33.png";
+			break;
+		case WALL34: 
+			str = "file:ressource/sprites/maze/wall-34.png";
+			break;
+		case WALL35: 
+			str = "file:ressource/sprites/maze/wall-35.png";
+			break;
+		case WALL36: 
+			str = "file:ressource/sprites/maze/wall-36.png";
+			break;
+		case WALL37: 
+			str = "file:ressource/sprites/maze/wall-37.png";
+			break;
+		}
+		return new Image(str);
+	}
+	
 }

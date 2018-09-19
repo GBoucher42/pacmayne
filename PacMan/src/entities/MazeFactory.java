@@ -14,6 +14,8 @@ public class MazeFactory {
 	
 	private static TileCode[] tileCodes = TileCode.values();
 
+	private static TileWall[] tileWallCodes = TileWall.values();
+
 	// TODO: this should be in a file that we can load from the resources dict
 	private final static int levelOneTileGrid[][] = {
 			{11, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16,  5,  2, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 12},
@@ -67,8 +69,15 @@ public class MazeFactory {
 					throw new IndexOutOfBoundsException("The tile code '" + levelOneTileGrid[i][j] + "' in the map data is invalid ");
 				}
 				
+				if (levelOneTileGrid[i][j] > tileWallCodes.length || levelOneTileGrid[i][j] < 0) {
+					throw new IndexOutOfBoundsException("The tile code '" + levelOneTileGrid[i][j] + "' in the map data is invalid ");
+				}
+				
 				TileCode tileCode = tileCodes[levelOneTileGrid[i][j]];
 				TileType tileType =  tileCode == TileCode.WALL ? TileType.WALL : TileType.CORRIDOR;
+				
+				TileWall tileWallCode = tileWallCodes[levelOneTileGrid[i][j]];
+				System.out.println("bonjour");
 				
 				Tile newTile = new Tile(j, i, tileType);
 				
