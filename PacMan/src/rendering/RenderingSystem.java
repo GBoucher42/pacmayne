@@ -7,8 +7,10 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import static configs.GameConfig.WindowHeight;
-import static configs.GameConfig.WindowWidth;;
+import static configs.GameConfig.GAME_WIDTH;
+import static configs.GameConfig.HEIGTH_WINDOW;
+
+
 
 public class RenderingSystem extends Application {
 	
@@ -33,7 +35,8 @@ public class RenderingSystem extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		primaryStage = initStage(primaryStage,WindowWidth ,WindowHeight);
+		primaryStage = initStage(primaryStage,GAME_WIDTH,HEIGTH_WINDOW);
+
 		Game gameInstance = new Game((IBoardRenderer) primaryStage.getScene().getRoot());
  		gameInstance.run();
 	}

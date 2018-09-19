@@ -74,7 +74,6 @@ public class Board extends BorderPane implements IBoardRenderer{
 	        		pane.getChildren().add(wall);
 	        		this.setCenter(pane);
 				} else {
-					// TODO: these classes should contain their image that we simply display
 					 if (tiles[i][k].isTileSuperGum()) {
 			        		Circle gum = new Circle(tiles[i][k].getX() * TILE_SIZE + TILE_SIZE / 2, tiles[i][k].getY() * TILE_SIZE + TILE_SIZE / 2, TILE_SIZE / 2);
 			        		gum.setFill(Color.WHITE);
@@ -116,7 +115,6 @@ public class Board extends BorderPane implements IBoardRenderer{
 	        		+ "-fx-font-weight: bold");
 	        scoreText.setTextFill(Color.RED);
 	        scoreText.setText("Score: 0");
-	        //scoreText.setFont(new Font(20));
 	        scoreText.setAlignment(Pos.CENTER);
 	        paneFooter.getChildren().add(scoreText);
 	        paneFooter.setStyle("-fx-background-color: black;");
