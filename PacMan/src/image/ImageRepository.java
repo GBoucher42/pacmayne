@@ -66,20 +66,6 @@ public class ImageRepository {
         
 		return result;
 	}
-	
-	public static Image updateAvatar(String imgName) {
-		try {
-			String str = "file:ressource/sprites/" + imgName + ".png";
-			return new Image(str);
-		} catch (Exception e) {
-			System.err.println(e);
-			return null;
-		}
-		
-	}
-	
-	
-
 }
 
 
