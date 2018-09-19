@@ -24,7 +24,7 @@ class AnimatableTest {
 	Direction initDirection = Direction.DOWN;
 	
 	
-	@BeforeAll
+	/*@BeforeAll
 	void setup() {
 		animatable = new PacMan(initX, initY, initSpeed, initDirection);
 		
@@ -79,7 +79,7 @@ class AnimatableTest {
 		animatable.setCurrentY(initY);
 		animatable.setSpeed(initSpeed);
 		animatable.setDirection(initDirection);
-	}
+	}*/
 	
 	
 }

@@ -1,14 +1,18 @@
 package entities;
 
-public class PacMan extends Animatable{
+public class PacMan extends GameEntity{
 	
 	public final static int MAX_LIFE = 3;
 	private int lives = MAX_LIFE;
+	private boolean hasPower = false;
 	
-	public PacMan(double x, double y, double initSpeed, Direction initDirection)
+	public PacMan(int x, int y, Animatable animatable)
 	{
-		super("pacman", x, y,  initSpeed, initDirection);
-		tileIndex = 30;
+		super("pacman", x, y, animatable);
+	}
+	
+	public PacMan(int x, int y, Animatable animatable, Velocity vel) {
+		super("pacman", x, y, animatable, vel);
 	}
 	
 	public void startMoving()
@@ -30,14 +34,23 @@ public class PacMan extends Animatable{
 	{
 		// TODO:
 	}
+	
+	public boolean hasPower()
+	{
+		return hasPower;
+	}
+	
+	public void givePower()
+	{
+		hasPower = true;
+	}
+	
+	public void removePower()
+	{
+		hasPower = false;
+	}
 
 	public int getLives() {
 		return lives;
-	}
-
-	@Override
-	public void update() {
-		// TODO Auto-generated method stub
-		
 	}
 }

@@ -2,13 +2,13 @@ package entities;
 
 import strategies.IGhostAIStrategy;
 
-public class Ghost extends Animatable{
+public class Ghost extends GameEntity{
 
 	private IGhostAIStrategy aiStrategy;
 	
-	public Ghost(String name, double x, double y, double initSpeed, Direction initDirection)
+	public Ghost(String name, int x, int y, Animatable animatable)
 	{
-		super(name, x, y, initSpeed, initDirection);
+		super(name, x, y, animatable);
 	}
 	
 	public void setAIStrategy(IGhostAIStrategy strategy)
@@ -29,12 +29,6 @@ public class Ghost extends Animatable{
 	public void startEvading()
 	{
 		// TODO:
-	}
-	
-	@Override
-	public void update() {
-		// TODO Auto-generated method stub
-		
 	}
 	
 	public void setStandBy()

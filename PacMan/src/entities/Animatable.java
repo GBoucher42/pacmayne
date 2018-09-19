@@ -1,51 +1,17 @@
 package entities;
 
-import static configs.GameConfig.GAME_TILE_WIDTH_COUNT;
-import static configs.GameConfig.TILE_SIZE;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
-public abstract class Animatable extends GameEntity{
-	private boolean isMoving;
-	protected Velocity velocity = new Velocity();
+public class Animatable{
+	private Animation currentAnimation;
+	private String defaultProp;
+	private Map<Direction, Animation> animationGroup = new HashMap<Direction, Animation>();
 	
-	public Animatable(String name, double x, double y, double speed, Direction direction) {
-		super(name, x, y);
-		setSpeed(speed);
-		setDirection(direction);
-	}
-	
-	// Change on collision
-	public void setIsMoving(boolean isMoving)
+	public Animatable(String defaultProp)
 	{
-		this.isMoving = isMoving;
-	}
-
-	public void moveOneFrameBySpeed()
-	{
-		if (isMoving)
-		{
-			// TODO: move per frame instead of jumping tiles (requires game thread to be functionnal)
-			switch(velocity.getDirection())
-			{
-			case DOWN:
-				setCurrentY(getCurrentY() + TILE_SIZE);
-				tileIndex += GAME_TILE_WIDTH_COUNT;
-				break;
-			case LEFT:
-				setCurrentX(getCurrentX() - TILE_SIZE);
-				--tileIndex;
-				break;
-			case RIGHT:
-				setCurrentX(getCurrentX() + TILE_SIZE);
-				++tileIndex;
-				break;
-			case UP:
-				setCurrentY(getCurrentY() - TILE_SIZE);
-				tileIndex -= GAME_TILE_WIDTH_COUNT;
-				break;
-			default:
-				break;
-			}
-		}
+		this.defaultProp = defaultProp;
 	}
 	
 	public void startCurrentAnimation()
@@ -58,21 +24,54 @@ public abstract class Animatable extends GameEntity{
 		// TODO:
 	}
 	
-	public void setSpeed(double speed) {
-		velocity.setSpeed(speed);
+	public boolean hasAnimation()
+	{
+		return animationGroup.size() > 0;
 	}
 	
-	public void setDirection(Direction direction)
+	public void setCurrentAnimation(Direction direction)
 	{
-		velocity.setDirection(direction);
-	}
-
-	public void setVelocity(Velocity velocity) {
-		this.velocity = velocity;
+		if (animationGroup.containsKey(direction)) {
+			currentAnimation = animationGroup.get(direction);
+		}		
 	}
 	
-	public Velocity getVelocity()
+	public void addAnimation(Direction direction, ArrayList<String> images)
 	{
-		return this.velocity;
+		if (!animationGroup.containsKey(direction)) {
+			Animation anim = new Animation(images);
+			animationGroup.put(direction, anim);
+			
+			if (currentAnimation == null) {
+				currentAnimation = anim;
+			}
+		}
+	}
+	
+	public String getNextImage()
+	{		
+		return hasAnimation() ? currentAnimation.getNextImage() : defaultProp;
+	}
+	
+	private class Animation {
+		private ArrayList<String> images;
+		private int imageIndex = 0;
+		
+		public Animation(ArrayList<String> images)
+		{
+			this.images = images;
+		}
+		
+		public String getNextImage()
+		{
+			int index = (imageIndex++) % images.size();
+			if(imageIndex == images.size()) {
+				imageIndex = 0;
+			}
+			
+			return images.get(index);
+		}
 	}
 }
+
+
