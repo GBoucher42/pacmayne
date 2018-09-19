@@ -22,6 +22,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaPlayer.Status;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
@@ -31,6 +32,7 @@ public class Board extends Pane implements IBoardRenderer{
 	private Maze map;
 	private Collection<Sprite> movingSprites = new LinkedList<Sprite>();
 	private Map<Tile, Sprite> staticSprites = new HashMap<Tile, Sprite>();
+	private boolean isRunning = true;
 
 	private Direction awaitingDirection;
 	private int score;
@@ -73,6 +75,7 @@ public class Board extends Pane implements IBoardRenderer{
 
         scoreText = new Text(GAME_WIDTH /2 - 50 , GAME_HEIGHT /2, "Score: 0");
         scoreText.setFont(new Font(20));
+        scoreText.setFill(Color.RED);
         this.getChildren().addAll(staticSprites.values());
         this.getChildren().add(scoreText);
 	}
@@ -136,8 +139,11 @@ public class Board extends Pane implements IBoardRenderer{
 	
 	public void onKeyPressed(KeyCode keyCode) {
 		// TODO: adopt behavior to current state of state machine 
-		
-		switch(keyCode) {
+		if(keyCode == keyCode.P) {
+			isRunning = !isRunning;
+		}
+		if(isRunning) {
+			switch(keyCode) {
 			case UP:
 				awaitingDirection = Direction.UP;
 				break;
@@ -158,11 +164,16 @@ public class Board extends Pane implements IBoardRenderer{
 				break;
 			default:
 				break;
-		}		
+			}		
+		}
+		
 	}
 	
 	private void animate()
 	{
+		if(isRunning) {
+			
+		
 		//TODO: Animate ALL animatable sprites if able/valid
 		CollisionType type;
 		
@@ -186,6 +197,7 @@ public class Board extends Pane implements IBoardRenderer{
 			pacman.setIsMoving(false);
 		} else if (type == CollisionType.OVERBOUND) {
 			pacman.passTunnel();
+		}
 		}
 	}
 	
