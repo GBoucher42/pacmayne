@@ -4,6 +4,9 @@ import static configs.GameConfig.GAME_HEIGHT;
 import static configs.GameConfig.GAME_WIDTH;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -17,15 +20,24 @@ import entities.Maze;
 import entities.PacMan;
 import entities.Tile;
 import entities.TileType;
+import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaPlayer.Status;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-public class Board extends Pane implements IBoardRenderer{
+public class Board extends BorderPane implements IBoardRenderer{
 
 	private PacMan pacman;
 	private Maze map;
@@ -34,12 +46,17 @@ public class Board extends Pane implements IBoardRenderer{
 
 	private Direction awaitingDirection;
 	private int score;
-	private Text scoreText;
 	MediaPlayer pacmanEatingPlayer;
+	private Label scoreText;
+	@FXML private ImageView imglogo ;
+	Pane paneFooter= new Pane();
+	Pane paneHeader =new Pane();
+	Pane pane =new Pane();
 	
 	public Board()
 	{
-		this.setStyle("-fx-background-color: black;");
+		pane.setStyle("-fx-background-color: black;");
+		
 	}
 	
 	public void loadSounds() {
@@ -49,7 +66,8 @@ public class Board extends Pane implements IBoardRenderer{
 	}
 	
 	public void drawMaze(Maze map) 
-	{		
+	{	
+		this.setCenter(pane);
 		this.map = map;
 		Tile[][] tiles = map.getTiles();	
 		
@@ -64,12 +82,37 @@ public class Board extends Pane implements IBoardRenderer{
 			}
 		}
 
-        scoreText = new Text(GAME_WIDTH /2 - 50 , GAME_HEIGHT /2, "Score: 0");
-        scoreText.setFont(new Font(20));
-        this.getChildren().addAll(staticSprites.values());
-        this.getChildren().add(scoreText);
+       pane.getChildren().addAll(staticSprites.values());
+       	footer();
+       header();
 	}
 	
+    void header() {
+	 
+    Image image = new Image("file:ressource/sprites/logo.png");
+    imglogo = new ImageView();
+    imglogo.setImage(image);
+    imglogo.setFitHeight(75);
+    paneHeader.getChildren().add(imglogo);
+    paneHeader.setStyle("-fx-background-color: black;");
+    paneHeader.setPrefSize(700,75);   
+    this.setTop(paneHeader);
+}
+	void footer() {
+		 scoreText = new Label(); 
+	        scoreText.setStyle("-fx-font-size: 32px;"
+	        		+ "-fx-font-family: \"Comic Sans MS\";"
+	                + "-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );"
+	        		+ "-fx-font-weight: bold");
+	        scoreText.setTextFill(Color.RED);
+	        scoreText.setText("Score: 0");
+	        scoreText.setAlignment(Pos.CENTER);
+	        paneFooter.getChildren().add(scoreText);
+	        paneFooter.setStyle("-fx-background-color: black;");
+	        paneFooter.setPrefSize(700,50);        
+	        this.setBottom(paneFooter);
+	      
+	}
 	public void spawnAnimatables(EntityManager entityManager)
 	{
 		for (int i = 0; i < entityManager.count(); ++i)
@@ -87,7 +130,7 @@ public class Board extends Pane implements IBoardRenderer{
 			}				
 		}
 		
-		this.getChildren().addAll(movingSprites);
+		pane.getChildren().addAll(movingSprites);
 	}
 	
 	public void spawnStaticEntities(EntityManager entityManager)
@@ -121,7 +164,7 @@ public class Board extends Pane implements IBoardRenderer{
 			playEatingAudio();
 			Sprite spriteToRemove = staticSprites.get(tile);
 			staticSprites.remove(tile);			
-			this.getChildren().remove(spriteToRemove);	
+			pane.getChildren().remove(spriteToRemove);	
 		} else {
 			stopEatingAudio();
 		}
