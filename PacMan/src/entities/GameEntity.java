@@ -74,7 +74,7 @@ public abstract class GameEntity implements IGameEntity {
 			setCurrentX(getCurrentX() - GAME_TILE_WIDTH_COUNT);
 			break;
 		case UP:
-			setCurrentY(getCurrentY() -+ GAME_TILE_HEIGHT_COUNT);
+			setCurrentY(getCurrentY() + GAME_TILE_HEIGHT_COUNT);
 			break;
 		case NONE:
 			isMoving = false;
