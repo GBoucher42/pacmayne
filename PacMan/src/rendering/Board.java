@@ -141,7 +141,7 @@ public class Board extends BorderPane implements IBoardRenderer{
 	
 	public void refreshView()
 	{
-		animate();
+		//animate();
 		for (Sprite sprite : staticSprites.values())
 		{
 			sprite.updateAvatar();
@@ -203,10 +203,9 @@ public class Board extends BorderPane implements IBoardRenderer{
 		
 	}
 	
-	private void animate()
+	public void animate()
 	{
-		if(isRunning) {
-			
+		if(isRunning) {			
 		
 		//TODO: Animate ALL animatable sprites if able/valid
 		CollisionType type;
