@@ -14,4 +14,6 @@ public interface IBoardRenderer {
 	void spawnStaticEntities(EntityManager entityManager);
 	
 	void refreshView();
+	
+	void animate();
 }
