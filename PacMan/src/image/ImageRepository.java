@@ -8,16 +8,21 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import entities.Direction;
-import javafx.scene.image.Image;
 import utils.FileFinder;
 
 
 public class ImageRepository {	
+	
+	private static final Logger LOGGER = Logger.getLogger( ImageRepository.class.getName() );
 	private static FileFinder finder = new FileFinder("*.png");
 	private static String resourceDirectoryPath = "ressource/sprites/";
-	private static Map<String, ArrayList<String>> imagesMap = new HashMap<String, ArrayList<String>>();
+	private static Map<String, ArrayList<String>> imagesMap = new HashMap<>();
+	
+	private ImageRepository() {}
 	
 	public static ArrayList<String> getImages(String entityName, Direction direction) {
 		ArrayList<String> result = new ArrayList<String>();
@@ -58,8 +63,7 @@ public class ImageRepository {
         try {
 			Files.walkFileTree(Paths.get(resourceDirectoryPath), finder);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, e.getMessage());
 		}
  
         // get the matched paths
