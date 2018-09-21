@@ -2,6 +2,7 @@ package entities;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Animatable{
@@ -36,7 +37,7 @@ public class Animatable{
 		}		
 	}
 	
-	public void addAnimation(Direction direction, ArrayList<String> images)
+	public void addAnimation(Direction direction, List<String> images)
 	{
 		if (!animationGroup.containsKey(direction)) {
 			Animation anim = new Animation(images);
@@ -54,10 +55,10 @@ public class Animatable{
 	}
 	
 	private class Animation {
-		private ArrayList<String> images;
+		private List<String> images;
 		private int imageIndex = 0;
 		
-		public Animation(ArrayList<String> images)
+		public Animation(List<String> images)
 		{
 			this.images = images;
 		}
