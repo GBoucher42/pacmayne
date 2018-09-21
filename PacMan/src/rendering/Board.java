@@ -36,6 +36,7 @@ import javafx.scene.media.MediaPlayer.Status;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 public class Board extends BorderPane implements IBoardRenderer{
 
@@ -191,7 +192,8 @@ public class Board extends BorderPane implements IBoardRenderer{
 				awaitingDirection = Direction.RIGHT;
 				break;
 			case F:
-				pacman.setSpeed(2);
+				Stage stage = (Stage) this.getScene().getWindow();
+				stage.setFullScreen(!stage.isFullScreen());
 				break;
 			case S:
 				pacman.setSpeed(1);
