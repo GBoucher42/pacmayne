@@ -1,5 +1,11 @@
 package rendering;
 
+import static configs.GameConfig.GAME_WIDTH;
+import static configs.GameConfig.HEIGTH_WINDOW;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import gameThreads.Game;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -10,12 +16,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
-import static configs.GameConfig.GAME_WIDTH;
-import static configs.GameConfig.HEIGTH_WINDOW;
-
-
 
 public class RenderingSystem extends Application {
+	
+	private static final Logger LOGGER = Logger.getLogger( RenderingSystem.class.getName() );
 	
 
 	private Stage initStage(Stage primaryStage ,int width ,int height ) {
@@ -33,7 +37,7 @@ public class RenderingSystem extends Application {
 			letterbox(scene, root);
 			
 		} catch(Exception e) {
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, e.getMessage());
 		}
 		
 		return primaryStage;
@@ -41,8 +45,7 @@ public class RenderingSystem extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		primaryStage = initStage(primaryStage,GAME_WIDTH,HEIGTH_WINDOW);
-
+		initStage(primaryStage,GAME_WIDTH,HEIGTH_WINDOW);
 		Game gameInstance = new Game((IBoardRenderer) primaryStage.getScene().getRoot());
  		gameInstance.run();
 	}
