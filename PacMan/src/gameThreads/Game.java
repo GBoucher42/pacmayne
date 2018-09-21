@@ -11,6 +11,9 @@ import static configs.GameConfig.INKY_SPAWN_POINT_Y;
 import static configs.GameConfig.PINKY_SPAWN_POINT_X;
 import static configs.GameConfig.PINKY_SPAWN_POINT_Y;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import audio.AudioRepository;
 import entities.EntityManager;
 import entities.GameEntityType;
@@ -22,6 +25,7 @@ import rendering.IBoardRenderer;
 
 public class Game {
 
+	private static final Logger LOGGER = Logger.getLogger( Game.class.getName() );
 	private IBoardRenderer board;
 	private AudioRepository audioRepository = new AudioRepository();
 	private EntityManager entityManager = new EntityManager();
@@ -40,7 +44,7 @@ public class Game {
 		try {
 			map = MazeFactory.BuildMaze();
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, e.getMessage());
 		}
 		
 		board.drawMaze(map);
