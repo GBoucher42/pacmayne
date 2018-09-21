@@ -11,6 +11,10 @@ public class Ghost extends GameEntity{
 		super(name, x, y, animatable);
 	}
 	
+	public Ghost(String name, int x, int y, Animatable animatable, Velocity vel) {
+		super(name, x, y, animatable, vel);
+	}
+	
 	public void setAIStrategy(IGhostAIStrategy strategy)
 	{
 		aiStrategy = strategy;	

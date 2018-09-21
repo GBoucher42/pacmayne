@@ -6,6 +6,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
 import entities.Direction;
 import javafx.scene.image.Image;
 import utils.FileFinder;
@@ -14,6 +17,7 @@ import utils.FileFinder;
 public class ImageRepository {	
 	private static FileFinder finder = new FileFinder("*.png");
 	private static String resourceDirectoryPath = "ressource/sprites/";
+	private static Map<String, ArrayList<String>> imagesMap = new HashMap<String, ArrayList<String>>();
 	
 	public static ArrayList<String> getImages(String entityName, Direction direction) {
 		ArrayList<String> result = new ArrayList<String>();
@@ -37,10 +41,14 @@ public class ImageRepository {
 			nameFile.append("-u");
 			break;
 		case NONE:
-			//nameFile.append("-");
 			break;
 		default:
 			break;
+		}	
+		String key = nameFile.toString();
+		
+		if (imagesMap.containsKey(key)) {
+			return imagesMap.get(key);
 		}		
 		
 		nameFile.append("*.png");
@@ -62,6 +70,7 @@ public class ImageRepository {
         	result.add(resourceDirectoryPath + path.getFileName().toString());
         }
        
+        imagesMap.put(key, result);
         finder.clearMatches();
         
 		return result;
