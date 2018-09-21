@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
+import entities.Animatable;
 import entities.Direction;
 import entities.PacMan;
 import rendering.Sprite;
@@ -14,35 +15,36 @@ import rendering.Sprite;
 public class SpriteTest {
 	private Sprite sprite;
 	private PacMan pacman;
-	double initX = 20;
-	double initY = 20;
-	double initSpeed = 20;
-	Direction initDirection = Direction.DOWN;
+	int initX = 20;
+	int initY = 20;
+	private Animatable animatable;
 	
 
 	
-	/*@BeforeAll
+	@BeforeAll
 	public void setup() {
-		pacman = new PacMan(initX, initY, initSpeed, initDirection);
+		animatable = new Animatable("pacman-d1");
+		pacman = new PacMan(initX, initY, animatable);
 		sprite = new Sprite(pacman, 1);
 	}
 	
+	
 	@Test
 	public void updateSpritePositionCorrectly() {
-		double newX = 25;
-		double newY = 29;
+		int newX = 25;
+		int newY = 29;
 		assertEquals(initX, sprite.getLayoutX());
 		assertEquals(initY, sprite.getLayoutY());
-		pacman.setCurrentX(newX);
+		/*pacman.setCurrentX(newX);
 		pacman.setCurrentY(newY);
 		assertNotEquals(initX, pacman.getCurrentX());
 		assertNotEquals(initY, pacman.getCurrentY());
 		sprite.updatePosition();
 		assertEquals(newX, sprite.getLayoutX());
-		assertEquals(newY, sprite.getLayoutY());
+		assertEquals(newY, sprite.getLayoutY());*/
 	}
 	
-	@Test
+	/*@Test
 	public void resetSpritePositionCorrectly() {
 		double newX = 25;
 		double newY = 29;
@@ -67,13 +69,11 @@ public class SpriteTest {
 		assertEquals(sprite.isVisible(), true);
 		sprite.hide();
 		assertEquals(sprite.isVisible(), false);
-	}
+	}*/
 	
 	@AfterEach
 	void resetParameter() {
 		pacman.setCurrentX(initX);
 		pacman.setCurrentY(initY);
-		pacman.setSpeed(initSpeed);
-		pacman.setDirection(initDirection);
-	}*/
+	}
 }

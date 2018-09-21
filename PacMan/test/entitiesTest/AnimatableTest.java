@@ -5,7 +5,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -18,68 +24,51 @@ import entities.PacMan;
 @TestInstance(Lifecycle.PER_CLASS)
 class AnimatableTest {
 	private Animatable animatable;
-	double initX = 20;
-	double initY = 20;
-	double initSpeed = 20;
-	Direction initDirection = Direction.DOWN;
+	private String defaultProp;
+	private Direction direction;
 	
 	
-	/*@BeforeAll
+	@BeforeAll
 	void setup() {
-		animatable = new PacMan(initX, initY, initSpeed, initDirection);
-		
+		animatable = new Animatable("pacman-u1");
+		 
 	}
 	
 	@Test 
-	void willNotMoveIfImmobile() {
-		animatable.setIsMoving(false);
-		animatable.moveOneFrameBySpeed();
-		assertEquals(initX, animatable.getCurrentX());
-		assertEquals(initY, animatable.getCurrentY());
+	void addAnimationTest() {
+		assertTrue(animatable.hasAnimation() == false);
+		List<String> images = new ArrayList<>();
+		images.add("pacman-u2");
+		animatable.addAnimation(Direction.UP, images);
+		assertTrue(animatable.hasAnimation());
 	}
 	
-	@Test 
-	void MoveDownIfIsMoving() {
-		animatable.setIsMoving(true);
-		animatable.moveOneFrameBySpeed();
-		assertEquals(initX, animatable.getCurrentX());
-		assertTrue(initY < animatable.getCurrentY());
+	@Test
+	void voirLaProchaineImage() {
+		List<String> images = new ArrayList<>();
+		images.add("pacman-u1");
+		images.add("pacman-u2");
+		animatable.addAnimation(Direction.UP, images);
+		assertEquals(animatable.getNextImage(), "pacman-u1");
+		assertEquals(animatable.getNextImage(), "pacman-u2");
+		assertEquals(animatable.getNextImage(), "pacman-u1"); //vérifier qu'il revient bien à la première image
 	}
 	
-	@Test 
-	void MoveUpIfIsMoving() {
-		animatable.setIsMoving(true);
-		animatable.setDirection(Direction.UP);
-		animatable.moveOneFrameBySpeed();
-		assertEquals(initX, animatable.getCurrentX());
-		assertTrue(initY > animatable.getCurrentY());
-	}
-	
-	@Test 
-	void MoveRigthIfIsMoving() {
-		animatable.setIsMoving(true);
-		animatable.setDirection(Direction.RIGHT);
-		animatable.moveOneFrameBySpeed();
-		assertTrue(initX < animatable.getCurrentX());
-		assertEquals(initY, animatable.getCurrentY());
-	}
-	
-	@Test 
-	void MoveLeftIfIsMoving() {
-		animatable.setIsMoving(true);
-		animatable.setDirection(Direction.LEFT);
-		animatable.moveOneFrameBySpeed();
-		assertTrue(initX > animatable.getCurrentX());
-		assertEquals(initY, animatable.getCurrentY());
+	@Test
+	void imageSelonDirection() {
+		List<String> images = new ArrayList<>();
+		images.add("pacman-u1");
+		animatable.addAnimation(Direction.UP, images);
+		images.add("pacman-d1");
+		animatable.addAnimation(Direction.DOWN, images);
+		animatable.setCurrentAnimation(Direction.UP);
+		assertEquals(animatable.getCurrentAnimation(), images.indexOf("pacman-u1"));
 	}
 	
 	@AfterEach
 	void resetParameter() {
-		animatable.setCurrentX(initX);
-		animatable.setCurrentY(initY);
-		animatable.setSpeed(initSpeed);
-		animatable.setDirection(initDirection);
-	}*/
+		animatable = new Animatable("pacman-u1");
+	}
 	
 	
 }
