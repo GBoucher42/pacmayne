@@ -37,10 +37,6 @@ public class Animatable{
 		}		
 	}
 	
-	public int getCurrentAnimation() {
-		return currentAnimation.imageIndex;
-	}
-	
 	public void addAnimation(Direction direction, List<String> images)
 	{
 		if (!animationGroup.containsKey(direction)) {

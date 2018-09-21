@@ -56,13 +56,18 @@ class AnimatableTest {
 	
 	@Test
 	void imageSelonDirection() {
-		List<String> images = new ArrayList<>();
-		images.add("pacman-u1");
-		animatable.addAnimation(Direction.UP, images);
-		images.add("pacman-d1");
-		animatable.addAnimation(Direction.DOWN, images);
+		List<String> imagesUp = new ArrayList<>();
+		List<String> imagesDown = new ArrayList<>();
+		imagesUp.add("pacman-u1");
+		animatable.addAnimation(Direction.UP, imagesUp);
+		imagesDown.add("pacman-d1");
+		animatable.addAnimation(Direction.DOWN, imagesDown);
+		
 		animatable.setCurrentAnimation(Direction.UP);
-		assertEquals(animatable.getCurrentAnimation(), images.indexOf("pacman-u1"));
+		assertEquals("pacman-u1", animatable.getNextImage());
+		
+		animatable.setCurrentAnimation(Direction.DOWN);
+		assertEquals("pacman-d1", animatable.getNextImage());
 	}
 	
 	@AfterEach
