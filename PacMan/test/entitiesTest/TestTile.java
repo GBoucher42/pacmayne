@@ -41,21 +41,21 @@ public class TestTile {
 	public void ConsumeCollectable_Gum_Coorectly() {
 		tile.setGameEntity(itemGum);
 		tile.setCollectable(itemGum);
-		assertEquals(itemGum.getScoreValue(), tile.consumeCollectable());
+		assertEquals(100, tile.consumeCollectable());
 	}
 
 	@Test
 	public void ConsumeCollectable_SuperGum_Coorectly() {
 		tile.setGameEntity(itemSgum);
 		tile.setCollectable(itemSgum);
-		assertEquals(itemSgum.getScoreValue(), tile.consumeCollectable());
+		assertEquals(200, tile.consumeCollectable());
 	}
 
 	@Test
 	public void ConsumeCollectable_Fruit_Coorectly() {
 		tile.setGameEntity(itemFruit);
 		tile.setCollectable(itemFruit);
-		assertEquals(itemFruit.getScoreValue(), tile.consumeCollectable());
+		assertEquals( 500, tile.consumeCollectable());
 	}
 
 	@Test
@@ -67,14 +67,14 @@ public class TestTile {
 	public void YesitsTileGum() {
 		tile.setGameEntity(itemGum);
 		tile.setCollectable(itemGum);
-		assertEquals(true, tile.isTileGum());
+		assertTrue( tile.isTileGum());
 	}
 
 	@Test
 	public void YesitsTileSuperGum() {
 		tile.setGameEntity(itemSgum);
 		tile.setCollectable(itemSgum);
-		assertEquals(true, tile.isTileSuperGum());
+		assertTrue(tile.isTileSuperGum());
 	}
 
 }
