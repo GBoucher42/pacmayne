@@ -1,5 +1,9 @@
 package factories;
 
+import components.AnimatableGraphicsComponent;
+import components.AnimatablePhysicsComponent;
+import components.GameObject;
+import components.PlayerInputComponent;
 import entities.Animatable;
 import entities.Direction;
 import entities.GameEntity;
@@ -85,5 +89,9 @@ public class GameEntityFactory {
 		}
 		
 		return entity;
+	}
+	
+	public static void createPacMan(int x, int y) {
+		GameObject obj = new GameObject("pacman", x, y, new PlayerInputComponent(), new AnimatablePhysicsComponent(), new AnimatableGraphicsComponent());
 	}
 }

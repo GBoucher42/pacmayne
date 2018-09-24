@@ -1,6 +1,6 @@
 package components;
 
-public class PropComponent implements IGraphicsComponent{
+public class PropGraphicsComponent implements IGraphicsComponent{
 
 	@Override
 	public void update(GameObject object) {

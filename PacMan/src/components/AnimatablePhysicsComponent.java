@@ -1,6 +1,6 @@
 package components;
 
-public class AnimatedComponent implements IGraphicsComponent{
+public class AnimatablePhysicsComponent implements IPhysicsComponent{
 
 	@Override
 	public void update(GameObject object) {

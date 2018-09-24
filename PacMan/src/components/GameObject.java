@@ -1,6 +1,6 @@
 package components;
 
-public abstract class GameObject {
+public class GameObject {
 
 	private final String name;
 	private final int startX, startY;
