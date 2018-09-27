@@ -24,9 +24,7 @@ public class PhysicsSystem extends SystemBase {
 			if (graphic == null || entity == pacman)
 				continue;
 			if(pacmanGraphic.getBounds().intersects(graphic.getBounds())) {
-				System.out.println("Collision " +  physic.getCollisionType() + " with " + entity.toString() + 
-						" at position: pacman: x:" + pacmanGraphic.getBounds().getMinX() + " " + pacmanGraphic.getBounds().getMaxX() + ", y:" + pacmanGraphic.getBounds().getMinY() + " " + pacmanGraphic.getBounds().getMaxY() +
-						 "other: x:" + graphic.getBounds().getMinX() + " " + graphic.getBounds().getMaxX() + ", y:" + graphic.getBounds().getMinY() + " " + graphic.getBounds().getMaxY());
+				MessageQueue.addMessage(entity, GraphicsComponent.class.getName(), MessageEnum.EATEN);
 			}
 			
 		}		

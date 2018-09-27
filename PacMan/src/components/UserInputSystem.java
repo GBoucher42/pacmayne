@@ -21,7 +21,7 @@ public class UserInputSystem extends SystemBase {
 				MoveComponent move = (MoveComponent) entityManager.getComponentOfClass(MoveComponent.class.getName(), entity);
 				
 				if (move != null) {
-					move.setDirection(direction);
+					move.setAwaitingDirection(direction);
 				}
 			}
 		}

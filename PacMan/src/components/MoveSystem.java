@@ -3,6 +3,7 @@ package components;
 import java.util.List;
 
 import entities.CollisionType;
+import entities.Direction;
 import entities.Maze;
 
 public class MoveSystem extends SystemBase {
@@ -23,16 +24,14 @@ public class MoveSystem extends SystemBase {
 			if(graphic == null) 
 				continue;
 			
+			if(move.canTurn() &&!move.getAwaitingDirection().equals(Direction.NONE) && maze.validateMove(move, move.getAwaitingDirection()) == CollisionType.NONE) {
+				move.updateDirection();
+			}
+			
 			if(maze.validateMove(move, move.getDirection()) == CollisionType.NONE) {
-				System.out.println("go ahead from position: " + move.getX() + ",  " + move.getY() + " - on tile: " + move.getTileX() + " , " + move.getTileY());
 				move.moveOneFrameBySpeed();
 				graphic.updatePosition(move.getX(), move.getY(), move.getDirection());
-			} else if(maze.validateMove(move, move.getDirection()) == CollisionType.COLLIDEWALL) {
-				System.out.println("stop, theres a wall at position: " + move.getX() + ",  " + move.getY() + " - on tile: " + move.getTileX() + " , " + move.getTileY());
 			}
-
-			
-			
 		}		
 	}
 

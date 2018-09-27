@@ -13,7 +13,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import components.Entity;
+import components.MessageEnum;
+import components.MessageQueue;
 import components.Sprite;
+import components.UserInputComponent;
 import entities.CollisionType;
 import entities.Direction;
 import entities.Maze;
@@ -48,6 +52,8 @@ public class Board extends BorderPane implements IBoardRenderer{
 	Pane paneFooter= new Pane();
 	Pane paneHeader =new Pane();
 	Pane pane =new Pane();
+	
+	private Entity pacman;
 	
 	public Board()
 	{
@@ -102,24 +108,29 @@ public class Board extends BorderPane implements IBoardRenderer{
 		pane.getChildren().addAll(movingSprites);
 	}
 	
+	public void setPacManEntity(Entity pacman) {
+		this.pacman = pacman;
+	}
+	
 	public void onKeyPressed(KeyCode keyCode) {
 		// TODO: adopt behavior to current state of state machine 
 		if(keyCode == keyCode.P) {
 			isRunning = !isRunning;
 		}
+		
 		if(isRunning) {
 			switch(keyCode) {
 			case UP:
-				awaitingDirection = Direction.UP;
+				MessageQueue.addMessage(pacman, UserInputComponent.class.getName(), MessageEnum.UP);
 				break;
 			case DOWN:
-				awaitingDirection = Direction.DOWN;
+				MessageQueue.addMessage(pacman, UserInputComponent.class.getName(), MessageEnum.DOWN);
 				break;
 			case LEFT:
-				awaitingDirection = Direction.LEFT;
+				MessageQueue.addMessage(pacman, UserInputComponent.class.getName(), MessageEnum.LEFT);
 				break;
 			case RIGHT:
-				awaitingDirection = Direction.RIGHT;
+				MessageQueue.addMessage(pacman, UserInputComponent.class.getName(), MessageEnum.RIGHT);
 				break;
 			case F:
 				Stage stage = (Stage) this.getScene().getWindow();

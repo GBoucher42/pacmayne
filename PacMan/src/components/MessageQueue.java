@@ -1,0 +1,32 @@
+package components;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
+public class MessageQueue {
+	
+	private static final Map<Entity, Map<String, MessageEnum>> messageQueue = new ConcurrentHashMap<>();
+	
+	public static void addMessage(Entity entity, String componentName, MessageEnum message) {
+		if(!messageQueue.containsKey(entity)) {
+			messageQueue.put(entity, new HashMap<String, MessageEnum>());
+		}
+		messageQueue.get(entity).put(componentName, message);
+	}
+	
+	public static MessageEnum consumeEntityMessages(Entity entity, String componentName) {
+		if(!messageQueue.containsKey(entity)) {
+			return null;
+		} else {
+			return messageQueue.get(entity).remove(componentName);
+		}
+	}
+	
+	
+
+}

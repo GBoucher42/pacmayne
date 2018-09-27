@@ -94,6 +94,7 @@ public class Game {
 	private void createMovableEntities() {
 		List<Sprite> sprites = new ArrayList<Sprite>();
 		pacman = new EntityFactory(entityManager).createPacMan(PACMAN_SPAWN_POINT_X, PACMAN_SPAWN_POINT_Y, Direction.RIGHT);
+		board.setPacManEntity(pacman);
 		// Ghosts here
 		
 		List<Entity> entities = entityManager.getAllEntitiesPosessingComponentOfClass(MoveComponent.class.getName());
@@ -126,10 +127,18 @@ public class Game {
         }.start();
 	}
 	
+	private int counter = 1;
 	private void update() {
+		
 		userInputSystem.update();
 		moveSystem.update();
 		physicsSystem.update();
-		graphicsSystem.update();
+		if (counter % 3== 0) {
+			counter = 1;			
+			graphicsSystem.update();
+		} else {
+			++counter;
+		}
+		
 	}
 }

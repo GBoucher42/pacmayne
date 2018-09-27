@@ -62,6 +62,10 @@ public class GraphicsComponent implements IComponent{
 		return sprite.getBounds();
 	}
 	
+	public void removeImage() {
+		sprite.removeImage();
+	}
+	
 	public void updatePosition(double x, double y, Direction direction) {
 		if(!direction.equals(this.direction)) {
 			this.direction = direction;

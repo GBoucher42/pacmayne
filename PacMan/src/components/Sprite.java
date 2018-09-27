@@ -31,6 +31,10 @@ public class Sprite extends StackPane {
 		this.getChildren().add(image);		
 	}
 	
+	public void removeImage() {
+		image.setImage(null);
+	}
+	
 	public void setImage(String imgPath) {
 		Image img = new Image("file:" + imgPath);
 		image.setImage(img);
@@ -44,7 +48,7 @@ public class Sprite extends StackPane {
 	{
 		setLayoutX(x);
 		setLayoutY(y);
-		this.bounds = new BoundingBox(this.getLayoutX(), this.getLayoutY(), this.getWidth(), this.getHeight());
+		this.bounds = new BoundingBox(this.getLayoutX(), this.getLayoutY(), this.getWidth() -5, this.getHeight() -5);
 	}
 
 }
