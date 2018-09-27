@@ -17,9 +17,9 @@ public class MoveSystem extends SystemBase {
 	@Override
 	public void update() {
 		List<Entity> entities = entityManager.getAllEntitiesPosessingComponentOfClass(MoveComponent.class.getName());
-		for(Entity entity: entities) {
+		for(Entity entity: entities) {	
 			MoveComponent move = (MoveComponent) entityManager.getComponentOfClass(MoveComponent.class.getName(), entity);
-			GraphicComponent graphic = (GraphicComponent) entityManager.getComponentOfClass(GraphicComponent.class.getName(), entity);
+			GraphicsComponent graphic = (GraphicsComponent) entityManager.getComponentOfClass(GraphicsComponent.class.getName(), entity);
 			if(graphic == null) 
 				continue;
 			

@@ -6,9 +6,4 @@ public class Entity {
 	public Entity(int id) {
 		this.id = id;
 	}
-	
-	public String toString() {
-		return Integer.toString(id);
-	}
-	
 }

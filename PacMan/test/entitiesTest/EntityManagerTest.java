@@ -11,20 +11,20 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import static org.mockito.Mockito.when; 
 
-import entities.EntityManager;
+import entities.OldEntityManager;
 import entities.GameEntity;
 import entities.IGameEntity;
 
 @TestInstance(Lifecycle.PER_CLASS)
 class EntityManagerTest {
-	EntityManager entityManager;
+	OldEntityManager entityManager;
 	@Mock
 	GameEntity gameEntity;
 	
 	@BeforeAll
 	void setup() {
 		MockitoAnnotations.initMocks(this);
-		entityManager = new EntityManager();
+		entityManager = new OldEntityManager();
 		
 		when(gameEntity.getName()).thenReturn("random");
 		

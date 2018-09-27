@@ -1,19 +1,13 @@
 package rendering;
 
-import entities.EntityManager;
-import entities.Maze;
+import java.util.List;
+import components.Sprite;
 
 public interface IBoardRenderer {
 
-	void drawMaze(Maze map);
+	void drawMaze(List<Sprite> sprites);
 	
 	void loadSounds();
 	
-	void spawnAnimatables(EntityManager entityManager);
-	
-	void spawnStaticEntities(EntityManager entityManager);
-	
-	void refreshView();
-	
-	void animate();
+	void spawnAnimatables(List<Sprite> sprites);
 }

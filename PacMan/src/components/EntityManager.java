@@ -52,7 +52,10 @@ public class EntityManager {
 	
 	public List<Entity> getAllEntitiesPosessingComponentOfClass(String className) {
 		List<Entity> entities = new ArrayList<>();
-		for (Map.Entry<Entity, IComponent> entry : componentsByClass.get(className).entrySet()) {
+		Map<Entity, IComponent> classMap = componentsByClass.get(className);
+		if(classMap == null)
+			return entities;
+		for (Map.Entry<Entity, IComponent> entry : classMap.entrySet()) {
 			entities.add(entry.getKey());
 		}
 		

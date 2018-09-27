@@ -32,7 +32,7 @@ public class MoveComponent implements IComponent {
 				--tileX;
 			break;
 		case RIGHT:
-			x-=moveIncrementer;
+			x+=moveIncrementer;
 			if(isNewTile(x))
 				++tileX;
 			break;

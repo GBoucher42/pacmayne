@@ -3,8 +3,8 @@ package factories;
 import static configs.GameConfig.GAME_TILE_HEIGHT_COUNT;
 import static configs.GameConfig.GAME_TILE_WIDTH_COUNT;
 
-import entities.Collectable;
-import entities.GameEntityType;
+import components.EntityFactory;
+import components.EntityManager;
 import entities.Maze;
 import entities.Tile;
 import entities.TileType;
@@ -54,9 +54,10 @@ public class MazeFactory {
 			{13,  15,  15,  15,  15,  15,  15,  15,  15,  15,  15,  15,  15,  15,  15,  15,  15,  15,  15,  15,  15,  15,  15,  15,  15,  15,  15,  14}
 	};
 	
-	public static Maze BuildMaze() throws Exception
+	public static Maze BuildMaze(EntityManager manager) throws Exception
 	{
 		Maze maze = new Maze();
+		EntityFactory factory = new EntityFactory(manager);
 		
 		if (levelOneTileGrid.length != GAME_TILE_HEIGHT_COUNT || levelOneTileGrid[0].length != GAME_TILE_WIDTH_COUNT)
 		{
@@ -74,10 +75,9 @@ public class MazeFactory {
 				
 				TileCode tileCode = tileCodes[levelOneTileGrid[i][j]];
 				TileType tileType;
-				if (tileCode == TileCode.VOID) {
+
+				if (tileCode == TileCode.FRUIT || tileCode == TileCode.GUM || tileCode == TileCode.SUPERGUM || tileCode == TileCode.VOID){
 					tileType = TileType.VOID;
-				} else if (tileCode == TileCode.FRUIT || tileCode == TileCode.GUM || tileCode == TileCode.SUPERGUM){
-					tileType = TileType.CORRIDOR;
 				} else {
 					tileType = TileType.WALL;
 				}
@@ -85,17 +85,15 @@ public class MazeFactory {
 				Tile newTile = new Tile(j, i, tileType);
 
 				if (tileCode == TileCode.GUM) {
-					newTile.setCollectable((Collectable) GameEntityFactory.createGameEntity(GameEntityType.GUM, j, i));
+					factory.createGum(j, i);
 				}
 				else if (tileCode == TileCode.SUPERGUM) {
-					newTile.setCollectable((Collectable) GameEntityFactory.createGameEntity(GameEntityType.SUPERGUM, j, i));
+					factory.createSuperGum(j, i);
 				}
 				else if (tileCode == TileCode.FRUIT) {
-					newTile.setCollectable((Collectable) GameEntityFactory.createGameEntity(GameEntityType.FRUIT, j, i));
 				}
 				else if (tileCode != TileCode.VOID){
-					GameEntityFactory.setWallIndex(levelOneTileGrid[i][j]); // TODO: remove this hack
-					newTile.setGameEntity(GameEntityFactory.createGameEntity(GameEntityType.WALL, j, i));
+					factory.createWall(j, i, levelOneTileGrid[i][j]);
 				}				
 			
 				maze.addTile(newTile, i, j);

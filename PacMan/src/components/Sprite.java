@@ -2,7 +2,6 @@ package components;
 
 import static configs.GameConfig.TILE_SIZE;
 
-import entities.IGameEntity;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.scene.image.Image;
@@ -20,10 +19,16 @@ public class Sprite extends StackPane {
 		this.setHeight(TILE_SIZE);
 		updatePosition(x,y);	
 
-//		image = new ImageView();
-//		setImage(imgPath);
+		image = new ImageView();
 		
+		//scale image
+		image.fitWidthProperty().bind(this.widthProperty());
+		image.fitHeightProperty().bind(this.heightProperty());
+		image.translateXProperty().bind(this.widthProperty().subtract(image.getFitWidth()).divide(4));
+		image.translateYProperty().bind(this.heightProperty().subtract(image.getFitHeight()).divide(4));
+		setImage(imgPath);
 		
+		this.getChildren().add(image);		
 	}
 	
 	public void setImage(String imgPath) {

@@ -17,10 +17,10 @@ public class PhysicsSystem extends SystemBase {
 	@Override
 	public void update() {
 		List<Entity> entities = entityManager.getAllEntitiesPosessingComponentOfClass(PhysicsComponent.class.getName());
-		GraphicComponent pacmanGraphic = (GraphicComponent) entityManager.getComponentOfClass(GraphicComponent.class.getName(), pacman);
+		GraphicsComponent pacmanGraphic = (GraphicsComponent) entityManager.getComponentOfClass(GraphicsComponent.class.getName(), pacman);
 		for(Entity entity: entities) {
 			PhysicsComponent physic = (PhysicsComponent) entityManager.getComponentOfClass(PhysicsComponent.class.getName(), entity);
-			GraphicComponent graphic = (GraphicComponent) entityManager.getComponentOfClass(GraphicComponent.class.getName(), entity);
+			GraphicsComponent graphic = (GraphicsComponent) entityManager.getComponentOfClass(GraphicsComponent.class.getName(), entity);
 			if (graphic == null || entity == pacman)
 				continue;
 			if(pacmanGraphic.getBounds().intersects(graphic.getBounds())) {

@@ -12,5 +12,4 @@ public class PhysicsComponent implements IComponent {
 	public String getCollisionType() {
 		return collisionType;
 	}
-
 }
