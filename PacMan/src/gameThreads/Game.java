@@ -25,9 +25,9 @@ import components.GraphicsSystem;
 import components.MoveComponent;
 import components.MoveSystem;
 import components.PhysicsSystem;
+import components.ScoreSystem;
 import components.Sprite;
 import components.UserInputSystem;
-import entities.CollisionType;
 import entities.Direction;
 import entities.Maze;
 import factories.MazeFactory;
@@ -38,13 +38,13 @@ public class Game {
 
 	private static final Logger LOGGER = Logger.getLogger( Game.class.getName() );
 	private IBoardRenderer board;
-	private AudioRepository audioRepository = new AudioRepository();	
 	
 	private EntityManager entityManager;
 	private UserInputSystem userInputSystem;
 	private MoveSystem moveSystem;
 	private PhysicsSystem physicsSystem;
 	private GraphicsSystem graphicsSystem;
+	private ScoreSystem scoreSystem;
 	private Entity pacman;
 	
 	Maze map;
@@ -89,6 +89,7 @@ public class Game {
 		moveSystem = new MoveSystem(entityManager, map);
 		physicsSystem = new PhysicsSystem(entityManager, pacman);
 		graphicsSystem = new GraphicsSystem(entityManager);
+		scoreSystem = new ScoreSystem(entityManager);
 	}
 	
 	private void createMovableEntities() {
@@ -133,12 +134,13 @@ public class Game {
 		userInputSystem.update();
 		moveSystem.update();
 		physicsSystem.update();
-		if (counter % 3== 0) {
-			counter = 1;			
-			graphicsSystem.update();
-		} else {
-			++counter;
-		}
 		
+//		if (counter % 3== 0) {
+//			counter = 1;			
+			graphicsSystem.update();
+//		} else {
+//			++counter;
+//		}
+		scoreSystem.update();
 	}
 }

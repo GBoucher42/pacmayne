@@ -4,6 +4,8 @@ import java.util.List;
 
 public class GraphicsSystem extends SystemBase{
 
+	private int refreshCounter = 1;
+	
 	public GraphicsSystem(EntityManager entityManager) {
 		super(entityManager);
 	}
@@ -18,7 +20,12 @@ public class GraphicsSystem extends SystemBase{
 				graphic.removeImage();
 				entityManager.removeEntity(entity);
 			} else {
-				graphic.updateImage();
+				if (refreshCounter % 3== 0) {
+					refreshCounter = 1;	
+					graphic.updateImage();
+				} else {
+					++refreshCounter;
+				}
 			}
 		}		
 	}

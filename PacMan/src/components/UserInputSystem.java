@@ -24,10 +24,6 @@ public class UserInputSystem extends SystemBase {
 					move.setAwaitingDirection(direction);
 				}
 			}
-		}
-		
+		}		
 	}
-	
-	
-
 }

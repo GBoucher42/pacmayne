@@ -1,16 +1,12 @@
 package components;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class MessageQueue {
 	
-	private static final Map<Entity, Map<String, MessageEnum>> messageQueue = new ConcurrentHashMap<>();
+	private static final Map<Entity, Map<String, MessageEnum>> messageQueue = Collections.synchronizedMap(new HashMap<>());
 	
 	public static void addMessage(Entity entity, String componentName, MessageEnum message) {
 		if(!messageQueue.containsKey(entity)) {

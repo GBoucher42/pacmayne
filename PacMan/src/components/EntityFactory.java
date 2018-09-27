@@ -20,6 +20,7 @@ public class EntityFactory {
 		graphic.addAnimation(Direction.DOWN, ImageRepository.getImages("pacman", Direction.DOWN));
 		entityManager.addComponent(graphic, entity);
 		entityManager.addComponent(new MoveComponent(x,y,direction), entity);
+		entityManager.addComponent(new ScoreComponent(), entity);
 		entityManager.addComponent(new UserInputComponent(), entity);
 		return entity;
 	}
@@ -33,7 +34,7 @@ public class EntityFactory {
 	
 	public Entity createSuperGum(int x, int y) {
 		Entity entity = entityManager.CreateEntity();
-		entityManager.addComponent(new PhysicsComponent("Supergum"), entity);
+		entityManager.addComponent(new PhysicsComponent("SuperGum"), entity);
 		entityManager.addComponent(new GraphicsComponent(Direction.NONE, ImageRepository.getImages("gum", Direction.NONE), x * TILE_SIZE, y * TILE_SIZE), entity);
 		return entity;
 	}
