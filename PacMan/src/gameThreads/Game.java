@@ -11,14 +11,25 @@ import static configs.GameConfig.INKY_SPAWN_POINT_Y;
 import static configs.GameConfig.PINKY_SPAWN_POINT_X;
 import static configs.GameConfig.PINKY_SPAWN_POINT_Y;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import audio.AudioRepository;
-import entities.EntityManager;
-import entities.GameEntityType;
+import components.Entity;
+import components.EntityFactory;
+import components.EntityManager;
+import components.GraphicsComponent;
+import components.GraphicsSystem;
+import components.MoveComponent;
+import components.MoveSystem;
+import components.PhysicsSystem;
+import components.Sprite;
+import components.UserInputSystem;
+import entities.CollisionType;
+import entities.Direction;
 import entities.Maze;
-import factories.GameEntityFactory;
 import factories.MazeFactory;
 import javafx.animation.AnimationTimer;
 import rendering.IBoardRenderer;
@@ -27,8 +38,15 @@ public class Game {
 
 	private static final Logger LOGGER = Logger.getLogger( Game.class.getName() );
 	private IBoardRenderer board;
-	private AudioRepository audioRepository = new AudioRepository();
-	private EntityManager entityManager = new EntityManager();
+	private AudioRepository audioRepository = new AudioRepository();	
+	
+	private EntityManager entityManager;
+	private UserInputSystem userInputSystem;
+	private MoveSystem moveSystem;
+	private PhysicsSystem physicsSystem;
+	private GraphicsSystem graphicsSystem;
+	private Entity pacman;
+	
 	Maze map;
 	
 	public Game(IBoardRenderer board)
@@ -39,27 +57,58 @@ public class Game {
 
 	private void init()
 	{
-		createEntities();
+		entityManager = new EntityManager();
 		
 		try {
-			map = MazeFactory.BuildMaze();
+			map = MazeFactory.BuildMaze(entityManager);			
 		} catch (Exception e) {
 			LOGGER.log(Level.SEVERE, e.getMessage());
 		}
 		
-		board.drawMaze(map);
-		board.loadSounds();
-		board.spawnAnimatables(entityManager);
-		board.spawnStaticEntities(entityManager);		
+		buildMaze();
+		createMovableEntities();
+		initSystems();
+		
+		board.loadSounds();	
 	}
-
-	private void createEntities()
-	{
-		entityManager.addEntity(GameEntityFactory.createGameEntity(GameEntityType.PACMAN, PACMAN_SPAWN_POINT_X, PACMAN_SPAWN_POINT_Y));
-		entityManager.addEntity(GameEntityFactory.createGameEntity(GameEntityType.INKY, INKY_SPAWN_POINT_X, INKY_SPAWN_POINT_Y));
-		entityManager.addEntity(GameEntityFactory.createGameEntity(GameEntityType.PINKY, PINKY_SPAWN_POINT_X, PINKY_SPAWN_POINT_Y));
-		entityManager.addEntity(GameEntityFactory.createGameEntity(GameEntityType.BLINKY, BLINKY_SPAWN_POINT_X, BLINKY_SPAWN_POINT_Y));
-		entityManager.addEntity(GameEntityFactory.createGameEntity(GameEntityType.CLYDE, CLYDE_SPAWN_POINT_X, CLYDE_SPAWN_POINT_Y));
+	
+	private void buildMaze() {
+		List<Sprite> sprites = new ArrayList<Sprite>();
+		List<Entity> entities = entityManager.getAllEntitiesPosessingComponentOfClass(GraphicsComponent.class.getName());
+		
+		for(Entity entity: entities) {	
+			GraphicsComponent graphic = (GraphicsComponent) entityManager.getComponentOfClass(GraphicsComponent.class.getName(), entity);
+			sprites.add(graphic.getSprite());			
+		}	
+		
+		board.drawMaze(sprites);
+	}
+	
+	private void initSystems() {
+		userInputSystem = new UserInputSystem(entityManager);
+		moveSystem = new MoveSystem(entityManager, map);
+		physicsSystem = new PhysicsSystem(entityManager, pacman);
+		graphicsSystem = new GraphicsSystem(entityManager);
+	}
+	
+	private void createMovableEntities() {
+		List<Sprite> sprites = new ArrayList<Sprite>();
+		pacman = new EntityFactory(entityManager).createPacMan(PACMAN_SPAWN_POINT_X, PACMAN_SPAWN_POINT_Y, Direction.RIGHT);
+		// Ghosts here
+		
+		List<Entity> entities = entityManager.getAllEntitiesPosessingComponentOfClass(MoveComponent.class.getName());
+		
+		for(Entity entity: entities) {
+			GraphicsComponent graphic = (GraphicsComponent) entityManager.getComponentOfClass(GraphicsComponent.class.getName(), entity);
+			
+			if (graphic == null) {
+				continue;
+			}
+			
+			sprites.add(graphic.getSprite());			
+		}
+		
+		board.spawnAnimatables(sprites);
 	}
 
 	public void run()
@@ -71,18 +120,16 @@ public class Game {
             {            
             	if (now - lastUpdate >= 30_000_000) {
             		lastUpdate = System.nanoTime();
-            		update();
-                	render();                	
+            		update();               	
             	}
             }
         }.start();
 	}
 	
 	private void update() {
-		board.animate();
-	}
-	
-	private void render() {
-		board.refreshView();
+		userInputSystem.update();
+		moveSystem.update();
+		physicsSystem.update();
+		graphicsSystem.update();
 	}
 }
