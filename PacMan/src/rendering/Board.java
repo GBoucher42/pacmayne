@@ -44,17 +44,22 @@ public class Board extends BorderPane implements IBoardRenderer{
 	private int score;
 	MediaPlayer pacmanEatingPlayer;
 	private Label scoreText;
+	private Label pauseText = new Label("PAUSE");
 	@FXML private ImageView imglogo ;
 	Pane paneFooter= new Pane();
 	Pane paneHeader =new Pane();
 	Pane pane =new Pane();
-	
+
 	public Board()
 	{
 		pane.setStyle("-fx-background-color: black;");
-		
+		//TODO: deplacer la suite
+				pauseText.setAlignment(Pos.CENTER);
+				pauseText.setTextFill(Color.RED);
+				pauseText.setPrefSize(200, 200);
+				pane.getChildren().add(pauseText);
 	}
-	
+
 	public void loadSounds() {
 		String musicFile = "ressource/audio/pacman-eating.wav"; 
 		Media sound = new Media(new File(musicFile).toURI().toString());
@@ -129,7 +134,7 @@ public class Board extends BorderPane implements IBoardRenderer{
 				break;
 			}		
 		}
-		
+
 	}
 	
 	private void playEatingAudio() {
@@ -137,15 +142,18 @@ public class Board extends BorderPane implements IBoardRenderer{
 			pacmanEatingPlayer.play();
 		}
 	}
-	
+
 	private void stopEatingAudio() {
 		if(Status.PLAYING.equals(pacmanEatingPlayer.getStatus())) {
 			pacmanEatingPlayer.stop();
 		}
 	}
-	
+
 	private void updateScore(int value) {
 		score += value;
 		scoreText.setText("Score: " + score);
 	}
+	
+	
+	
 }
