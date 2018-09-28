@@ -16,9 +16,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import components.Sprite;
+import components.UserInputComponent;
 import entities.CollisionType;
 import entities.Direction;
+import entities.Entity;
 import entities.Maze;
 import entities.Tile;
 import entities.TileType;
@@ -40,8 +41,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import threads.MessageEnum;
+import threads.MessageQueue;
 
-
+public class Board extends BorderPane implements IBoardRenderer{
+	private boolean isRunning = true;
 
 public class Board extends BorderPane implements IBoardRenderer{
 	private boolean isRunning = true;
@@ -55,7 +59,9 @@ public class Board extends BorderPane implements IBoardRenderer{
 	Pane paneFooter= new Pane();
 	Pane paneHeader =new Pane();
 	Pane pane =new Pane();
-
+	
+	private Entity pacman;
+	
 	public Board()
 	{
 		pane.setStyle("-fx-background-color: black;");
@@ -130,6 +136,10 @@ public class Board extends BorderPane implements IBoardRenderer{
 		pane.getChildren().addAll(movingSprites);
 	}
 	
+	public void setPacManEntity(Entity pacman) {
+		this.pacman = pacman;
+	}
+	
 	public void onKeyPressed(KeyCode keyCode) {
 		// TODO: adopt behavior to current state of state machine 
 		if(keyCode == keyCode.P) {
@@ -137,19 +147,20 @@ public class Board extends BorderPane implements IBoardRenderer{
 			pauseText.setVisible(!pauseText.isVisible());
 			pauseText.toFront();
 		}
+		
 		if(isRunning) {
 			switch(keyCode) {
 			case UP:
-				awaitingDirection = Direction.UP;
+				MessageQueue.addMessage(pacman, UserInputComponent.class.getName(), MessageEnum.UP);
 				break;
 			case DOWN:
-				awaitingDirection = Direction.DOWN;
+				MessageQueue.addMessage(pacman, UserInputComponent.class.getName(), MessageEnum.DOWN);
 				break;
 			case LEFT:
-				awaitingDirection = Direction.LEFT;
+				MessageQueue.addMessage(pacman, UserInputComponent.class.getName(), MessageEnum.LEFT);
 				break;
 			case RIGHT:
-				awaitingDirection = Direction.RIGHT;
+				MessageQueue.addMessage(pacman, UserInputComponent.class.getName(), MessageEnum.RIGHT);
 				break;
 			case F:
 				Stage stage = (Stage) this.getScene().getWindow();
@@ -159,7 +170,7 @@ public class Board extends BorderPane implements IBoardRenderer{
 				break;
 			}		
 		}
-
+		
 	}
 	
 	private void playEatingAudio() {

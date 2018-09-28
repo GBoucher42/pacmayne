@@ -17,35 +17,35 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import audio.AudioRepository;
-import components.Entity;
-import components.EntityFactory;
-import components.EntityManager;
 import components.GraphicsComponent;
-import components.GraphicsSystem;
 import components.MoveComponent;
-import components.MoveSystem;
-import components.PhysicsSystem;
-import components.Sprite;
-import components.UserInputSystem;
-import entities.CollisionType;
 import entities.Direction;
+import entities.Entity;
+import entities.EntityManager;
 import entities.Maze;
+import factories.EntityFactory;
 import factories.MazeFactory;
 import image.FontRepository;
 import javafx.animation.AnimationTimer;
 import rendering.IBoardRenderer;
+import rendering.Sprite;
+import systems.GraphicsSystem;
+import systems.MoveSystem;
+import systems.PhysicsSystem;
+import systems.ScoreSystem;
+import systems.UserInputSystem;
 
 public class Game {
 
 	private static final Logger LOGGER = Logger.getLogger( Game.class.getName() );
 	private IBoardRenderer board;
-	private FontRepository fontRepository = new FontRepository();
 	
 	private EntityManager entityManager;
 	private UserInputSystem userInputSystem;
 	private MoveSystem moveSystem;
 	private PhysicsSystem physicsSystem;
 	private GraphicsSystem graphicsSystem;
+	private ScoreSystem scoreSystem;
 	private Entity pacman;
 	
 	Maze map;
@@ -90,11 +90,13 @@ public class Game {
 		moveSystem = new MoveSystem(entityManager, map);
 		physicsSystem = new PhysicsSystem(entityManager, pacman);
 		graphicsSystem = new GraphicsSystem(entityManager);
+		scoreSystem = new ScoreSystem(entityManager);
 	}
 	
 	private void createMovableEntities() {
 		List<Sprite> sprites = new ArrayList<Sprite>();
 		pacman = new EntityFactory(entityManager).createPacMan(PACMAN_SPAWN_POINT_X, PACMAN_SPAWN_POINT_Y, Direction.RIGHT);
+		board.setPacManEntity(pacman);
 		// Ghosts here
 		
 		List<Entity> entities = entityManager.getAllEntitiesPosessingComponentOfClass(MoveComponent.class.getName());
@@ -127,10 +129,19 @@ public class Game {
         }.start();
 	}
 	
+	private int counter = 1;
 	private void update() {
+		
 		userInputSystem.update();
 		moveSystem.update();
 		physicsSystem.update();
-		graphicsSystem.update();
+		
+		if (counter % 3== 0) {
+			counter = 1;			
+			graphicsSystem.update();
+			scoreSystem.update();
+		} else {
+			++counter;
+		}		
 	}
 }

@@ -1,7 +1,8 @@
 package rendering;
 
 import java.util.List;
-import components.Sprite;
+
+import entities.Entity;
 
 public interface IBoardRenderer {
 
@@ -10,4 +11,6 @@ public interface IBoardRenderer {
 	void loadSounds();
 	
 	void spawnAnimatables(List<Sprite> sprites);
+	
+	void setPacManEntity(Entity pacman);
 }

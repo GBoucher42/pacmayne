@@ -3,8 +3,7 @@ package factories;
 import static configs.GameConfig.GAME_TILE_HEIGHT_COUNT;
 import static configs.GameConfig.GAME_TILE_WIDTH_COUNT;
 
-import components.EntityFactory;
-import components.EntityManager;
+import entities.EntityManager;
 import entities.Maze;
 import entities.Tile;
 import entities.TileType;

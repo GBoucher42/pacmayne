@@ -6,6 +6,7 @@ import java.util.Map;
 
 import entities.Direction;
 import javafx.geometry.Bounds;
+import rendering.Sprite;
 
 public class GraphicsComponent implements IComponent{
 	private Sprite sprite;
@@ -60,6 +61,10 @@ public class GraphicsComponent implements IComponent{
 
 	public Bounds getBounds() {
 		return sprite.getBounds();
+	}
+	
+	public void removeImage() {
+		sprite.removeImage();
 	}
 	
 	public void updatePosition(double x, double y, Direction direction) {
