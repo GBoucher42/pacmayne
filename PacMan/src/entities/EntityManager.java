@@ -1,48 +1,68 @@
 package entities;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import components.IComponent;
 
 public class EntityManager {
+	private List<Entity> entities;
+	private Map<String, Map<Entity, IComponent>> componentsByClass;
+	private int lowestUnassingedId;
 	
-	private ArrayList<IGameEntity> entities = new ArrayList<>();
-	
-	public void addEntity(IGameEntity entity)
-	{
-		if (!entities.contains(entity)) {
-			entities.add(entity);
-		}
+	public EntityManager() {
+		lowestUnassingedId = 0;
+		entities = new ArrayList<>();
+		componentsByClass = new HashMap<String, Map<Entity, IComponent>>();
 	}
 	
-	public IGameEntity getEntity(int index)
-	{
-		return entities.get(index);
+	public int generateNewId() {
+		return lowestUnassingedId++; 
+		
 	}
 	
-	public IGameEntity getEntity(String entityName)
-	{
-		for (IGameEntity entity : entities)
-		{
-			if (entity.getName().equals(entityName)) {
-				return entity;
+	public Entity CreateEntity() {
+		return new Entity(generateNewId());
+	}
+	
+	public void addComponent(IComponent component, Entity entity) {
+		String name = component.getClass().getName();
+		if(!componentsByClass.containsKey(name)) {
+			componentsByClass.put(name, new HashMap<Entity, IComponent>());
+			componentsByClass.get(name).put(entity, component);
+		} else {
+			if(!componentsByClass.get(name).containsKey(entity)) {
+				componentsByClass.get(name).put(entity, component);
 			}
 		}
-		
-		return null;
 	}
 	
-	public void deleteEntity(IGameEntity entity)
-	{
-		// TODO: should fire an event caught by the board for it to delete the associated sprite
+	public void removeEntity(Entity entity) {
+		for (Map.Entry<String, Map<Entity, IComponent>> parentEntry : componentsByClass.entrySet()) {
+			if(parentEntry.getValue().containsKey(entity)) {
+				parentEntry.getValue().remove(entity);
+			}
+		}
 		entities.remove(entity);
 	}
 	
-	public void clear()
-	{
-		entities.clear();
+	public IComponent getComponentOfClass(String className, Entity entity) {
+		return componentsByClass.get(className).get(entity);
 	}
 	
-	public int count()
-	{
-		return entities.size();
+	public List<Entity> getAllEntitiesPosessingComponentOfClass(String className) {
+		List<Entity> entities = new ArrayList<>();
+		Map<Entity, IComponent> classMap = componentsByClass.get(className);
+		if(classMap == null)
+			return entities;
+		for (Map.Entry<Entity, IComponent> entry : classMap.entrySet()) {
+			entities.add(entry.getKey());
+		}
+		
+		return entities;
 	}
+	
+
 }
