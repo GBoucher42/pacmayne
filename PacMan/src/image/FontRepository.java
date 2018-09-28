@@ -20,7 +20,7 @@ public class FontRepository {
 	private char[] letters = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r',
 			's', 't', 'u', 'v', 'w', 'z'};
 	private Integer[] numbers = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-	private Map<Integer, String> mapPathLetter = new HashMap<>();
+	private Map<Character, String> mapPathLetter = new HashMap<>();
 	private Map<Integer, String> mapPathNumber = new HashMap<>();
 	
 	public FontRepository() {
@@ -29,11 +29,10 @@ public class FontRepository {
 	}
 	
 	public String getFont(char letter) throws Exception {
-		int index = (int) letter;
-		if(!mapPathLetter.containsKey(index)) {
+		if(!mapPathLetter.containsKey(letter)) {
 			throw new Exception("Try to access unknown letter " + letter);
 		}
-		return mapPathLetter.get(index);
+		return mapPathLetter.get(letter);
 	}
 	
 	public String getFont(int number) throws Exception {
@@ -61,7 +60,7 @@ public class FontRepository {
 	        // print the matched paths
 	        for (Path path : matchedFiles) {
 	        	if(path != null) {
-	        		mapPathLetter.put((int) letters[i], resourceDirectoryPath + path.getFileName().toString());
+	        		mapPathLetter.put(letters[i], resourceDirectoryPath + path.getFileName().toString());
 	        	}
 	        }
 	        finder.clearMatches();
@@ -85,8 +84,7 @@ public class FontRepository {
 			
 	        // print the matched paths
 	        for (Path path : matchedFiles) {
-	        	numberSprites[i] = resourceDirectoryPath + path.getFileName().toString();
-	        	mapPathNumber.put(numbers[i], numberSprites[i]);
+	        	mapPathNumber.put(numbers[i], resourceDirectoryPath + path.getFileName().toString());
 	        }
 	        finder.clearMatches();
 		}
