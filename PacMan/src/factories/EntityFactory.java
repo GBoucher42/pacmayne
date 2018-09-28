@@ -28,9 +28,21 @@ public class EntityFactory {
 		graphic.addAnimation(Direction.UP, ImageRepository.getImages("pacman", Direction.UP));
 		graphic.addAnimation(Direction.DOWN, ImageRepository.getImages("pacman", Direction.DOWN));
 		entityManager.addComponent(graphic, entity);
-		entityManager.addComponent(new MoveComponent(x,y,direction), entity);
+		entityManager.addComponent(new MoveComponent(x, y, direction), entity);
 		entityManager.addComponent(new ScoreComponent(), entity);
 		entityManager.addComponent(new UserInputComponent(), entity);
+		return entity;
+	}
+	
+	public Entity createGhost(int x, int y, Direction direction, String ghostName) {
+		Entity entity = entityManager.CreateEntity();
+		entityManager.addComponent(new PhysicsComponent(ghostName), entity);
+		GraphicsComponent graphic = new GraphicsComponent(Direction.RIGHT, ImageRepository.getImages(ghostName, Direction.RIGHT), x * TILE_SIZE, y * TILE_SIZE);
+		graphic.addAnimation(Direction.LEFT, ImageRepository.getImages(ghostName, Direction.LEFT));
+		graphic.addAnimation(Direction.UP, ImageRepository.getImages(ghostName, Direction.UP));
+		graphic.addAnimation(Direction.DOWN, ImageRepository.getImages(ghostName, Direction.DOWN));
+		entityManager.addComponent(graphic, entity);
+		entityManager.addComponent(new MoveComponent(x , y, direction), entity);
 		return entity;
 	}
 	

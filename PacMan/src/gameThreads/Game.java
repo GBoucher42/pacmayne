@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 import audio.AudioRepository;
 import components.GraphicsComponent;
 import components.MoveComponent;
+import components.ScoreComponent;
 import entities.Direction;
 import entities.Entity;
 import entities.EntityManager;
@@ -68,8 +69,6 @@ public class Game {
 		buildMaze();
 		createMovableEntities();
 		initSystems();
-		
-		board.loadSounds();	
 	}
 	
 	private void buildMaze() {
@@ -78,7 +77,7 @@ public class Game {
 		
 		for(Entity entity: entities) {	
 			GraphicsComponent graphic = (GraphicsComponent) entityManager.getComponentOfClass(GraphicsComponent.class.getName(), entity);
-			sprites.add(graphic.getSprite());			
+			sprites.add(graphic.getSprite());
 		}	
 		
 		board.drawMaze(sprites);
@@ -94,9 +93,13 @@ public class Game {
 	
 	private void createMovableEntities() {
 		List<Sprite> sprites = new ArrayList<Sprite>();
-		pacman = new EntityFactory(entityManager).createPacMan(PACMAN_SPAWN_POINT_X, PACMAN_SPAWN_POINT_Y, Direction.RIGHT);
+		EntityFactory factory = new EntityFactory(entityManager);
+		pacman = factory.createPacMan(PACMAN_SPAWN_POINT_X, PACMAN_SPAWN_POINT_Y, Direction.RIGHT);
+		factory.createGhost(CLYDE_SPAWN_POINT_X, CLYDE_SPAWN_POINT_Y, Direction.DOWN, "clyde");
+		factory.createGhost(BLINKY_SPAWN_POINT_X, BLINKY_SPAWN_POINT_Y, Direction.UP, "blinky");
+		factory.createGhost(INKY_SPAWN_POINT_X, INKY_SPAWN_POINT_Y, Direction.RIGHT, "inky");
+		factory.createGhost(PINKY_SPAWN_POINT_X, PINKY_SPAWN_POINT_Y, Direction.LEFT, "pinky");
 		board.setPacManEntity(pacman);
-		// Ghosts here
 		
 		List<Entity> entities = entityManager.getAllEntitiesPosessingComponentOfClass(MoveComponent.class.getName());
 		
@@ -122,7 +125,8 @@ public class Game {
             {            
             	if (now - lastUpdate >= 30_000_000) {
             		lastUpdate = System.nanoTime();
-            		update();               	
+            		update();  
+            		render();
             	}
             }
         }.start();
@@ -142,5 +146,13 @@ public class Game {
 		} else {
 			++counter;
 		}		
+	}
+	
+	private void render() {
+		ScoreComponent score = (ScoreComponent) entityManager.getComponentOfClass(ScoreComponent.class.getName(), pacman);
+		
+		if (score != null) {
+			board.refreshScore(score.getScore());
+		}
 	}
 }

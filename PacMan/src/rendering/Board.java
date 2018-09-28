@@ -1,41 +1,21 @@
 package rendering;
 
-import static configs.GameConfig.GAME_HEIGHT;
-import static configs.GameConfig.GAME_WIDTH;
-
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-
 import components.UserInputComponent;
-import entities.CollisionType;
-import entities.Direction;
 import entities.Entity;
-import entities.Maze;
-import entities.Tile;
-import entities.TileType;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaPlayer.Status;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import threads.MessageEnum;
 import threads.MessageQueue;
@@ -43,28 +23,21 @@ import threads.MessageQueue;
 public class Board extends BorderPane implements IBoardRenderer{
 	private boolean isRunning = true;
 
-	private Direction awaitingDirection;
 	private int score;
-	MediaPlayer pacmanEatingPlayer;
+	private MediaPlayer pacmanEatingPlayer;
 	private Label scoreText;
 	@FXML private ImageView imglogo ;
-	Pane paneFooter= new Pane();
-	Pane paneHeader =new Pane();
-	Pane pane =new Pane();
+	private Pane paneFooter= new Pane();
+	private Pane paneHeader =new Pane();
+	private Pane pane =new Pane();
 	
 	private Entity pacman;
 	
 	public Board()
 	{
 		pane.setStyle("-fx-background-color: black;");
-		
-	}
-	
-	public void loadSounds() {
-		String musicFile = "ressource/audio/pacman-eating.wav"; 
-		Media sound = new Media(new File(musicFile).toURI().toString());
-		pacmanEatingPlayer = new MediaPlayer(sound);
-	}
+		loadSounds();		
+	}	
 	
 	public void drawMaze(List<Sprite> sprites) 
 	{	
@@ -77,15 +50,15 @@ public class Board extends BorderPane implements IBoardRenderer{
 	
     private void header() {
 	 
-    Image image = new Image("file:ressource/sprites/logo.png");
-    imglogo = new ImageView();
-    imglogo.setImage(image);
-    imglogo.setFitHeight(75);
-    paneHeader.getChildren().add(imglogo);
-    paneHeader.setStyle("-fx-background-color: black;");
-    paneHeader.setPrefSize(700,75);   
-    this.setTop(paneHeader);
-}
+	    Image image = new Image("file:ressource/sprites/logo.png");
+	    imglogo = new ImageView();
+	    imglogo.setImage(image);
+	    imglogo.setFitHeight(75);
+	    paneHeader.getChildren().add(imglogo);
+	    paneHeader.setStyle("-fx-background-color: black;");
+	    paneHeader.setPrefSize(700,75);   
+	    this.setTop(paneHeader);
+    }
 	private void footer() {
 		 scoreText = new Label(); 
 	        scoreText.setStyle("-fx-font-size: 32px;"
@@ -98,8 +71,17 @@ public class Board extends BorderPane implements IBoardRenderer{
 	        paneFooter.getChildren().add(scoreText);
 	        paneFooter.setStyle("-fx-background-color: black;");
 	        paneFooter.setPrefSize(700,50);        
-	        this.setBottom(paneFooter);
-	      
+	        this.setBottom(paneFooter);	      
+	}
+	
+	public void refreshScore(int score) {
+		scoreText.setText("Score: " + Integer.toString(score));
+	}
+	
+	private void loadSounds() {
+		String musicFile = "ressource/audio/pacman-eating.wav"; 
+		Media sound = new Media(new File(musicFile).toURI().toString());
+		pacmanEatingPlayer = new MediaPlayer(sound);
 	}
 	
 	public void spawnAnimatables(List<Sprite> movingSprites)
@@ -138,8 +120,7 @@ public class Board extends BorderPane implements IBoardRenderer{
 			default:
 				break;
 			}		
-		}
-		
+		}		
 	}
 	
 	private void playEatingAudio() {

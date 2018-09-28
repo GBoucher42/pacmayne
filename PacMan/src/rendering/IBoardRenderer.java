@@ -8,7 +8,7 @@ public interface IBoardRenderer {
 
 	void drawMaze(List<Sprite> sprites);
 	
-	void loadSounds();
+	void refreshScore(int score);
 	
 	void spawnAnimatables(List<Sprite> sprites);
 	

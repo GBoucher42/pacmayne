@@ -23,7 +23,6 @@ public class ScoreSystem extends SystemBase{
 			
 			if (message != null) {
 				score.addScore(message.getPoints());
-				System.out.println(score.getScore());
 			}
 		}
 	}
