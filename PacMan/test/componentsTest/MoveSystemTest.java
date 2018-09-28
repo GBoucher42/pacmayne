@@ -7,14 +7,14 @@ import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import components.EntityFactory;
-import components.EntityManager;
-import components.MoveSystem;
 import entities.Direction;
+import entities.EntityManager;
 import entities.GameEntity;
 import entities.Maze;
 import entities.Tile;
 import entities.TileType;
+import factories.EntityFactory;
+import systems.MoveSystem;
 
 @TestInstance(Lifecycle.PER_CLASS)
 class MoveSystemTest {

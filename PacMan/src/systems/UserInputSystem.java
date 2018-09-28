@@ -1,8 +1,12 @@
-package components;
+package systems;
 
 import java.util.List;
 
+import components.MoveComponent;
+import components.UserInputComponent;
 import entities.Direction;
+import entities.Entity;
+import entities.EntityManager;
 
 public class UserInputSystem extends SystemBase {
 

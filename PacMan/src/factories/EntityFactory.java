@@ -1,7 +1,16 @@
-package components;
+package factories;
 
 import entities.Direction;
+import entities.Entity;
+import entities.EntityManager;
+
 import static configs.GameConfig.TILE_SIZE;
+
+import components.GraphicsComponent;
+import components.MoveComponent;
+import components.PhysicsComponent;
+import components.ScoreComponent;
+import components.UserInputComponent;
 import image.ImageRepository;
 
 public class EntityFactory {

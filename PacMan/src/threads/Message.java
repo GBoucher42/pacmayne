@@ -1,4 +1,6 @@
-package components;
+package threads;
+
+import entities.Entity;
 
 public class Message {
 	

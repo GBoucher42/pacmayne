@@ -1,9 +1,13 @@
-package components;
+package systems;
 
 import java.util.List;
 
+import components.GraphicsComponent;
+import components.MoveComponent;
 import entities.CollisionType;
 import entities.Direction;
+import entities.Entity;
+import entities.EntityManager;
 import entities.Maze;
 
 public class MoveSystem extends SystemBase {

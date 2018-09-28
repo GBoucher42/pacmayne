@@ -13,13 +13,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import components.Entity;
-import components.MessageEnum;
-import components.MessageQueue;
-import components.Sprite;
 import components.UserInputComponent;
 import entities.CollisionType;
 import entities.Direction;
+import entities.Entity;
 import entities.Maze;
 import entities.Tile;
 import entities.TileType;
@@ -40,6 +37,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import threads.MessageEnum;
+import threads.MessageQueue;
 
 public class Board extends BorderPane implements IBoardRenderer{
 	private boolean isRunning = true;

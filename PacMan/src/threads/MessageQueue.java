@@ -1,8 +1,10 @@
-package components;
+package threads;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+
+import entities.Entity;
 
 public class MessageQueue {
 	

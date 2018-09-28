@@ -6,6 +6,7 @@ import java.util.Map;
 
 import entities.Direction;
 import javafx.geometry.Bounds;
+import rendering.Sprite;
 
 public class GraphicsComponent implements IComponent{
 	private Sprite sprite;

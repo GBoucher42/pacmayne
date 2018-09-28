@@ -1,4 +1,6 @@
-package components;
+package systems;
+
+import entities.EntityManager;
 
 public abstract class SystemBase {
 	

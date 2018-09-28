@@ -1,4 +1,4 @@
-package components;
+package threads;
 
 public enum MessageEnum {
 	COLLISION, DOWN, RIGHT, LEFT, UP, EATEN, KILLED, GUMPOINTS(10), SUPERGUMPOINTS(50);

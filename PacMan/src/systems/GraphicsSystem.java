@@ -1,10 +1,14 @@
-package components;
+package systems;
 
 import java.util.List;
 
-public class GraphicsSystem extends SystemBase{
+import components.GraphicsComponent;
+import entities.Entity;
+import entities.EntityManager;
+import threads.MessageEnum;
+import threads.MessageQueue;
 
-	private int refreshCounter = 1;
+public class GraphicsSystem extends SystemBase{
 	
 	public GraphicsSystem(EntityManager entityManager) {
 		super(entityManager);
@@ -19,13 +23,8 @@ public class GraphicsSystem extends SystemBase{
 			if(message != null && message.equals(MessageEnum.EATEN)) {
 				graphic.removeImage();
 				entityManager.removeEntity(entity);
-			} else {
-				if (refreshCounter % 3== 0) {
-					refreshCounter = 1;	
-					graphic.updateImage();
-				} else {
-					++refreshCounter;
-				}
+			} else {				
+				graphic.updateImage();				
 			}
 		}		
 	}

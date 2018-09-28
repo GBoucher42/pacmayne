@@ -1,9 +1,16 @@
-package components;
+package systems;
 
 import java.util.List;
 
+import components.GraphicsComponent;
+import components.PhysicsComponent;
+import components.ScoreComponent;
 import entities.CollisionType;
+import entities.Entity;
+import entities.EntityManager;
 import entities.Maze;
+import threads.MessageEnum;
+import threads.MessageQueue;
 
 public class PhysicsSystem extends SystemBase {
 	Entity pacman;

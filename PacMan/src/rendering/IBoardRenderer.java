@@ -2,8 +2,7 @@ package rendering;
 
 import java.util.List;
 
-import components.Entity;
-import components.Sprite;
+import entities.Entity;
 
 public interface IBoardRenderer {
 

@@ -1,9 +1,11 @@
-package components;
+package entities;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import components.IComponent;
 
 public class EntityManager {
 	private List<Entity> entities;

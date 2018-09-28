@@ -17,22 +17,22 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import audio.AudioRepository;
-import components.Entity;
-import components.EntityFactory;
-import components.EntityManager;
 import components.GraphicsComponent;
-import components.GraphicsSystem;
 import components.MoveComponent;
-import components.MoveSystem;
-import components.PhysicsSystem;
-import components.ScoreSystem;
-import components.Sprite;
-import components.UserInputSystem;
 import entities.Direction;
+import entities.Entity;
+import entities.EntityManager;
 import entities.Maze;
+import factories.EntityFactory;
 import factories.MazeFactory;
 import javafx.animation.AnimationTimer;
 import rendering.IBoardRenderer;
+import rendering.Sprite;
+import systems.GraphicsSystem;
+import systems.MoveSystem;
+import systems.PhysicsSystem;
+import systems.ScoreSystem;
+import systems.UserInputSystem;
 
 public class Game {
 
@@ -135,12 +135,12 @@ public class Game {
 		moveSystem.update();
 		physicsSystem.update();
 		
-//		if (counter % 3== 0) {
-//			counter = 1;			
+		if (counter % 3== 0) {
+			counter = 1;			
 			graphicsSystem.update();
-//		} else {
-//			++counter;
-//		}
-		scoreSystem.update();
+			scoreSystem.update();
+		} else {
+			++counter;
+		}		
 	}
 }

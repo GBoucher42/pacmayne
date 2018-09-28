@@ -1,4 +1,4 @@
-package components;
+package rendering;
 
 import static configs.GameConfig.TILE_SIZE;
 

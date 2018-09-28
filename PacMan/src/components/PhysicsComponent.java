@@ -1,7 +1,5 @@
 package components;
 
-import entities.Type;
-
 public class PhysicsComponent implements IComponent {
 	private String collisionType;
 	
