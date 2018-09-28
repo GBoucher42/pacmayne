@@ -20,8 +20,8 @@ public class FontRepository {
 	private char[] letters = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r',
 			's', 't', 'u', 'v', 'w', 'z'};
 	private Integer[] numbers = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-	private Map<Integer, String> map = new HashMap<>();
-	private Map<Integer, String> map2 = new HashMap<>();
+	private Map<Integer, String> mapPathLetter = new HashMap<>();
+	private Map<Integer, String> mapPathNumber = new HashMap<>();
 	
 	public FontRepository() {
 		letterToSprite();
@@ -30,18 +30,17 @@ public class FontRepository {
 	
 	public String getFont(char letter) throws Exception {
 		int index = (int) letter;
-		if(!map.containsKey(index)) {
+		if(!mapPathLetter.containsKey(index)) {
 			throw new Exception("Try to access unknown letter " + letter);
 		}
-		return map.get(index);
+		return mapPathLetter.get(index);
 	}
 	
 	public String getFont(int number) throws Exception {
-		int index = number;
-		if(!map2.containsKey(index)) {
+		if(!mapPathNumber.containsKey(number)) {
 			throw new Exception("Try to access unknown number " + number);
 		}
-		return map2.get(index);
+		return mapPathNumber.get(number);
 	}
 	
 	private void letterToSprite() {
@@ -62,8 +61,7 @@ public class FontRepository {
 	        // print the matched paths
 	        for (Path path : matchedFiles) {
 	        	if(path != null) {
-	        		fontSprites[i] = resourceDirectoryPath + path.getFileName().toString();
-		        	map.put((int) letters[i], fontSprites[i]);
+	        		mapPathLetter.put((int) letters[i], resourceDirectoryPath + path.getFileName().toString());
 	        	}
 	        }
 	        finder.clearMatches();
@@ -88,7 +86,7 @@ public class FontRepository {
 	        // print the matched paths
 	        for (Path path : matchedFiles) {
 	        	numberSprites[i] = resourceDirectoryPath + path.getFileName().toString();
-	        	map2.put(numbers[i], numberSprites[i]);
+	        	mapPathNumber.put(numbers[i], numberSprites[i]);
 	        }
 	        finder.clearMatches();
 		}
