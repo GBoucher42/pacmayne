@@ -2,11 +2,14 @@ package rendering;
 
 import static configs.GameConfig.GAME_HEIGHT;
 import static configs.GameConfig.GAME_WIDTH;
+import static configs.GameConfig.TILE_SIZE;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -19,6 +22,7 @@ import entities.Direction;
 import entities.Maze;
 import entities.Tile;
 import entities.TileType;
+import image.FontRepository;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -37,14 +41,16 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+
+
 public class Board extends BorderPane implements IBoardRenderer{
 	private boolean isRunning = true;
-
+	private FontRepository fontRepository = new FontRepository();
 	private Direction awaitingDirection;
 	private int score;
 	MediaPlayer pacmanEatingPlayer;
 	private Label scoreText;
-	private Label pauseText = new Label("PAUSE");
+	private Label pauseText;
 	@FXML private ImageView imglogo ;
 	Pane paneFooter= new Pane();
 	Pane paneHeader =new Pane();
@@ -53,11 +59,28 @@ public class Board extends BorderPane implements IBoardRenderer{
 	public Board()
 	{
 		pane.setStyle("-fx-background-color: black;");
-		//TODO: deplacer la suite
-				pauseText.setAlignment(Pos.CENTER);
-				pauseText.setTextFill(Color.RED);
-				pauseText.setPrefSize(200, 200);
-				pane.getChildren().add(pauseText);
+		
+		try {
+			Sprite test = new Sprite(fontRepository.getFont('a'), 12*TILE_SIZE, 15*TILE_SIZE);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		/*FontRepository fontRepository = new FontRepository();
+		ArrayList<String> pathList = fontRepository.letterToSprite();
+		String pathSprite = pathList.indexOf("letter-a");*/
+		//Sprite test = new Sprite(Arrays.asList(FontRepository.this.letterToSprite()).indexOf("letter-a"), 12*TILE_SIZE, 15*TILE_SIZE);
+		pauseText = new Label();
+		pauseText.setText("PAUSE");
+		pauseText.setLayoutX(12*TILE_SIZE);
+		pauseText.setLayoutY(15*TILE_SIZE);
+		pauseText.setFont(new Font(5*TILE_SIZE));
+		pauseText.setTextFill(Color.RED);
+		
+		pauseText.setVisible(false);
+		
+		pane.getChildren().add(pauseText);
+		
 	}
 
 	public void loadSounds() {
@@ -111,6 +134,8 @@ public class Board extends BorderPane implements IBoardRenderer{
 		// TODO: adopt behavior to current state of state machine 
 		if(keyCode == keyCode.P) {
 			isRunning = !isRunning;
+			pauseText.setVisible(!pauseText.isVisible());
+			pauseText.toFront();
 		}
 		if(isRunning) {
 			switch(keyCode) {

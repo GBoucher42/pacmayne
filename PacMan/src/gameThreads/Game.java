@@ -31,6 +31,7 @@ import entities.CollisionType;
 import entities.Direction;
 import entities.Maze;
 import factories.MazeFactory;
+import image.FontRepository;
 import javafx.animation.AnimationTimer;
 import rendering.IBoardRenderer;
 
@@ -38,7 +39,7 @@ public class Game {
 
 	private static final Logger LOGGER = Logger.getLogger( Game.class.getName() );
 	private IBoardRenderer board;
-	private AudioRepository audioRepository = new AudioRepository();	
+	private FontRepository fontRepository = new FontRepository();
 	
 	private EntityManager entityManager;
 	private UserInputSystem userInputSystem;
