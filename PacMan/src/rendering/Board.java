@@ -44,8 +44,6 @@ import javafx.stage.Stage;
 import threads.MessageEnum;
 import threads.MessageQueue;
 
-public class Board extends BorderPane implements IBoardRenderer{
-	private boolean isRunning = true;
 
 public class Board extends BorderPane implements IBoardRenderer{
 	private boolean isRunning = true;
