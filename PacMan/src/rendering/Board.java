@@ -59,7 +59,7 @@ public class Board extends BorderPane implements IBoardRenderer{
 	Pane pane =new Pane();
 	
 	private char[] pause = {'p', 'a', 'u', 's', 'e'};
-	ArrayList<Sprite> spritesPause;
+	private ArrayList<Sprite> spritesPause;
 	
 	private Entity pacman;
 	
@@ -67,7 +67,7 @@ public class Board extends BorderPane implements IBoardRenderer{
 	{
 		pane.setStyle("-fx-background-color: black;");
 		spritesPause = createWords(pause, 11*TILE_SIZE, 17*TILE_SIZE, pane);
-		hiddenSprites(spritesPause);
+		hideSprites(spritesPause);
 	}
 
 	public void loadSounds() {
@@ -126,7 +126,7 @@ public class Board extends BorderPane implements IBoardRenderer{
 		if(keyCode == keyCode.P) {
 			isRunning = !isRunning;
 			if(isRunning) {
-				hiddenSprites(spritesPause);
+				hideSprites(spritesPause);
 			} else {
 				displaySprites(spritesPause);
 			}
@@ -185,9 +185,9 @@ public class Board extends BorderPane implements IBoardRenderer{
 	
 	private ArrayList<Sprite> createWords(char[] letters, int x, int y, Pane myPane) {
 		ArrayList<Sprite> sprites = new ArrayList<Sprite>();
-		for(int i=0; i<letters.length; ++i) {
+		for(char myLetter: letters) {
 			try {
-				Sprite letter = new Sprite(fontRepository.getFont(letters[i]), x , y); //12*TILE_SIZE, 17*TILE_SIZE
+				Sprite letter = new Sprite(fontRepository.getFont(myLetter), x , y); //12*TILE_SIZE, 17*TILE_SIZE
 				x += TILE_SIZE;
 				sprites.add(letter);
 				myPane.getChildren().add(letter);
@@ -198,7 +198,7 @@ public class Board extends BorderPane implements IBoardRenderer{
 		return sprites;
 	}
 	
-	private void hiddenSprites(ArrayList<Sprite> sprites) {
+	private void hideSprites(ArrayList<Sprite> sprites) {
 		for(Sprite sprite : sprites) {
 			sprite.setVisible(false);
 		}
