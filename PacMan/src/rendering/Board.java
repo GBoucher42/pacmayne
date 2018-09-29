@@ -66,7 +66,7 @@ public class Board extends BorderPane implements IBoardRenderer{
 	public Board()
 	{
 		pane.setStyle("-fx-background-color: black;");
-		spritesPause = createWords(pause, 11*TILE_SIZE, 17*TILE_SIZE, pane);
+		spritesPause = createWords(pause, 11*TILE_SIZE + TILE_SIZE/2, 17*TILE_SIZE, pane);
 		hideSprites(spritesPause);
 	}
 
