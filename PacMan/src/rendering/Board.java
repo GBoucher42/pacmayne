@@ -2,11 +2,14 @@ package rendering;
 
 import static configs.GameConfig.GAME_HEIGHT;
 import static configs.GameConfig.GAME_WIDTH;
+import static configs.GameConfig.TILE_SIZE;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -20,6 +23,7 @@ import entities.Entity;
 import entities.Maze;
 import entities.Tile;
 import entities.TileType;
+import image.FontRepository;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -40,13 +44,15 @@ import javafx.stage.Stage;
 import threads.MessageEnum;
 import threads.MessageQueue;
 
+
 public class Board extends BorderPane implements IBoardRenderer{
 	private boolean isRunning = true;
-
+	private FontRepository fontRepository = new FontRepository();
 	private Direction awaitingDirection;
 	private int score;
 	MediaPlayer pacmanEatingPlayer;
 	private Label scoreText;
+	private Label pauseText;
 	@FXML private ImageView imglogo ;
 	Pane paneFooter= new Pane();
 	Pane paneHeader =new Pane();
@@ -58,8 +64,29 @@ public class Board extends BorderPane implements IBoardRenderer{
 	{
 		pane.setStyle("-fx-background-color: black;");
 		
+		try {
+			Sprite test = new Sprite(fontRepository.getFont('a'), 12*TILE_SIZE, 15*TILE_SIZE);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		/*FontRepository fontRepository = new FontRepository();
+		ArrayList<String> pathList = fontRepository.letterToSprite();
+		String pathSprite = pathList.indexOf("letter-a");*/
+		//Sprite test = new Sprite(Arrays.asList(FontRepository.this.letterToSprite()).indexOf("letter-a"), 12*TILE_SIZE, 15*TILE_SIZE);
+		pauseText = new Label();
+		pauseText.setText("PAUSE");
+		pauseText.setLayoutX(12*TILE_SIZE);
+		pauseText.setLayoutY(15*TILE_SIZE);
+		pauseText.setFont(new Font(5*TILE_SIZE));
+		pauseText.setTextFill(Color.RED);
+		
+		pauseText.setVisible(false);
+		
+		pane.getChildren().add(pauseText);
+		
 	}
-	
+
 	public void loadSounds() {
 		String musicFile = "ressource/audio/pacman-eating.wav"; 
 		Media sound = new Media(new File(musicFile).toURI().toString());
@@ -115,6 +142,8 @@ public class Board extends BorderPane implements IBoardRenderer{
 		// TODO: adopt behavior to current state of state machine 
 		if(keyCode == keyCode.P) {
 			isRunning = !isRunning;
+			pauseText.setVisible(!pauseText.isVisible());
+			pauseText.toFront();
 		}
 		
 		if(isRunning) {
@@ -147,15 +176,18 @@ public class Board extends BorderPane implements IBoardRenderer{
 			pacmanEatingPlayer.play();
 		}
 	}
-	
+
 	private void stopEatingAudio() {
 		if(Status.PLAYING.equals(pacmanEatingPlayer.getStatus())) {
 			pacmanEatingPlayer.stop();
 		}
 	}
-	
+
 	private void updateScore(int value) {
 		score += value;
 		scoreText.setText("Score: " + score);
 	}
+	
+	
+	
 }

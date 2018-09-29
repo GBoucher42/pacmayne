@@ -25,6 +25,7 @@ import entities.EntityManager;
 import entities.Maze;
 import factories.EntityFactory;
 import factories.MazeFactory;
+import image.FontRepository;
 import javafx.animation.AnimationTimer;
 import rendering.IBoardRenderer;
 import rendering.Sprite;
