@@ -58,33 +58,16 @@ public class Board extends BorderPane implements IBoardRenderer{
 	Pane paneHeader =new Pane();
 	Pane pane =new Pane();
 	
+	private char[] pause = {'p', 'a', 'u', 's', 'e'};
+	ArrayList<Sprite> spritesPause;
+	
 	private Entity pacman;
 	
 	public Board()
 	{
 		pane.setStyle("-fx-background-color: black;");
-		
-		try {
-			Sprite test = new Sprite(fontRepository.getFont('a'), 12*TILE_SIZE, 15*TILE_SIZE);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		/*FontRepository fontRepository = new FontRepository();
-		ArrayList<String> pathList = fontRepository.letterToSprite();
-		String pathSprite = pathList.indexOf("letter-a");*/
-		//Sprite test = new Sprite(Arrays.asList(FontRepository.this.letterToSprite()).indexOf("letter-a"), 12*TILE_SIZE, 15*TILE_SIZE);
-		pauseText = new Label();
-		pauseText.setText("PAUSE");
-		pauseText.setLayoutX(12*TILE_SIZE);
-		pauseText.setLayoutY(15*TILE_SIZE);
-		pauseText.setFont(new Font(5*TILE_SIZE));
-		pauseText.setTextFill(Color.RED);
-		
-		pauseText.setVisible(false);
-		
-		pane.getChildren().add(pauseText);
-		
+		spritesPause = createWords(pause, 11*TILE_SIZE, 17*TILE_SIZE, pane);
+		hiddenSprites(spritesPause);
 	}
 
 	public void loadSounds() {
@@ -142,8 +125,15 @@ public class Board extends BorderPane implements IBoardRenderer{
 		// TODO: adopt behavior to current state of state machine 
 		if(keyCode == keyCode.P) {
 			isRunning = !isRunning;
-			pauseText.setVisible(!pauseText.isVisible());
-			pauseText.toFront();
+			if(isRunning) {
+				hiddenSprites(spritesPause);
+			} else {
+				displaySprites(spritesPause);
+			}
+		}
+		if(keyCode == keyCode.F) {
+			Stage stage = (Stage) this.getScene().getWindow();
+			stage.setFullScreen(!stage.isFullScreen());
 		}
 		
 		if(isRunning) {
@@ -159,10 +149,6 @@ public class Board extends BorderPane implements IBoardRenderer{
 				break;
 			case RIGHT:
 				MessageQueue.addMessage(pacman, UserInputComponent.class.getName(), MessageEnum.RIGHT);
-				break;
-			case F:
-				Stage stage = (Stage) this.getScene().getWindow();
-				stage.setFullScreen(!stage.isFullScreen());
 				break;
 			default:
 				break;
@@ -188,6 +174,40 @@ public class Board extends BorderPane implements IBoardRenderer{
 		scoreText.setText("Score: " + score);
 	}
 	
+	public boolean isRunning() {
+		return isRunning;
+	}
+
+	public void setRunning(boolean isRunning) {
+		this.isRunning = isRunning;
+	}
 	
+	
+	private ArrayList<Sprite> createWords(char[] letters, int x, int y, Pane myPane) {
+		ArrayList<Sprite> sprites = new ArrayList<Sprite>();
+		for(int i=0; i<letters.length; ++i) {
+			try {
+				Sprite letter = new Sprite(fontRepository.getFont(letters[i]), x , y); //12*TILE_SIZE, 17*TILE_SIZE
+				x += TILE_SIZE;
+				sprites.add(letter);
+				myPane.getChildren().add(letter);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return sprites;
+	}
+	
+	private void hiddenSprites(ArrayList<Sprite> sprites) {
+		for(Sprite sprite : sprites) {
+			sprite.setVisible(false);
+		}
+	}
+	
+	private void displaySprites(ArrayList<Sprite> sprites) {
+		for(Sprite sprite : sprites) {
+			sprite.setVisible(true);
+		}
+	}
 	
 }

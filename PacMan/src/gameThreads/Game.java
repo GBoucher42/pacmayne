@@ -131,17 +131,19 @@ public class Game {
 	
 	private int counter = 1;
 	private void update() {
-		
-		userInputSystem.update();
-		moveSystem.update();
-		physicsSystem.update();
-		
-		if (counter % 3== 0) {
-			counter = 1;			
-			graphicsSystem.update();
-			scoreSystem.update();
-		} else {
-			++counter;
-		}		
+		if(board.isRunning()) {
+			userInputSystem.update();
+			moveSystem.update();
+			physicsSystem.update();
+			
+			if (counter % 3== 0) {
+				counter = 1;			
+				graphicsSystem.update();
+				scoreSystem.update();
+			} else {
+				++counter;
+			}
+		}
+				
 	}
 }
