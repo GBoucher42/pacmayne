@@ -1,8 +1,9 @@
-package systems;
+package systemThreads;
 
 import java.util.List;
 
 import components.GraphicsComponent;
+import components.LifeComponent;
 import components.PhysicsComponent;
 import components.ScoreComponent;
 import entities.CollisionType;
@@ -12,8 +13,9 @@ import entities.Maze;
 import threads.MessageEnum;
 import threads.MessageQueue;
 
-public class PhysicsSystem extends SystemBase {
-	Entity pacman;
+public class PhysicsSystem extends SystemBase implements Runnable {
+	private Entity pacman;
+	private volatile boolean isRunning = true;
 	
 	public PhysicsSystem(EntityManager entityManager, Entity pacman) {
 		super(entityManager);
@@ -24,9 +26,7 @@ public class PhysicsSystem extends SystemBase {
 	@Override
 	public void update() {
 		List<Entity> entities = entityManager.getAllEntitiesPosessingComponentOfClass(PhysicsComponent.class.getName());
-		GraphicsComponent pacmanGraphic = (GraphicsComponent) entityManager.getComponentOfClass(GraphicsComponent.class.getName(), pacman);
-		ScoreComponent pacmanScore = (ScoreComponent) entityManager.getComponentOfClass(ScoreComponent.class.getName(), pacman);
-		
+		GraphicsComponent pacmanGraphic = (GraphicsComponent) entityManager.getComponentOfClass(GraphicsComponent.class.getName(), pacman);		
 		for(Entity entity: entities) {
 			PhysicsComponent physic = (PhysicsComponent) entityManager.getComponentOfClass(PhysicsComponent.class.getName(), entity);
 			GraphicsComponent graphic = (GraphicsComponent) entityManager.getComponentOfClass(GraphicsComponent.class.getName(), entity);
@@ -34,14 +34,38 @@ public class PhysicsSystem extends SystemBase {
 				continue;
 			
 			if(pacmanGraphic.getBounds().intersects(graphic.getBounds())) {
-				MessageQueue.addMessage(entity, GraphicsComponent.class.getName(), MessageEnum.EATEN);
 				
 				if (physic.getCollisionType() == "Gum") {
+					MessageQueue.addMessage(entity, GraphicsComponent.class.getName(), MessageEnum.EATEN);
 					MessageQueue.addMessage(pacman, ScoreComponent.class.getName(), MessageEnum.GUMPOINTS);
 				} else if (physic.getCollisionType() == "SuperGum"){
+					MessageQueue.addMessage(entity, GraphicsComponent.class.getName(), MessageEnum.EATEN);
 					MessageQueue.addMessage(pacman, ScoreComponent.class.getName(), MessageEnum.SUPERGUMPOINTS);
-				}				
+				} else if(physic.getCollisionType() == "Ghost") {
+					MessageQueue.addMessage(pacman, LifeComponent.class.getName(), MessageEnum.KILLED);
+//					MessageQueue.addMessage(pacman, GraphicsComponent.class.getName(), MessageEnum.EATEN);
+				}			
 			}
 		}		
+	}
+	
+	public void stopThread() {
+		isRunning = false;
+	}
+
+
+	@Override
+	public void run() {
+		System.out.println("Start Physics Thread");
+		while(isRunning) {
+			update();
+			try {
+				Thread.sleep(33);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		System.out.println("Stop Physics Thread!");	
 	}
 }

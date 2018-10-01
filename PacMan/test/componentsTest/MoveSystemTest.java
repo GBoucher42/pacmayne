@@ -9,12 +9,11 @@ import org.mockito.MockitoAnnotations;
 
 import entities.Direction;
 import entities.EntityManager;
-import entities.GameEntity;
 import entities.Maze;
 import entities.Tile;
 import entities.TileType;
 import factories.EntityFactory;
-import systems.MoveSystem;
+import systemThreads.MoveSystem;
 
 @TestInstance(Lifecycle.PER_CLASS)
 class MoveSystemTest {
@@ -34,13 +33,13 @@ class MoveSystemTest {
 	
 	void initTiles() {
 		tile1 = new Tile(0, 0, TileType.WALL);
-		tile2 = new Tile(0, 1, TileType.CORRIDOR);
+		tile2 = new Tile(0, 1, TileType.VOID);
 		tile3 = new Tile(0, 2, TileType.WALL);
-		tile4 = new Tile(1, 0, TileType.CORRIDOR);
-		tile5 = new Tile(1, 1, TileType.CORRIDOR);
+		tile4 = new Tile(1, 0, TileType.VOID);
+		tile5 = new Tile(1, 1, TileType.VOID);
 		tile6 = new Tile(1, 2, TileType.WALL);
 		tile7 = new Tile(2, 0, TileType.WALL);
-		tile8 = new Tile(2, 1, TileType.CORRIDOR);
+		tile8 = new Tile(2, 1, TileType.VOID);
 		tile9 = new Tile(2, 2, TileType.WALL);
 		//w-c-w
 		//c-c-w

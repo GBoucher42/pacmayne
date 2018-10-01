@@ -13,7 +13,7 @@ public class MazeFactory {
 		WALL, GUM, WALL2, WALL3, WALL4, WALL5, WALL6, WALL7, WALL8, WALL9, WALL10, WALL11, WALL12, 
 		WALL13, WALL14, WALL15, WALL16, WALL17, WALL18, WALL19, WALL20, WALL21, WALL22,
 		WALL23, WALL24, WALL25, WALL26, WALL27, WALL28, WALL29, WALL30, WALL31, WALL32,
-		WALL33, WALL34, WALL35, WALL36, WALL37, SUPERGUM, VOID, FRUIT;
+		WALL33, WALL34, WALL35, WALL36, WALL37, SUPERGUM, VOID, FRUIT, TUNNEL;
 	}
 	
 	private static TileCode[] tileCodes = TileCode.values();
@@ -34,7 +34,7 @@ public class MazeFactory {
 			{39,  39,  39,  39,  39,  18,   1,  29,  30,  39,  39,  39,  39,  39,  39,  39,  39,  39,  39,  29,  30,   1,  17,  39,  39,  39,  39,  39},
 			{39,  39,  39,  39,  39,  18,   1,  29,  30,  39,  19,  15,  36,  39,  39,  35,  15,  20,  39,  29,  30,   1,  17,  39,  39,  39,  39,  39},
 			{16,  16,  16,  16,  16,  22,   1,  33,  34,  39,  17,  39,  39,  39,  39,  39,  39,  18,  39,  33,  34,   1,  21,  16,  16,  16,  16,  16},
-			{39,  39,  39,  39,  39,  39,   1,  39,  39,  39,  17,  39,  39,  39,  39,  39,  39,  18,  39,  39,  39,   1,  39,  39,  39,  39,  39,  39},
+			{41,  41,  41,  41,  41,  41,   1,  39,  39,  39,  17,  39,  39,  39,  39,  39,  39,  18,  39,  39,  39,   1,  41,  41,  41,  41,  41,  41},
 			{15,  15,  15,  15,  15,  20,   1,  31,  32,  39,  17,  39,  39,  39,  39,  39,  39,  18,  39,  31,  32,   1,  19,  15,  15,  15,  15,  15},
 			{39,  39,  39,  39,  39,  18,   1,  29,  30,  39,  21,  16,  16,  16,  16,  16,  16,  22,  39,  29,  30,   1,  17,  39,  39,  39,  39,  39},
 			{39,  39,  39,  39,  39,  18,   1,  29,  30,  39,  39,  39,  39,  39,  39,  39,  39,  39,  39,  29,  30,   1,  17,  39,  39,  39,  39,  39},
@@ -74,8 +74,9 @@ public class MazeFactory {
 				
 				TileCode tileCode = tileCodes[levelOneTileGrid[i][j]];
 				TileType tileType;
-
-				if (tileCode == TileCode.FRUIT || tileCode == TileCode.GUM || tileCode == TileCode.SUPERGUM || tileCode == TileCode.VOID){
+				if(tileCode == TileCode.TUNNEL) {
+					tileType = TileType.TUNNEL;
+				} else if (tileCode == TileCode.FRUIT || tileCode == TileCode.GUM || tileCode == TileCode.SUPERGUM || tileCode == TileCode.VOID){
 					tileType = TileType.VOID;
 				} else {
 					tileType = TileType.WALL;
@@ -91,7 +92,7 @@ public class MazeFactory {
 				}
 				else if (tileCode == TileCode.FRUIT) {
 				}
-				else if (tileCode != TileCode.VOID){
+				else if (tileCode != TileCode.VOID && tileCode != TileCode.TUNNEL){
 					factory.createWall(j, i, levelOneTileGrid[i][j]);
 				}				
 			

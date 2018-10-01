@@ -8,9 +8,13 @@ public interface IBoardRenderer {
 
 	void drawMaze(List<Sprite> sprites);
 	
-	void loadSounds();
+	void refreshScore(int score);
 	
 	void spawnAnimatables(List<Sprite> sprites);
 	
 	void setPacManEntity(Entity pacman);
+	
+	boolean isRunning();
+	
+	void setRunning(boolean isRunning);
 }

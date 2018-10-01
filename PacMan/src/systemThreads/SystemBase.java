@@ -1,4 +1,4 @@
-package systems;
+package systemThreads;
 
 import entities.EntityManager;
 

@@ -1,5 +1,5 @@
 package entities;
 
 public enum CollisionType {
-	OVERBOUND, COLLIDEENTITY, COLLIDEWALL, NONE
+	TUNNEL, COLLIDEWALL, NONE, OVERBOUND,
 }

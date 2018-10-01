@@ -2,6 +2,8 @@ package components;
 
 import entities.Direction;
 import static configs.GameConfig.TILE_SIZE;
+import static configs.GameConfig.GAME_TILE_WIDTH_COUNT;
+import static configs.GameConfig.GAME_TILE_HEIGHT_COUNT;
 
 public class MoveComponent implements IComponent {
 	private int tileX, tileY;
@@ -9,14 +11,41 @@ public class MoveComponent implements IComponent {
 	private Direction direction, awaitingDirection;
 	private final double moveIncrementer = TILE_SIZE/5;
 	private boolean canTurn = false;
+	private boolean inTunnel = false;
+	private final boolean canPassTunnel;
 	
-	public MoveComponent(double x, double y, Direction direction ) {
+	public MoveComponent(double x, double y, Direction direction, boolean canPassTunnel ) {
 		this.tileX = (int)x;
 		this.tileY = (int)y;
 		this.x = x * TILE_SIZE;
 		this.y = y * TILE_SIZE;
 		this.direction = direction;
 		this.awaitingDirection = Direction.NONE;
+		this.canPassTunnel = canPassTunnel;
+	}
+	
+	public void passTunnel() {
+		switch(direction)
+		{
+		case DOWN:
+			y = 0;
+			tileY = 0;
+			break;
+		case LEFT:
+			tileX = GAME_TILE_WIDTH_COUNT;
+			x = GAME_TILE_WIDTH_COUNT * TILE_SIZE;
+			break;
+		case RIGHT:
+			x = 0;
+			tileX = 0;
+			break;
+		case UP:
+			tileY = GAME_TILE_HEIGHT_COUNT;
+			y = GAME_TILE_HEIGHT_COUNT * TILE_SIZE;
+			break;
+		default:
+			break;
+		}
 	}
 	
 	public void moveOneFrameBySpeed()
@@ -124,8 +153,20 @@ public class MoveComponent implements IComponent {
 		awaitingDirection = Direction.NONE;
 	}
 	
+	public boolean isInTunnel() {
+		return inTunnel;
+	}
+
+	public void setInTunnel(boolean inTunnel) {
+		this.inTunnel = inTunnel;
+	}
+
 	public boolean canTurn() {
 		return canTurn;
+	}
+	
+	public boolean canPassTunnel() {
+		return canPassTunnel;
 	}
 	
 }
