@@ -51,6 +51,7 @@ public class Game {
 	private LifeSystem lifeSystem;
 	private Entity pacman;
 	private boolean isFocused = true;
+	private boolean inView = true;
 	
 	Maze map;
 	
@@ -143,7 +144,7 @@ public class Game {
 	
 	private int counter = 0;
 	private void update() {
-		if(board.isRunning() && isFocused) {
+		if(board.isRunning() && isFocused && inView) {
 			userInputSystem.update();
 			moveSystem.update();
 			aiSystem.update();
@@ -169,5 +170,9 @@ public class Game {
 	
 	public void setFocus(boolean focus) {
 		isFocused = focus;
+	}
+	
+	public void setInView(boolean inView) {
+		this.inView = inView;
 	}
 }

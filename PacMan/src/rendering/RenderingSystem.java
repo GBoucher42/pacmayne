@@ -47,10 +47,18 @@ public class RenderingSystem extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		initStage(primaryStage,GAME_WIDTH,HEIGTH_WINDOW);
 		Game gameInstance = new Game((IBoardRenderer) primaryStage.getScene().getRoot());
+		
+		primaryStage.focusedProperty().addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean > ov, Boolean t, Boolean t1) {
+				gameInstance.setFocus(t1);
+			}
+		});
+		
 		primaryStage.iconifiedProperty().addListener(new ChangeListener<Boolean>() {
 			@Override
 			public void changed(ObservableValue<? extends Boolean > ov, Boolean t, Boolean t1) {
-				gameInstance.setFocus(t);
+				gameInstance.setInView(t);
 			}
 		});
  		gameInstance.run();
