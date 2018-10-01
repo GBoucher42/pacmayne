@@ -146,6 +146,7 @@ public class Game {
 	private int counter = 0;
 	private void update() {
 		if(board.isRunning() && isFocused && inView) {
+
 			userInputSystem.update();
 			moveSystem.update();
 			aiSystem.update();
