@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import components.UserInputComponent;
 import entities.Entity;
+import entities.LivesImages;
 import image.FontRepository;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -22,69 +23,75 @@ import javafx.stage.Stage;
 import threads.MessageEnum;
 import threads.MessageQueue;
 import static configs.GameConfig.TILE_SIZE;
-
+import static configs.GameConfig.GAME_HEIGHT;
+import static configs.GameConfig.GAME_WIDTH;
+import static configs.GameConfig.HEIGTH_FOOTER;
+import static configs.GameConfig.HEIGTH_HEADER;;
 
 public class Board extends BorderPane implements IBoardRenderer{
 	private boolean isRunning = true;
 	private FontRepository fontRepository = new FontRepository();
 	private MediaPlayer pacmanEatingPlayer;
 	@FXML private ImageView imglogo ;
+    private	int lives;
 	private Pane paneFooter= new Pane();
 	private Pane paneHeader =new Pane();
 	private Pane pane =new Pane();
-	
+	private Pane ScorePane= new Pane();
 	private char[] pause = {'p', 'a', 'u', 's', 'e'};
 	private ArrayList<Sprite> spritesPause;
 	private ArrayList<Sprite> spritesScore;
-	
 	private Entity pacman;
-	
+	private char[] TextScore = {'s', 'c', 'o', 'r', 'e'};
+	private char[] GameOver = {'g', 'a', 'm', 'e', 'o','v','r','e'};
+	private ArrayList<Sprite> spritesGameOver;
+	private ArrayList<Sprite> spritesTextScore;
+	private ArrayList<Sprite> spritesNumScore;
+	int[]number ;
+    private  LivesImages imagelives;
 	public Board()
-	{
+	{	
+		imagelives=new LivesImages(ScorePane);
 		pane.setStyle("-fx-background-color: black;");
 		loadSounds();		
 		spritesPause = createWords(pause, 11*TILE_SIZE + TILE_SIZE/2, 17*TILE_SIZE, pane);
-		createWords(new char[] {'s', 'c', 'o', 'r', 'e'}, TILE_SIZE/2, TILE_SIZE/2, paneFooter);
-		spritesScore = createNumbers(new int[] {0}, TILE_SIZE*6, TILE_SIZE/2, paneFooter);
 		hideSprites(spritesPause);
+		
 	}	
 	
 	public void drawMaze(List<Sprite> sprites) 
 	{	
-		this.setCenter(pane);		
-
-       pane.getChildren().addAll(sprites);
-       footer();
-       header();
+	 this.setCenter(pane);		
+     pane.getChildren().addAll(sprites);
+     footer();
+     header();
 	}
-	
     private void header() {
-	 
-	    Image image = new Image("file:ressource/sprites/logo.png");
-	    imglogo = new ImageView();
-	    imglogo.setImage(image);
-	    imglogo.setFitHeight(75);
-	    paneHeader.getChildren().add(imglogo);
-	    paneHeader.setStyle("-fx-background-color: black;");
-	    paneHeader.setPrefSize(700,75);   
-	    this.setTop(paneHeader);
-    }
+    	
+    Image image = new Image("file:ressource/sprites/logo.png");
+    imglogo = new ImageView();
+    imglogo.setImage(image);
+    imglogo.setFitHeight(HEIGTH_HEADER);
+    imglogo.setFitWidth(GAME_WIDTH);
+    paneHeader.getChildren().add(imglogo);
+    paneHeader.setStyle("-fx-background-color: black;");
+    paneHeader.setPrefSize(GAME_WIDTH,HEIGTH_HEADER);   
+    this.setTop(paneHeader);
+}
 	private void footer() {
+		spritesTextScore= createWords(TextScore, 350, 0, ScorePane);
+	    paneFooter.getChildren().add(ScorePane);
         paneFooter.setStyle("-fx-background-color: black;");
-        paneFooter.setPrefSize(700,50);        
-        this.setBottom(paneFooter);	      
+	    paneFooter.setPrefSize(GAME_WIDTH,HEIGTH_FOOTER);
+	        this.setBottom(paneFooter);
+	        
+	      
 	}
 	
 	public void refreshScore(int score) {
-		// TODO: do it modulo way
-		String[] t = Integer.toString(score).split("");
-		int[] numberArray = new int[t.length];
+		 int []  number =Integer.toString(score).chars().map(c -> c-'0').toArray();
+		  spritesNumScore=CreateScore(number,475,0, ScorePane);
 		
-		for(int i =0; i < t.length; ++i) {
-			numberArray[i] = Integer.valueOf(t[i]);
-		}
-		
-		spritesScore = createNumbers(numberArray, TILE_SIZE*6, TILE_SIZE/2, paneFooter);
 	}
 	
 	private void loadSounds() {
@@ -140,6 +147,7 @@ public class Board extends BorderPane implements IBoardRenderer{
 	private void playEatingAudio() {
 		if(!Status.PLAYING.equals(pacmanEatingPlayer.getStatus())) {
 			pacmanEatingPlayer.play();
+			
 		}
 	}
 
@@ -157,14 +165,15 @@ public class Board extends BorderPane implements IBoardRenderer{
 		this.isRunning = isRunning;
 	}	
 	
-	private ArrayList<Sprite> createNumbers(int[] numbers, int x, int y, Pane myPane) {
+       private ArrayList<Sprite> CreateScore(int[] tabint,int x, int y, Pane myPane) {
+		
 		ArrayList<Sprite> sprites = new ArrayList<Sprite>();
-		for(int myNumber: numbers) {
+		for(int mySocre: tabint) { 
 			try {
-				Sprite letter = new Sprite(fontRepository.getFont(myNumber), x , y); //12*TILE_SIZE, 17*TILE_SIZE
+				Sprite num = new Sprite(fontRepository.getFont(mySocre), x , y); //12*TILE_SIZE, 17*TILE_SIZE
 				x += TILE_SIZE;
-				sprites.add(letter);
-				myPane.getChildren().add(letter);
+				sprites.add(num);
+				myPane.getChildren().add(num);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -197,6 +206,30 @@ public class Board extends BorderPane implements IBoardRenderer{
 		for(Sprite sprite : sprites) {
 			sprite.setVisible(true);
 		}
+	}
+
+	@Override
+	public void refreshLives(int lives) {
+		System.out.println(lives+"-3--");
+      if(lives==2) {
+    	  System.out.println(lives+"--2--");
+    	  imagelives.hideImage(imagelives.getImg3());
+      }
+      if(lives==1) {
+    	  System.out.println(lives+"--1--");
+    	  imagelives.hideImage(imagelives.getImg2());
+      }
+     
+      if(lives==0 && isRunning==true ) {
+    	 this.setRunning(false);
+    	  System.out.println(lives+"--0--");
+    	 imagelives.hideImage(imagelives.getImg1());
+         spritesGameOver = createWords(GameOver, 11*TILE_SIZE + TILE_SIZE/2, 17*TILE_SIZE, pane);
+         displaySprites(spritesGameOver);
+        
+         
+	}
+      
 	}
 	
 }

@@ -10,6 +10,8 @@ public interface IBoardRenderer {
 	
 	void refreshScore(int score);
 	
+	void refreshLives(int lives);
+	
 	void spawnAnimatables(List<Sprite> sprites);
 	
 	void setPacManEntity(Entity pacman);
@@ -18,3 +20,4 @@ public interface IBoardRenderer {
 	
 	void setRunning(boolean isRunning);
 }
+
