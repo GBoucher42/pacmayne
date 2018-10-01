@@ -8,14 +8,17 @@ import java.util.logging.Logger;
 
 import gameThreads.Game;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class RenderingSystem extends Application {
 	
@@ -47,10 +50,32 @@ public class RenderingSystem extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		initStage(primaryStage,GAME_WIDTH,HEIGTH_WINDOW);
 		Game gameInstance = new Game((IBoardRenderer) primaryStage.getScene().getRoot());
+		
+		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+
+	         @Override
+	         public void handle(WindowEvent event) {
+	             Platform.runLater(new Runnable() {
+
+	                 @Override
+	                 public void run() {
+	                	 gameInstance.stopThreads();
+	                     System.exit(0);
+	                 }
+	             });
+	         }
+	     });
+		primaryStage.focusedProperty().addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean > ov, Boolean t, Boolean t1) {
+				gameInstance.setFocus(t1);
+			}
+		});
+		
 		primaryStage.iconifiedProperty().addListener(new ChangeListener<Boolean>() {
 			@Override
 			public void changed(ObservableValue<? extends Boolean > ov, Boolean t, Boolean t1) {
-				gameInstance.setFocus(t);
+				gameInstance.setInView(t);
 			}
 		});
  		gameInstance.run();

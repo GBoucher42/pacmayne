@@ -51,6 +51,8 @@ public class Game {
 	private LifeSystem lifeSystem;
 	private Entity pacman;
 	private boolean isFocused = true;
+	private boolean inView = true;
+	private Thread physicsThread;
 	
 	Maze map;
 	
@@ -125,7 +127,7 @@ public class Game {
 
 	public void run()
 	{
-		Thread physicsThread = new Thread(physicsSystem);
+		physicsThread = new Thread(physicsSystem);
 		physicsThread.start();
 		new AnimationTimer()
         {
@@ -143,7 +145,8 @@ public class Game {
 	
 	private int counter = 0;
 	private void update() {
-		if(board.isRunning() && isFocused) {
+		if(board.isRunning() && isFocused && inView) {
+
 			userInputSystem.update();
 			moveSystem.update();
 			aiSystem.update();
@@ -167,7 +170,25 @@ public class Game {
 		}
 	}
 	
+	public void stopThreads() {
+		physicsSystem.stopThread();
+		try {
+			physicsThread.join(33);
+			if (physicsThread.isAlive())
+			{
+				physicsThread.interrupt();
+			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
 	public void setFocus(boolean focus) {
 		isFocused = focus;
+	}
+	
+	public void setInView(boolean inView) {
+		this.inView = inView;
 	}
 }
