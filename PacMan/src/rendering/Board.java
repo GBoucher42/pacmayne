@@ -1,23 +1,10 @@
 package rendering;
 
-import static configs.GameConfig.GAME_HEIGHT;
-import static configs.GameConfig.GAME_WIDTH;
-
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import components.UserInputComponent;
-import entities.Direction;
 import entities.Entity;
-import entities.Maze;
-import entities.Tile;
-import entities.TileType;
 import image.FontRepository;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -40,9 +27,7 @@ import static configs.GameConfig.TILE_SIZE;
 public class Board extends BorderPane implements IBoardRenderer{
 	private boolean isRunning = true;
 	private FontRepository fontRepository = new FontRepository();
-	private int score;
 	private MediaPlayer pacmanEatingPlayer;
-	private Label scoreText;
 	@FXML private ImageView imglogo ;
 	private Pane paneFooter= new Pane();
 	private Pane paneHeader =new Pane();
@@ -50,6 +35,7 @@ public class Board extends BorderPane implements IBoardRenderer{
 	
 	private char[] pause = {'p', 'a', 'u', 's', 'e'};
 	private ArrayList<Sprite> spritesPause;
+	private ArrayList<Sprite> spritesScore;
 	
 	private Entity pacman;
 	
@@ -58,6 +44,8 @@ public class Board extends BorderPane implements IBoardRenderer{
 		pane.setStyle("-fx-background-color: black;");
 		loadSounds();		
 		spritesPause = createWords(pause, 11*TILE_SIZE + TILE_SIZE/2, 17*TILE_SIZE, pane);
+		createWords(new char[] {'s', 'c', 'o', 'r', 'e'}, TILE_SIZE/2, TILE_SIZE/2, paneFooter);
+		spritesScore = createNumbers(new int[] {0}, TILE_SIZE*6, TILE_SIZE/2, paneFooter);
 		hideSprites(spritesPause);
 	}	
 	
@@ -82,22 +70,21 @@ public class Board extends BorderPane implements IBoardRenderer{
 	    this.setTop(paneHeader);
     }
 	private void footer() {
-		 scoreText = new Label(); 
-	        scoreText.setStyle("-fx-font-size: 32px;"
-	        		+ "-fx-font-family: \"Comic Sans MS\";"
-	                + "-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );"
-	        		+ "-fx-font-weight: bold");
-	        scoreText.setTextFill(Color.RED);
-	        scoreText.setText("Score: 0");
-	        scoreText.setAlignment(Pos.CENTER);
-	        paneFooter.getChildren().add(scoreText);
-	        paneFooter.setStyle("-fx-background-color: black;");
-	        paneFooter.setPrefSize(700,50);        
-	        this.setBottom(paneFooter);	      
+        paneFooter.setStyle("-fx-background-color: black;");
+        paneFooter.setPrefSize(700,50);        
+        this.setBottom(paneFooter);	      
 	}
 	
 	public void refreshScore(int score) {
-		scoreText.setText("Score: " + Integer.toString(score));
+		// TODO: do it modulo way
+		String[] t = Integer.toString(score).split("");
+		int[] numberArray = new int[t.length];
+		
+		for(int i =0; i < t.length; ++i) {
+			numberArray[i] = Integer.valueOf(t[i]);
+		}
+		
+		spritesScore = createNumbers(numberArray, TILE_SIZE*6, TILE_SIZE/2, paneFooter);
 	}
 	
 	private void loadSounds() {
@@ -161,11 +148,6 @@ public class Board extends BorderPane implements IBoardRenderer{
 			pacmanEatingPlayer.stop();
 		}
 	}
-
-	private void updateScore(int value) {
-		score += value;
-		scoreText.setText("Score: " + score);
-	}
 	
 	public boolean isRunning() {
 		return isRunning;
@@ -173,8 +155,22 @@ public class Board extends BorderPane implements IBoardRenderer{
 
 	public void setRunning(boolean isRunning) {
 		this.isRunning = isRunning;
-	}
+	}	
 	
+	private ArrayList<Sprite> createNumbers(int[] numbers, int x, int y, Pane myPane) {
+		ArrayList<Sprite> sprites = new ArrayList<Sprite>();
+		for(int myNumber: numbers) {
+			try {
+				Sprite letter = new Sprite(fontRepository.getFont(myNumber), x , y); //12*TILE_SIZE, 17*TILE_SIZE
+				x += TILE_SIZE;
+				sprites.add(letter);
+				myPane.getChildren().add(letter);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return sprites;
+	}
 	
 	private ArrayList<Sprite> createWords(char[] letters, int x, int y, Pane myPane) {
 		ArrayList<Sprite> sprites = new ArrayList<Sprite>();
