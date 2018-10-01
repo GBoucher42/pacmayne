@@ -24,7 +24,7 @@ public class Maze {
 			return tiles[row][column];
 		}
 		return null;
-	}
+	}	
 	
 	public CollisionType validateMove(MoveComponent move, Direction direction)
 	{
@@ -39,20 +39,26 @@ public class Maze {
 				collisionType = CollisionType.OVERBOUND;
 			} else if (tiles[y + 1][x].isWall()){
 				collisionType = CollisionType.COLLIDEWALL;
-			}
+			} else if(tiles[y + 1][x].isTunnel()) {
+				collisionType = CollisionType.TUNNEL;
+			} 
 			break;
 		case LEFT:
 			if (x <= 0) {
 				collisionType = CollisionType.OVERBOUND;
 			} else if (tiles[y][x - 1].isWall()){
 				collisionType = CollisionType.COLLIDEWALL;
-			}
+			} else if(tiles[y][x - 1].isTunnel()) {
+				collisionType = CollisionType.TUNNEL;
+			} 
 			break;
 		case RIGHT:
 			if (x >= GAME_TILE_WIDTH_COUNT - 1) {
 				collisionType = CollisionType.OVERBOUND;
-			} else if (tiles[y][x + 1].isWall()){
+			}else if (tiles[y][x + 1].isWall()){
 				collisionType = CollisionType.COLLIDEWALL;
+			} else if(tiles[y][x + 1].isTunnel()) {
+				collisionType = CollisionType.TUNNEL;
 			}
 			break;
 		case UP:
@@ -60,7 +66,9 @@ public class Maze {
 				collisionType = CollisionType.OVERBOUND;
 			} else if (tiles[y - 1][x].isWall()){
 				collisionType = CollisionType.COLLIDEWALL;
-			}
+			} else if(tiles[y - 1][x].isTunnel()) {
+				collisionType = CollisionType.TUNNEL;
+			}  
 			break;
 		case NONE:
 			break;

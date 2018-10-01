@@ -1,6 +1,8 @@
-package systems;
+package systemThreads;
 
 import java.util.List;
+
+import javax.swing.plaf.synth.SynthSeparatorUI;
 
 import components.GraphicsComponent;
 import components.MoveComponent;
@@ -28,13 +30,24 @@ public class MoveSystem extends SystemBase {
 			if(graphic == null) 
 				continue;
 			
-			if(move.canTurn() &&!move.getAwaitingDirection().equals(Direction.NONE) && maze.validateMove(move, move.getAwaitingDirection()) == CollisionType.NONE) {
-				move.updateDirection();
-			}
+			CollisionType awaitingCollisionType = maze.validateMove(move, move.getAwaitingDirection());
 			
-			if(maze.validateMove(move, move.getDirection()) == CollisionType.NONE) {
+			if(!move.isInTunnel() && move.canTurn() &&!move.getAwaitingDirection().equals(Direction.NONE) && 
+					( awaitingCollisionType == CollisionType.NONE ||  awaitingCollisionType == CollisionType.TUNNEL && move.canPassTunnel())) {
+				move.updateDirection();
+			} 
+			
+			CollisionType collisionType = maze.validateMove(move, move.getDirection());
+			if(collisionType == CollisionType.NONE) {
+				move.moveOneFrameBySpeed();
+				move.setInTunnel(false);
+				graphic.updatePosition(move.getX(), move.getY(), move.getDirection());
+			} else if(collisionType == CollisionType.TUNNEL && move.canPassTunnel()) {
+				move.setInTunnel(true);
 				move.moveOneFrameBySpeed();
 				graphic.updatePosition(move.getX(), move.getY(), move.getDirection());
+			} else if (collisionType == CollisionType.OVERBOUND) {
+				move.passTunnel();
 			}
 		}		
 	}
