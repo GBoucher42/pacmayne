@@ -16,8 +16,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.plaf.synth.SynthSeparatorUI;
-
 import components.GraphicsComponent;
 import components.MoveComponent;
 import components.ScoreComponent;
