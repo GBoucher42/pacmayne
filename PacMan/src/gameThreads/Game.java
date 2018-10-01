@@ -50,6 +50,7 @@ public class Game {
 	private AISystem aiSystem;
 	private LifeSystem lifeSystem;
 	private Entity pacman;
+	private boolean isFocused = true;
 	
 	Maze map;
 	
@@ -142,7 +143,7 @@ public class Game {
 	
 	private int counter = 0;
 	private void update() {
-		if(board.isRunning()) {
+		if(board.isRunning() && isFocused) {
 			userInputSystem.update();
 			moveSystem.update();
 			aiSystem.update();
@@ -164,5 +165,9 @@ public class Game {
 		if (score != null) {
 			board.refreshScore(score.getScore());
 		}
+	}
+	
+	public void setFocus(boolean focus) {
+		isFocused = focus;
 	}
 }
