@@ -1,13 +1,13 @@
 package gameThreads;
 
-import static configs.GameConfig.PACMAN_SPAWN_POINT_X;
-import static configs.GameConfig.PACMAN_SPAWN_POINT_Y;
 import static configs.GameConfig.BLINKY_SPAWN_POINT_X;
 import static configs.GameConfig.BLINKY_SPAWN_POINT_Y;
 import static configs.GameConfig.CLYDE_SPAWN_POINT_X;
 import static configs.GameConfig.CLYDE_SPAWN_POINT_Y;
 import static configs.GameConfig.INKY_SPAWN_POINT_X;
 import static configs.GameConfig.INKY_SPAWN_POINT_Y;
+import static configs.GameConfig.PACMAN_SPAWN_POINT_X;
+import static configs.GameConfig.PACMAN_SPAWN_POINT_Y;
 import static configs.GameConfig.PINKY_SPAWN_POINT_X;
 import static configs.GameConfig.PINKY_SPAWN_POINT_Y;
 
@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import audio.AudioRepository;
 import components.GraphicsComponent;
 import components.MoveComponent;
 import components.ScoreComponent;
@@ -141,21 +140,22 @@ public class Game {
         }.start();
 	}
 	
-	private int counter = 1;
+	private int counter = 0;
 	private void update() {
-		
-		userInputSystem.update();
-		moveSystem.update();
-		aiSystem.update();
-		lifeSystem.update();
-		
-		if (counter == 3) {
-			counter = 1;			
-			graphicsSystem.update();
-			scoreSystem.update();
-		} else {
-			++counter;
-		}		
+		if(board.isRunning()) {
+			userInputSystem.update();
+			moveSystem.update();
+			aiSystem.update();
+			lifeSystem.update();
+			
+			if (counter == 3) {
+				counter = 0;			
+				graphicsSystem.update();
+				scoreSystem.update();
+			} else {
+				++counter;
+			}	
+		}
 	}
 	
 	private void render() {

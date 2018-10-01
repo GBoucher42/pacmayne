@@ -13,4 +13,8 @@ public interface IBoardRenderer {
 	void spawnAnimatables(List<Sprite> sprites);
 	
 	void setPacManEntity(Entity pacman);
+	
+	boolean isRunning();
+	
+	void setRunning(boolean isRunning);
 }
