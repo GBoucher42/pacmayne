@@ -56,6 +56,7 @@ public class PhysicsSystem extends SystemBase implements Runnable {
 
 	@Override
 	public void run() {
+		System.out.println("Start Physics Thread");
 		while(isRunning) {
 			update();
 			try {
@@ -65,6 +66,6 @@ public class PhysicsSystem extends SystemBase implements Runnable {
 				e.printStackTrace();
 			}
 		}
-		
+		System.out.println("Stop Physics Thread!");	
 	}
 }
