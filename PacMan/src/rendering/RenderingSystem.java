@@ -11,6 +11,7 @@ import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -35,6 +36,13 @@ public class RenderingSystem extends Application {
 			primaryStage.show();
 			
 			letterbox(scene, root);
+			
+			primaryStage.iconifiedProperty().addListener(new ChangeListener<Boolean>() {
+				@Override
+				public void changed(ObservableValue<? extends Boolean > ov, Boolean t, Boolean t1) {
+					root.onKeyPressed(KeyCode.P);
+				}
+			});
 			
 		} catch(Exception e) {
 			LOGGER.log(Level.SEVERE, e.getMessage());
