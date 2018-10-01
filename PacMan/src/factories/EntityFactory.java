@@ -3,10 +3,13 @@ package factories;
 import entities.Direction;
 import entities.Entity;
 import entities.EntityManager;
+import entities.Strategy;
 
 import static configs.GameConfig.TILE_SIZE;
 
+import components.AIComponent;
 import components.GraphicsComponent;
+import components.LifeComponent;
 import components.MoveComponent;
 import components.PhysicsComponent;
 import components.ScoreComponent;
@@ -28,21 +31,23 @@ public class EntityFactory {
 		graphic.addAnimation(Direction.UP, ImageRepository.getImages("pacman", Direction.UP));
 		graphic.addAnimation(Direction.DOWN, ImageRepository.getImages("pacman", Direction.DOWN));
 		entityManager.addComponent(graphic, entity);
-		entityManager.addComponent(new MoveComponent(x, y, direction), entity);
+		entityManager.addComponent(new MoveComponent(x, y, direction, true), entity);
 		entityManager.addComponent(new ScoreComponent(), entity);
 		entityManager.addComponent(new UserInputComponent(), entity);
+		entityManager.addComponent(new LifeComponent(3), entity);
 		return entity;
 	}
 	
 	public Entity createGhost(int x, int y, Direction direction, String ghostName) {
 		Entity entity = entityManager.CreateEntity();
-		entityManager.addComponent(new PhysicsComponent(ghostName), entity);
+		entityManager.addComponent(new PhysicsComponent("Ghost"), entity);
 		GraphicsComponent graphic = new GraphicsComponent(Direction.RIGHT, ImageRepository.getImages(ghostName, Direction.RIGHT), x * TILE_SIZE, y * TILE_SIZE);
 		graphic.addAnimation(Direction.LEFT, ImageRepository.getImages(ghostName, Direction.LEFT));
 		graphic.addAnimation(Direction.UP, ImageRepository.getImages(ghostName, Direction.UP));
 		graphic.addAnimation(Direction.DOWN, ImageRepository.getImages(ghostName, Direction.DOWN));
 		entityManager.addComponent(graphic, entity);
-		entityManager.addComponent(new MoveComponent(x , y, direction), entity);
+		entityManager.addComponent(new MoveComponent(x , y, direction, false), entity);
+		entityManager.addComponent(new AIComponent(Strategy.RANDOM), entity);
 		return entity;
 	}
 	

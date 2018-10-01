@@ -9,13 +9,12 @@ import org.mockito.MockitoAnnotations;
 
 import entities.Direction;
 import entities.EntityManager;
-import entities.GameEntity;
 import entities.Maze;
 import entities.Tile;
 import entities.TileType;
 import factories.EntityFactory;
-import systems.MoveSystem;
-import systems.PhysicsSystem;
+import systemThreads.MoveSystem;
+import systemThreads.PhysicsSystem;
 
 @TestInstance(Lifecycle.PER_CLASS)
 class PhysicsSystemTest {

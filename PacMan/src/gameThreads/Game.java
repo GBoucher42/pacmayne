@@ -29,11 +29,13 @@ import factories.MazeFactory;
 import javafx.animation.AnimationTimer;
 import rendering.IBoardRenderer;
 import rendering.Sprite;
-import systems.GraphicsSystem;
-import systems.MoveSystem;
-import systems.PhysicsSystem;
-import systems.ScoreSystem;
-import systems.UserInputSystem;
+import systemThreads.AISystem;
+import systemThreads.GraphicsSystem;
+import systemThreads.LifeSystem;
+import systemThreads.MoveSystem;
+import systemThreads.PhysicsSystem;
+import systemThreads.ScoreSystem;
+import systemThreads.UserInputSystem;
 
 public class Game {
 
@@ -46,6 +48,8 @@ public class Game {
 	private PhysicsSystem physicsSystem;
 	private GraphicsSystem graphicsSystem;
 	private ScoreSystem scoreSystem;
+	private AISystem aiSystem;
+	private LifeSystem lifeSystem;
 	private Entity pacman;
 	
 	Maze map;
@@ -89,16 +93,19 @@ public class Game {
 		physicsSystem = new PhysicsSystem(entityManager, pacman);
 		graphicsSystem = new GraphicsSystem(entityManager);
 		scoreSystem = new ScoreSystem(entityManager);
+		aiSystem = new AISystem(entityManager);
+		lifeSystem = new LifeSystem(entityManager);
+		
 	}
 	
 	private void createMovableEntities() {
 		List<Sprite> sprites = new ArrayList<Sprite>();
 		EntityFactory factory = new EntityFactory(entityManager);
 		pacman = factory.createPacMan(PACMAN_SPAWN_POINT_X, PACMAN_SPAWN_POINT_Y, Direction.RIGHT);
-		factory.createGhost(CLYDE_SPAWN_POINT_X, CLYDE_SPAWN_POINT_Y, Direction.DOWN, "clyde");
-		factory.createGhost(BLINKY_SPAWN_POINT_X, BLINKY_SPAWN_POINT_Y, Direction.UP, "blinky");
+		factory.createGhost(CLYDE_SPAWN_POINT_X, CLYDE_SPAWN_POINT_Y, Direction.LEFT, "clyde");
+		factory.createGhost(BLINKY_SPAWN_POINT_X, BLINKY_SPAWN_POINT_Y, Direction.LEFT, "blinky");
 		factory.createGhost(INKY_SPAWN_POINT_X, INKY_SPAWN_POINT_Y, Direction.RIGHT, "inky");
-		factory.createGhost(PINKY_SPAWN_POINT_X, PINKY_SPAWN_POINT_Y, Direction.LEFT, "pinky");
+		factory.createGhost(PINKY_SPAWN_POINT_X, PINKY_SPAWN_POINT_Y, Direction.RIGHT, "pinky");
 		board.setPacManEntity(pacman);
 		
 		List<Entity> entities = entityManager.getAllEntitiesPosessingComponentOfClass(MoveComponent.class.getName());
@@ -118,6 +125,8 @@ public class Game {
 
 	public void run()
 	{
+		Thread physicsThread = new Thread(physicsSystem);
+		physicsThread.start();
 		new AnimationTimer()
         {
 			long lastUpdate = System.nanoTime();
@@ -137,9 +146,10 @@ public class Game {
 		
 		userInputSystem.update();
 		moveSystem.update();
-		physicsSystem.update();
+		aiSystem.update();
+		lifeSystem.update();
 		
-		if (counter % 3== 0) {
+		if (counter == 3) {
 			counter = 1;			
 			graphicsSystem.update();
 			scoreSystem.update();
