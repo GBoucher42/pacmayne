@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 import components.GraphicsComponent;
 import components.LifeComponent;
 import components.MoveComponent;
+import components.PhysicsComponent;
 import components.ScoreComponent;
 import entities.Direction;
 import entities.Entity;
@@ -139,7 +140,7 @@ public class Game {
             		lastUpdate = System.nanoTime();
             		update();  
             		render();
-            		renderLives();
+            		
             	}
             }
         }.start();
@@ -165,16 +166,17 @@ public class Game {
 	
 	private void render() {
 		ScoreComponent score = (ScoreComponent) entityManager.getComponentOfClass(ScoreComponent.class.getName(), pacman);
-		
+		renderLives();
 		if (score != null) {
 			board.refreshScore(score.getScore());
 		}
+	
+		
 	}
 	private void renderLives() {
 		LifeComponent life =(LifeComponent) entityManager.getComponentOfClass(LifeComponent.class.getName(), pacman);
-		if (life.getLives()==1||life.getLives()==2||life.getLives()==3||life.getLives()==0) {
-	    board.refreshLives(life.getLives());
-	    
+		if (life.getLives()>=0) {
+	    board.refreshLives(life.getLives());   
 	   }
 	}
 	public void stopThreads() {

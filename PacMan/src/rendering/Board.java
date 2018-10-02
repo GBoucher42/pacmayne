@@ -14,7 +14,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaPlayer.Status;
@@ -38,6 +40,7 @@ public class Board extends BorderPane implements IBoardRenderer{
 	private Pane paneHeader =new Pane();
 	private Pane pane =new Pane();
 	private Pane ScorePane= new Pane();
+	Pane livePane =new Pane();
 	private char[] pause = {'p', 'a', 'u', 's', 'e'};
 	private ArrayList<Sprite> spritesPause;
 	private ArrayList<Sprite> spritesScore;
@@ -48,10 +51,9 @@ public class Board extends BorderPane implements IBoardRenderer{
 	private ArrayList<Sprite> spritesTextScore;
 	private ArrayList<Sprite> spritesNumScore;
 	int[]number ;
-    private  LivesImages imagelives;
+	 LivesImages imagelives;
 	public Board()
 	{	
-		imagelives=new LivesImages(ScorePane);
 		pane.setStyle("-fx-background-color: black;");
 		loadSounds();		
 		spritesPause = createWords(pause, 11*TILE_SIZE + TILE_SIZE/2, 17*TILE_SIZE, pane);
@@ -67,7 +69,6 @@ public class Board extends BorderPane implements IBoardRenderer{
      header();
 	}
     private void header() {
-    	
     Image image = new Image("file:ressource/sprites/logo.png");
     imglogo = new ImageView();
     imglogo.setImage(image);
@@ -81,9 +82,11 @@ public class Board extends BorderPane implements IBoardRenderer{
 	private void footer() {
 		spritesTextScore= createWords(TextScore, 350, 0, ScorePane);
 	    paneFooter.getChildren().add(ScorePane);
+	    imagelives=new LivesImages(livePane);
+	    paneFooter.getChildren().add(livePane);
         paneFooter.setStyle("-fx-background-color: black;");
 	    paneFooter.setPrefSize(GAME_WIDTH,HEIGTH_FOOTER);
-	        this.setBottom(paneFooter);
+	    this.setBottom(paneFooter);
 	        
 	      
 	}
@@ -165,10 +168,10 @@ public class Board extends BorderPane implements IBoardRenderer{
 		this.isRunning = isRunning;
 	}	
 	
-       private ArrayList<Sprite> CreateScore(int[] tabint,int x, int y, Pane myPane) {
+       private ArrayList<Sprite> CreateScore(int[] Number,int x, int y, Pane myPane) {
 		
 		ArrayList<Sprite> sprites = new ArrayList<Sprite>();
-		for(int mySocre: tabint) { 
+		for(int mySocre: Number) { 
 			try {
 				Sprite num = new Sprite(fontRepository.getFont(mySocre), x , y); //12*TILE_SIZE, 17*TILE_SIZE
 				x += TILE_SIZE;
@@ -210,26 +213,19 @@ public class Board extends BorderPane implements IBoardRenderer{
 
 	@Override
 	public void refreshLives(int lives) {
-		System.out.println(lives+"-3--");
-      if(lives==2) {
-    	  System.out.println(lives+"--2--");
-    	  imagelives.hideImage(imagelives.getImg3());
-      }
-      if(lives==1) {
-    	  System.out.println(lives+"--1--");
-    	  imagelives.hideImage(imagelives.getImg2());
-      }
-     
-      if(lives==0 && isRunning==true ) {
-    	 this.setRunning(false);
-    	  System.out.println(lives+"--0--");
-    	 imagelives.hideImage(imagelives.getImg1());
-         spritesGameOver = createWords(GameOver, 11*TILE_SIZE + TILE_SIZE/2, 17*TILE_SIZE, pane);
-         displaySprites(spritesGameOver);
-        
-         
+	if(lives==2) {
+	  imagelives.hideImage(imagelives.getimg(3));
+    }
+	if(lives==1) {
+		  imagelives.hideImage(imagelives.getimg(2));
+	    }
+    if(lives==0 && isRunning==true ) {
+  	  this.setRunning(false);
+  	  System.out.println(lives+"--0--");
+  	  imagelives.hideImage(imagelives.getimg(1));
+      spritesGameOver = createWords(GameOver, 10*TILE_SIZE + TILE_SIZE/2, 17*TILE_SIZE, pane);
+      displaySprites(spritesGameOver);   
 	}
       
-	}
+	}}
 	
-}

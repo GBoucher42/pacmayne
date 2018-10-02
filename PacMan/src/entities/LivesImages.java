@@ -13,36 +13,33 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 public class LivesImages {
-final Image imagepacman = new Image("file:ressource/sprites/life.png");
-ImageView img1 =new ImageView(imagepacman);
-ImageView img2 =new ImageView(imagepacman);
-ImageView img3 =new ImageView(imagepacman);
-//private List<ImageView> livesimage ;
-private HBox hbox ;
-private Pane pane;
-ImageView [] tabimg= {img1,img2,img3};
+	final Image imagelife = new Image("file:ressource/sprites/life.png");
+//	ImageView img1 =new ImageView(imagelife);
+//	ImageView img2 =new ImageView(imagelife);
+//	ImageView img3 =new ImageView(imagelife);
+	//private List<ImageView> livesimage ;
+	private HBox hbox ;
+	private Pane pane;
+	ImageView [] tabimg=new ImageView [4] ;
 
-public LivesImages(Pane pane) {
-	hbox = new HBox();
-for (int i = 0; i < tabimg.length; i++) {
+	public LivesImages(Pane pane) {
+		hbox = new HBox();
+	for (int i = 1; i < 4; i++) {
+		tabimg[i]=new ImageView(imagelife);
+		hbox.getChildren().add(tabimg[i]);
+		
+	}
+	pane.getChildren().add(hbox);
+
+	}
+	public void hideImage(ImageView im) {
+		 hbox.getChildren().remove( im);
+	}
 	
-	hbox.getChildren().add(tabimg[i]);
+	public ImageView getimg(int index) {
+		return tabimg[index];
+	}
+
 	
-}
-pane.getChildren().add(hbox);
-
-}
-public void hideImage(ImageView iv) {
-	 hbox.getChildren().remove(iv);
-}
-public ImageView getImg1() {
-	return img1;
-}
-public ImageView getImg2() {
-	return img2;
-}
-public ImageView getImg3() {
-	return img3;
-}
-
+	
 }
