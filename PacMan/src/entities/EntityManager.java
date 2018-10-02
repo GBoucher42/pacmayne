@@ -27,7 +27,7 @@ public class EntityManager {
 		return new Entity(generateNewId());
 	}
 	
-	public void addComponent(IComponent component, Entity entity) {
+	public synchronized void addComponent(IComponent component, Entity entity) {
 		String name = component.getClass().getName();
 		if(!componentsByClass.containsKey(name)) {
 			componentsByClass.put(name, new HashMap<Entity, IComponent>());
@@ -39,7 +39,7 @@ public class EntityManager {
 		}
 	}
 	
-	public void removeEntity(Entity entity) {
+	public synchronized void removeEntity(Entity entity) {
 		for (Map.Entry<String, Map<Entity, IComponent>> parentEntry : componentsByClass.entrySet()) {
 			if(parentEntry.getValue().containsKey(entity)) {
 				parentEntry.getValue().remove(entity);
@@ -48,11 +48,11 @@ public class EntityManager {
 		entities.remove(entity);
 	}
 	
-	public IComponent getComponentOfClass(String className, Entity entity) {
+	public synchronized IComponent getComponentOfClass(String className, Entity entity) {
 		return componentsByClass.get(className).get(entity);
 	}
 	
-	public List<Entity> getAllEntitiesPosessingComponentOfClass(String className) {
+	public synchronized List<Entity> getAllEntitiesPosessingComponentOfClass(String className) {
 		List<Entity> entities = new ArrayList<>();
 		Map<Entity, IComponent> classMap = componentsByClass.get(className);
 		if(classMap == null)
