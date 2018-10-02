@@ -9,8 +9,6 @@ import components.PhysicsComponent;
 import components.ScoreComponent;
 import entities.Entity;
 import entities.EntityManager;
-import threads.MessageEnum;
-import threads.MessageQueue;
 
 public class PhysicsSystem extends SystemBase implements Runnable {
 	private Entity pacman;

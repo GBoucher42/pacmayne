@@ -29,7 +29,7 @@ import javafx.animation.AnimationTimer;
 import rendering.IBoardRenderer;
 import rendering.Sprite;
 import systemThreads.AISystem;
-import systemThreads.AudioSystem;
+import systemThreads.GameAudioSystem;
 import systemThreads.GraphicsSystem;
 import systemThreads.LifeSystem;
 import systemThreads.MoveSystem;
@@ -47,7 +47,7 @@ public class Game {
 	private MoveSystem moveSystem;
 	private PhysicsSystem physicsSystem;
 	private GraphicsSystem graphicsSystem;
-	private AudioSystem audioSystem;
+	private GameAudioSystem audioSystem;
 	private ScoreSystem scoreSystem;
 	private AISystem aiSystem;
 	private LifeSystem lifeSystem;
@@ -101,7 +101,7 @@ public class Game {
 		scoreSystem = new ScoreSystem(entityManager);
 		aiSystem = new AISystem(entityManager);
 		lifeSystem = new LifeSystem(entityManager);
-		audioSystem = new AudioSystem(entityManager);
+		audioSystem = new GameAudioSystem(entityManager);
 	}
 	
 	private void createMovableEntities() {

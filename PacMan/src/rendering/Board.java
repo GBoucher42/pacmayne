@@ -19,8 +19,9 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaPlayer.Status;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import threads.MessageEnum;
-import threads.MessageQueue;
+import systemThreads.MessageEnum;
+import systemThreads.MessageQueue;
+
 import static configs.GameConfig.TILE_SIZE;
 
 
