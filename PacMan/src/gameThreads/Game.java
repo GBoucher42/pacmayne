@@ -17,7 +17,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import components.GraphicsComponent;
+import components.LifeComponent;
 import components.MoveComponent;
+import components.PhysicsComponent;
 import components.ScoreComponent;
 import entities.Direction;
 import entities.Entity;
@@ -138,6 +140,7 @@ public class Game {
             		lastUpdate = System.nanoTime();
             		update();  
             		render();
+            		
             	}
             }
         }.start();
@@ -151,7 +154,6 @@ public class Game {
 			moveSystem.update();
 			aiSystem.update();
 			lifeSystem.update();
-			
 			if (counter == 3) {
 				counter = 0;			
 				graphicsSystem.update();
@@ -164,12 +166,19 @@ public class Game {
 	
 	private void render() {
 		ScoreComponent score = (ScoreComponent) entityManager.getComponentOfClass(ScoreComponent.class.getName(), pacman);
-		
+		renderLives();
 		if (score != null) {
 			board.refreshScore(score.getScore());
 		}
-	}
 	
+		
+	}
+	private void renderLives() {
+		LifeComponent life =(LifeComponent) entityManager.getComponentOfClass(LifeComponent.class.getName(), pacman);
+		if (life.getLives()>=0) {
+	    board.refreshLives(life.getLives());   
+	   }
+	}
 	public void stopThreads() {
 		physicsSystem.stopThread();
 		try {

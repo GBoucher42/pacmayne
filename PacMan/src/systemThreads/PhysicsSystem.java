@@ -1,15 +1,18 @@
 package systemThreads;
 
 import java.util.List;
+import java.util.concurrent.Delayed;
 
 import components.GraphicsComponent;
 import components.LifeComponent;
 import components.PhysicsComponent;
 import components.ScoreComponent;
 import entities.CollisionType;
+import entities.Direction;
 import entities.Entity;
 import entities.EntityManager;
 import entities.Maze;
+import factories.EntityFactory;
 import threads.MessageEnum;
 import threads.MessageQueue;
 
@@ -42,8 +45,14 @@ public class PhysicsSystem extends SystemBase implements Runnable {
 					MessageQueue.addMessage(entity, GraphicsComponent.class.getName(), MessageEnum.EATEN);
 					MessageQueue.addMessage(pacman, ScoreComponent.class.getName(), MessageEnum.SUPERGUMPOINTS);
 				} else if(physic.getCollisionType() == "Ghost") {
+				System.out.println(physic.getCollisionType());
 					MessageQueue.addMessage(pacman, LifeComponent.class.getName(), MessageEnum.KILLED);
-//					MessageQueue.addMessage(pacman, GraphicsComponent.class.getName(), MessageEnum.EATEN);
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+               // MessageQueue.addMessage(pacman, GraphicsComponent.class.getName(), MessageEnum.EATEN);
 				}			
 			}
 		}		
