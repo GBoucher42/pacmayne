@@ -6,8 +6,6 @@ import components.LifeComponent;
 import components.ScoreComponent;
 import entities.Entity;
 import entities.EntityManager;
-import threads.MessageEnum;
-import threads.MessageQueue;
 
 public class LifeSystem extends SystemBase {
 	
