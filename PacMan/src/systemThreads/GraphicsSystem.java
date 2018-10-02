@@ -5,8 +5,6 @@ import java.util.List;
 import components.GraphicsComponent;
 import entities.Entity;
 import entities.EntityManager;
-import threads.MessageEnum;
-import threads.MessageQueue;
 
 public class GraphicsSystem extends SystemBase implements Runnable{
 	

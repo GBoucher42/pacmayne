@@ -2,8 +2,8 @@ package components;
 
 import entities.Direction;
 import entities.Entity;
-import threads.MessageEnum;
-import threads.MessageQueue;
+import systemThreads.MessageEnum;
+import systemThreads.MessageQueue;
 
 public class UserInputComponent implements IComponent{
 	

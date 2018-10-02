@@ -19,7 +19,7 @@ import components.PhysicsComponent;
 import components.ScoreComponent;
 import components.UserInputComponent;
 import image.ImageRepository;
-import threads.MessageEnum;
+import systemThreads.MessageEnum;
 
 public class EntityFactory {
 	private EntityManager entityManager;
