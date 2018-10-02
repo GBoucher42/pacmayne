@@ -29,6 +29,7 @@ import javafx.animation.AnimationTimer;
 import rendering.IBoardRenderer;
 import rendering.Sprite;
 import systemThreads.AISystem;
+import systemThreads.AudioSystem;
 import systemThreads.GraphicsSystem;
 import systemThreads.LifeSystem;
 import systemThreads.MoveSystem;
@@ -46,6 +47,7 @@ public class Game {
 	private MoveSystem moveSystem;
 	private PhysicsSystem physicsSystem;
 	private GraphicsSystem graphicsSystem;
+	private AudioSystem audioSystem;
 	private ScoreSystem scoreSystem;
 	private AISystem aiSystem;
 	private LifeSystem lifeSystem;
@@ -53,6 +55,8 @@ public class Game {
 	private boolean isFocused = true;
 	private boolean inView = true;
 	private Thread physicsThread;
+	private Thread audioThread;
+	private Thread graphicThread;
 	
 	Maze map;
 	
@@ -97,7 +101,7 @@ public class Game {
 		scoreSystem = new ScoreSystem(entityManager);
 		aiSystem = new AISystem(entityManager);
 		lifeSystem = new LifeSystem(entityManager);
-		
+		audioSystem = new AudioSystem(entityManager);
 	}
 	
 	private void createMovableEntities() {
@@ -129,6 +133,11 @@ public class Game {
 	{
 		physicsThread = new Thread(physicsSystem);
 		physicsThread.start();
+		audioThread = new Thread(audioSystem);
+		audioThread.start();
+		graphicThread = new Thread(graphicsSystem);
+		graphicThread.start();
+		
 		new AnimationTimer()
         {
 			long lastUpdate = System.nanoTime();
@@ -143,22 +152,13 @@ public class Game {
         }.start();
 	}
 	
-	private int counter = 0;
 	private void update() {
 		if(board.isRunning() && isFocused && inView) {
 
 			userInputSystem.update();
 			moveSystem.update();
 			aiSystem.update();
-			lifeSystem.update();
-			
-			if (counter == 3) {
-				counter = 0;			
-				graphicsSystem.update();
-				scoreSystem.update();
-			} else {
-				++counter;
-			}	
+			lifeSystem.update();	
 		}
 	}
 	
@@ -172,11 +172,20 @@ public class Game {
 	
 	public void stopThreads() {
 		physicsSystem.stopThread();
+		audioSystem.stopThread();
+		graphicsSystem.stopThread();
 		try {
 			physicsThread.join(33);
-			if (physicsThread.isAlive())
-			{
+			audioThread.join(33);
+			graphicThread.join(99);
+			if (physicsThread.isAlive()){
 				physicsThread.interrupt();
+			}
+			if (audioThread.isAlive()){
+				audioThread.interrupt();
+			}
+			if (graphicThread.isAlive()){
+				graphicThread.interrupt();
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();

@@ -7,7 +7,11 @@ import entities.Strategy;
 
 import static configs.GameConfig.TILE_SIZE;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import components.AIComponent;
+import components.AudioComponent;
 import components.GraphicsComponent;
 import components.LifeComponent;
 import components.MoveComponent;
@@ -15,6 +19,7 @@ import components.PhysicsComponent;
 import components.ScoreComponent;
 import components.UserInputComponent;
 import image.ImageRepository;
+import threads.MessageEnum;
 
 public class EntityFactory {
 	private EntityManager entityManager;
@@ -31,6 +36,11 @@ public class EntityFactory {
 		graphic.addAnimation(Direction.UP, ImageRepository.getImages("pacman", Direction.UP));
 		graphic.addAnimation(Direction.DOWN, ImageRepository.getImages("pacman", Direction.DOWN));
 		entityManager.addComponent(graphic, entity);
+		
+		Map<MessageEnum, String> pacmanAudioMap = new HashMap<>();
+		pacmanAudioMap.put(MessageEnum.EATEN, "ressource/audio/waka.wav");
+		entityManager.addComponent(new AudioComponent(pacmanAudioMap), entity);
+		
 		entityManager.addComponent(new MoveComponent(x, y, direction, true), entity);
 		entityManager.addComponent(new ScoreComponent(), entity);
 		entityManager.addComponent(new UserInputComponent(), entity);
