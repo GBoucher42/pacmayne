@@ -1,6 +1,7 @@
 package systemThreads;
 
 import java.util.List;
+import java.util.concurrent.Delayed;
 
 import components.AudioComponent;
 import components.GraphicsComponent;
@@ -41,8 +42,10 @@ public class PhysicsSystem extends SystemBase implements Runnable {
 					MessageQueue.addMessage(pacman, ScoreComponent.class.getName(), MessageEnum.SUPERGUMPOINTS);
 					MessageQueue.addMessage(pacman, AudioComponent.class.getName(), MessageEnum.EATEN);
 				} else if(physic.getCollisionType() == "Ghost") {
+				System.out.println(physic.getCollisionType());
 					MessageQueue.addMessage(pacman, LifeComponent.class.getName(), MessageEnum.KILLED);
-//					MessageQueue.addMessage(pacman, GraphicsComponent.class.getName(), MessageEnum.EATEN);
+
+               // MessageQueue.addMessage(pacman, GraphicsComponent.class.getName(), MessageEnum.EATEN);
 				}			
 			}
 		}		

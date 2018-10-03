@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 import components.GraphicsComponent;
 import components.LifeComponent;
 import components.MoveComponent;
+import components.PhysicsComponent;
 import components.ScoreComponent;
 import entities.Direction;
 import entities.Entity;
@@ -88,6 +89,7 @@ public class Game {
 	private void initLives() {
 		life = (LifeComponent) entityManager.getComponentOfClass(LifeComponent.class.getName(), pacman);
 		lives = life.getLives();
+		board.initLives(lives);
 	}
 	
 	private void buildMaze() {
@@ -156,6 +158,7 @@ public class Game {
             		lastUpdate = System.nanoTime();
             		update();  
             		render();
+            		
             	}
             }
         }.start();
@@ -169,25 +172,30 @@ public class Game {
 			aiSystem.update();
 			lifeSystem.update();
 			scoreSystem.update();
-			updateLives();
-		}
-	}
-	
-	private void updateLives() {
-		if(life.getLives() != lives) {
-			lives = life.getLives();
-			moveSystem.respawn();
 		}
 	}
 	
 	private void render() {
 		ScoreComponent score = (ScoreComponent) entityManager.getComponentOfClass(ScoreComponent.class.getName(), pacman);
-		
+		renderLives();
 		if (score != null) {
 			board.refreshScore(score.getScore());
 		}
-	}
 	
+		
+	}
+	private void renderLives() {
+		if(life.getLives() != lives) {
+			lives = life.getLives();
+			board.refreshLives(life.getLives());
+			if (life.getLives() > 0) {
+				moveSystem.respawn();
+			} else {
+			   stopThreads();
+		   }
+		}
+		
+	}
 	public void stopThreads() {
 		physicsSystem.stopThread();
 		audioSystem.stopThread();
