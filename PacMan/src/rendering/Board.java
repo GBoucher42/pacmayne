@@ -3,8 +3,11 @@ package rendering;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import components.LifeComponent;
 import components.UserInputComponent;
 import entities.Entity;
+import entities.EntityManager;
 import entities.LivesImages;
 import image.FontRepository;
 import javafx.fxml.FXML;
@@ -35,7 +38,7 @@ public class Board extends BorderPane implements IBoardRenderer{
 	private FontRepository fontRepository = new FontRepository();
 	private MediaPlayer pacmanEatingPlayer;
 	@FXML private ImageView imglogo ;
-    private	int lives;
+    private	int life;
 	private Pane paneFooter= new Pane();
 	private Pane paneHeader =new Pane();
 	private Pane pane =new Pane();
@@ -46,7 +49,7 @@ public class Board extends BorderPane implements IBoardRenderer{
 	private ArrayList<Sprite> spritesScore;
 	private Entity pacman;
 	private char[] TextScore = {'s', 'c', 'o', 'r', 'e'};
-	private char[] GameOver = {'g', 'a', 'm', 'e', 'o','v','r','e'};
+	private char[] GameOver = {'g', 'a', 'm', 'e', 'o','v','e','r'};
 	private ArrayList<Sprite> spritesGameOver;
 	private ArrayList<Sprite> spritesTextScore;
 	private ArrayList<Sprite> spritesNumScore;
@@ -82,7 +85,6 @@ public class Board extends BorderPane implements IBoardRenderer{
 	private void footer() {
 		spritesTextScore= createWords(TextScore, 350, 0, ScorePane);
 	    paneFooter.getChildren().add(ScorePane);
-	    imagelives=new LivesImages(livePane);
 	    paneFooter.getChildren().add(livePane);
         paneFooter.setStyle("-fx-background-color: black;");
 	    paneFooter.setPrefSize(GAME_WIDTH,HEIGTH_FOOTER);
@@ -211,21 +213,26 @@ public class Board extends BorderPane implements IBoardRenderer{
 		}
 	}
 
-	@Override
-	public void refreshLives(int lives) {
-	if(lives==2) {
-	  imagelives.hideImage(imagelives.getimg(3));
-    }
-	if(lives==1) {
-		  imagelives.hideImage(imagelives.getimg(2));
-	    }
-    if(lives==0 && isRunning==true ) {
-  	  this.setRunning(false);
-  	  System.out.println(lives+"--0--");
-  	  imagelives.hideImage(imagelives.getimg(1));
-      spritesGameOver = createWords(GameOver, 10*TILE_SIZE + TILE_SIZE/2, 17*TILE_SIZE, pane);
-      displaySprites(spritesGameOver);   
+		@Override
+		public void refreshLives(int lives) {
+
+			if (this.life == 0) {
+				this.life = lives;
+				imagelives = new LivesImages(livePane, this.life);
+
+			}
+
+			if (lives == 0 && isRunning == true) {
+				this.setRunning(false);
+				System.out.println(lives + "--0--");
+				imagelives.removeLife(imagelives.getimg(1));
+				spritesGameOver = createWords(GameOver, 10 * TILE_SIZE + TILE_SIZE / 2, 17 * TILE_SIZE, pane);
+				displaySprites(spritesGameOver);
+			} else {
+
+				imagelives.removeLife(imagelives.getimg(lives + 1));
+
+			}
+
+		}
 	}
-      
-	}}
-	

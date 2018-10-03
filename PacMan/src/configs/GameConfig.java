@@ -3,7 +3,7 @@ package configs;
 public class GameConfig {
 	
 
-  public static final int HEIGTH_FOOTER=75;
+  public static final int HEIGTH_FOOTER=40;
   public static final int HEIGTH_HEADER=50;
 	public static final int TILE_SIZE = 20;
 	public static final int GAME_TILE_WIDTH_COUNT = 28;
