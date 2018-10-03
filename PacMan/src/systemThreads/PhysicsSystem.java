@@ -47,11 +47,7 @@ public class PhysicsSystem extends SystemBase implements Runnable {
 				} else if(physic.getCollisionType() == "Ghost") {
 				System.out.println(physic.getCollisionType());
 					MessageQueue.addMessage(pacman, LifeComponent.class.getName(), MessageEnum.KILLED);
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
+
                // MessageQueue.addMessage(pacman, GraphicsComponent.class.getName(), MessageEnum.EATEN);
 				}			
 			}
