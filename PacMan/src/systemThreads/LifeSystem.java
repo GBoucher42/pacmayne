@@ -22,13 +22,8 @@ public class LifeSystem extends SystemBase {
 			
 			if (message != null) {
 				life.removeLife();
-				if(life.isDead()) {
-					System.out.println("game over, you suck");
-				} else {
-					System.out.println(life.getLives());
-				}
 				
-			}
+			}	
 		}
 		
 	}
