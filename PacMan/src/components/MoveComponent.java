@@ -6,9 +6,11 @@ import static configs.GameConfig.GAME_TILE_WIDTH_COUNT;
 import static configs.GameConfig.GAME_TILE_HEIGHT_COUNT;
 
 public class MoveComponent implements IComponent {
-	private int tileX, tileY, spawnX, spawnY;
+	private int tileX, tileY;
+	private final int spawnX, spawnY;
 	private double x, y;
-	private Direction direction, awaitingDirection, spawnDirection;
+	private Direction direction, awaitingDirection;
+	private final Direction spawnDirection;
 	private final double moveIncrementer = TILE_SIZE/5;
 	private boolean canTurn = false;
 	private boolean inTunnel = false;

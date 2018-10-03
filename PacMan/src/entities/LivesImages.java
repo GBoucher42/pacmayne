@@ -6,7 +6,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
 public class LivesImages {
-	final Image imagelife = new Image("file:ressource/sprites/life.png");
+	private final Image imagelife = new Image("file:ressource/sprites/pacman-r2.png");
 	private HBox hbox;
 	private ImageView[] livesImages;
 	private int nblives;

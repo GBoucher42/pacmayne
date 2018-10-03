@@ -41,8 +41,8 @@ public class Board extends BorderPane implements IBoardRenderer{
 	private ArrayList<Sprite> spritesPause;
 	private ArrayList<Sprite> spritesScore;
 	private Entity pacman;
-	private char[] TextScore = {'s', 'c', 'o', 'r', 'e'};
-	private char[] GameOver = {'g', 'a', 'm', 'e', 'o','v','e','r'};
+	private char[] textScore = {'s', 'c', 'o', 'r', 'e'};
+	private char[] gameOver = {'g', 'a', 'm', 'e', 'o','v','e','r'};
 	private ArrayList<Sprite> spritesGameOver;
 	private ArrayList<Sprite> spritesTextScore;
 	private ArrayList<Sprite> spritesNumScore;
@@ -76,7 +76,7 @@ public class Board extends BorderPane implements IBoardRenderer{
     this.setTop(paneHeader);
 }
 	private void footer() {
-		spritesTextScore= createWords(TextScore, 350, 0, ScorePane);
+		spritesTextScore= createWords(textScore, 350, 0, ScorePane);
 	    paneFooter.getChildren().add(ScorePane);
 	    paneFooter.getChildren().add(livePane);
         paneFooter.setStyle("-fx-background-color: black;");
@@ -166,9 +166,9 @@ public class Board extends BorderPane implements IBoardRenderer{
        private ArrayList<Sprite> CreateScore(int[] Number,int x, int y, Pane myPane) {
 		
 		ArrayList<Sprite> sprites = new ArrayList<Sprite>();
-		for(int mySocre: Number) { 
+		for(int myScore: Number) { 
 			try {
-				Sprite num = new Sprite(fontRepository.getFont(mySocre), x , y); //12*TILE_SIZE, 17*TILE_SIZE
+				Sprite num = new Sprite(fontRepository.getFont(myScore), x , y); //12*TILE_SIZE, 17*TILE_SIZE
 				x += TILE_SIZE;
 				sprites.add(num);
 				myPane.getChildren().add(num);
@@ -217,7 +217,7 @@ public class Board extends BorderPane implements IBoardRenderer{
 		if (lives == 0 && isRunning == true) {
 			this.setRunning(false);
 			imagelives.removeLife();
-			spritesGameOver = createWords(GameOver, 10 * TILE_SIZE + TILE_SIZE / 2, 17 * TILE_SIZE, pane);
+			spritesGameOver = createWords(gameOver, 10 * TILE_SIZE + TILE_SIZE / 2, 17 * TILE_SIZE, pane);
 			displaySprites(spritesGameOver);
 		} else {
 
