@@ -9,6 +9,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import components.AudioComponent;
 import components.UserInputComponent;
 import entities.Entity;
 import entities.LivesImages;
@@ -121,7 +122,6 @@ public class Board extends BorderPane implements IBoardRenderer{
 			Stage stage = (Stage) this.getScene().getWindow();
 			stage.setFullScreen(!stage.isFullScreen());
 		}
-		
 		if(isRunning) {
 			switch(keyCode) {
 			case UP:
@@ -135,6 +135,16 @@ public class Board extends BorderPane implements IBoardRenderer{
 				break;
 			case RIGHT:
 				MessageQueue.addMessage(pacman, UserInputComponent.class.getName(), MessageEnum.RIGHT);
+				break;
+			case MINUS:
+				MessageQueue.addMessage(pacman, UserInputComponent.class.getName(), MessageEnum.VOLUME_DOWN);
+				break;
+			case PLUS:
+			case EQUALS:
+				MessageQueue.addMessage(pacman, UserInputComponent.class.getName(), MessageEnum.VOLUME_UP);
+				break;
+			case M:
+				MessageQueue.addMessage(pacman, UserInputComponent.class.getName(), MessageEnum.MUTE);
 				break;
 			default:
 				break;
