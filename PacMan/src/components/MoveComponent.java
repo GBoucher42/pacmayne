@@ -6,9 +6,9 @@ import static configs.GameConfig.GAME_TILE_WIDTH_COUNT;
 import static configs.GameConfig.GAME_TILE_HEIGHT_COUNT;
 
 public class MoveComponent implements IComponent {
-	private int tileX, tileY;
+	private int tileX, tileY, spawnX, spawnY;
 	private double x, y;
-	private Direction direction, awaitingDirection;
+	private Direction direction, awaitingDirection, spawnDirection;
 	private final double moveIncrementer = TILE_SIZE/5;
 	private boolean canTurn = false;
 	private boolean inTunnel = false;
@@ -17,11 +17,22 @@ public class MoveComponent implements IComponent {
 	public MoveComponent(double x, double y, Direction direction, boolean canPassTunnel ) {
 		this.tileX = (int)x;
 		this.tileY = (int)y;
+		this.spawnX = (int)x;
+		this.spawnY = (int)y;
 		this.x = x * TILE_SIZE;
 		this.y = y * TILE_SIZE;
 		this.direction = direction;
+		this.spawnDirection = direction;
 		this.awaitingDirection = Direction.NONE;
 		this.canPassTunnel = canPassTunnel;
+	}
+	
+	public void resetPosition() {
+		tileX = spawnX;
+		tileY = spawnY;
+		x = spawnX * TILE_SIZE;
+		y = spawnY * TILE_SIZE;
+		direction = spawnDirection;
 	}
 	
 	public void passTunnel() {

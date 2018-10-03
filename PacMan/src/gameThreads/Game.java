@@ -17,6 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import components.GraphicsComponent;
+import components.LifeComponent;
 import components.MoveComponent;
 import components.ScoreComponent;
 import entities.Direction;
@@ -57,6 +58,8 @@ public class Game {
 	private Thread physicsThread;
 	private Thread audioThread;
 	private Thread graphicThread;
+	private int lives;
+	private LifeComponent life;
 	
 	Maze map;
 	
@@ -79,6 +82,12 @@ public class Game {
 		buildMaze();
 		createMovableEntities();
 		initSystems();
+		initLives();
+	}
+	
+	private void initLives() {
+		life = (LifeComponent) entityManager.getComponentOfClass(LifeComponent.class.getName(), pacman);
+		lives = life.getLives();
 	}
 	
 	private void buildMaze() {
@@ -158,7 +167,16 @@ public class Game {
 			userInputSystem.update();
 			moveSystem.update();
 			aiSystem.update();
-			lifeSystem.update();	
+			lifeSystem.update();
+			scoreSystem.update();
+			updateLives();
+		}
+	}
+	
+	private void updateLives() {
+		if(life.getLives() != lives) {
+			lives = life.getLives();
+			moveSystem.respawn();
 		}
 	}
 	
