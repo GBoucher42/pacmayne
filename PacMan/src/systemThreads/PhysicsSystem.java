@@ -1,17 +1,15 @@
 package systemThreads;
 
 import java.util.List;
+import java.util.concurrent.Delayed;
 
+import components.AudioComponent;
 import components.GraphicsComponent;
 import components.LifeComponent;
 import components.PhysicsComponent;
 import components.ScoreComponent;
-import entities.CollisionType;
 import entities.Entity;
 import entities.EntityManager;
-import entities.Maze;
-import threads.MessageEnum;
-import threads.MessageQueue;
 
 public class PhysicsSystem extends SystemBase implements Runnable {
 	private Entity pacman;
@@ -38,19 +36,23 @@ public class PhysicsSystem extends SystemBase implements Runnable {
 				if (physic.getCollisionType() == "Gum") {
 					MessageQueue.addMessage(entity, GraphicsComponent.class.getName(), MessageEnum.EATEN);
 					MessageQueue.addMessage(pacman, ScoreComponent.class.getName(), MessageEnum.GUMPOINTS);
+					MessageQueue.addMessage(pacman, AudioComponent.class.getName(), MessageEnum.EATEN);
 				} else if (physic.getCollisionType() == "SuperGum"){
 					MessageQueue.addMessage(entity, GraphicsComponent.class.getName(), MessageEnum.EATEN);
 					MessageQueue.addMessage(pacman, ScoreComponent.class.getName(), MessageEnum.SUPERGUMPOINTS);
+					MessageQueue.addMessage(pacman, AudioComponent.class.getName(), MessageEnum.EATEN);
 				} else if(physic.getCollisionType() == "Ghost") {
+				System.out.println(physic.getCollisionType());
 					MessageQueue.addMessage(pacman, LifeComponent.class.getName(), MessageEnum.KILLED);
-//					MessageQueue.addMessage(pacman, GraphicsComponent.class.getName(), MessageEnum.EATEN);
+
+               // MessageQueue.addMessage(pacman, GraphicsComponent.class.getName(), MessageEnum.EATEN);
 				}			
 			}
 		}		
 	}
 	
 	public void stopThread() {
-		isRunning = false;
+		isRunning = false;		
 	}
 
 
@@ -62,7 +64,6 @@ public class PhysicsSystem extends SystemBase implements Runnable {
 			try {
 				Thread.sleep(33);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

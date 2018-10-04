@@ -5,10 +5,10 @@ import java.util.List;
 import components.GraphicsComponent;
 import entities.Entity;
 import entities.EntityManager;
-import threads.MessageEnum;
-import threads.MessageQueue;
 
-public class GraphicsSystem extends SystemBase{
+public class GraphicsSystem extends SystemBase implements Runnable{
+	
+	private volatile boolean isRunning = true;
 	
 	public GraphicsSystem(EntityManager entityManager) {
 		super(entityManager);
@@ -27,6 +27,25 @@ public class GraphicsSystem extends SystemBase{
 				graphic.updateImage();				
 			}
 		}		
+	}
+
+	public void stopThread() {
+		isRunning = false;		
+	}
+
+	@Override
+	public void run() {
+		System.out.println("Start graphic Thread");
+		while(isRunning) {
+			update();
+			try {
+				Thread.sleep(99);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		System.out.println("Stop graphic Thread!");	
+		
 	}
 
 }

@@ -6,8 +6,6 @@ import components.LifeComponent;
 import components.ScoreComponent;
 import entities.Entity;
 import entities.EntityManager;
-import threads.MessageEnum;
-import threads.MessageQueue;
 
 public class LifeSystem extends SystemBase {
 	
@@ -24,13 +22,8 @@ public class LifeSystem extends SystemBase {
 			
 			if (message != null) {
 				life.removeLife();
-				if(life.isDead()) {
-					System.out.println("game over, you suck");
-				} else {
-					System.out.println(life.getLives());
-				}
 				
-			}
+			}	
 		}
 		
 	}

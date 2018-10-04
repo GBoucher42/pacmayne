@@ -51,5 +51,17 @@ public class MoveSystem extends SystemBase {
 			}
 		}		
 	}
+	
+	public void respawn() {
+		List<Entity> entities = entityManager.getAllEntitiesPosessingComponentOfClass(MoveComponent.class.getName());
+		for(Entity entity: entities) {	
+			MoveComponent move = (MoveComponent) entityManager.getComponentOfClass(MoveComponent.class.getName(), entity);
+			GraphicsComponent graphic = (GraphicsComponent) entityManager.getComponentOfClass(GraphicsComponent.class.getName(), entity);
+			if(graphic == null) 
+				continue;
+			move.resetPosition();
+			graphic.updatePosition(move.getX(), move.getY(), move.getDirection());
+		}
+	}
 
 }

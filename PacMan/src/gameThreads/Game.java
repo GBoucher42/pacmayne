@@ -17,7 +17,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import components.GraphicsComponent;
+import components.LifeComponent;
 import components.MoveComponent;
+import components.PhysicsComponent;
 import components.ScoreComponent;
 import entities.Direction;
 import entities.Entity;
@@ -29,6 +31,7 @@ import javafx.animation.AnimationTimer;
 import rendering.IBoardRenderer;
 import rendering.Sprite;
 import systemThreads.AISystem;
+import systemThreads.GameAudioSystem;
 import systemThreads.GraphicsSystem;
 import systemThreads.LifeSystem;
 import systemThreads.MoveSystem;
@@ -46,6 +49,7 @@ public class Game {
 	private MoveSystem moveSystem;
 	private PhysicsSystem physicsSystem;
 	private GraphicsSystem graphicsSystem;
+	private GameAudioSystem audioSystem;
 	private ScoreSystem scoreSystem;
 	private AISystem aiSystem;
 	private LifeSystem lifeSystem;
@@ -53,6 +57,10 @@ public class Game {
 	private boolean isFocused = true;
 	private boolean inView = true;
 	private Thread physicsThread;
+	private Thread audioThread;
+	private Thread graphicThread;
+	private int lives;
+	private LifeComponent life;
 	
 	Maze map;
 	
@@ -75,6 +83,13 @@ public class Game {
 		buildMaze();
 		createMovableEntities();
 		initSystems();
+		initLives();
+	}
+	
+	private void initLives() {
+		life = (LifeComponent) entityManager.getComponentOfClass(LifeComponent.class.getName(), pacman);
+		lives = life.getLives();
+		board.initLives(lives);
 	}
 	
 	private void buildMaze() {
@@ -97,7 +112,7 @@ public class Game {
 		scoreSystem = new ScoreSystem(entityManager);
 		aiSystem = new AISystem(entityManager);
 		lifeSystem = new LifeSystem(entityManager);
-		
+		audioSystem = new GameAudioSystem(entityManager);
 	}
 	
 	private void createMovableEntities() {
@@ -129,6 +144,11 @@ public class Game {
 	{
 		physicsThread = new Thread(physicsSystem);
 		physicsThread.start();
+		audioThread = new Thread(audioSystem);
+		audioThread.start();
+		graphicThread = new Thread(graphicsSystem);
+		graphicThread.start();
+		
 		new AnimationTimer()
         {
 			long lastUpdate = System.nanoTime();
@@ -138,12 +158,12 @@ public class Game {
             		lastUpdate = System.nanoTime();
             		update();  
             		render();
+            		
             	}
             }
         }.start();
 	}
 	
-	private int counter = 0;
 	private void update() {
 		if(board.isRunning() && isFocused && inView) {
 
@@ -151,32 +171,52 @@ public class Game {
 			moveSystem.update();
 			aiSystem.update();
 			lifeSystem.update();
-			
-			if (counter == 3) {
-				counter = 0;			
-				graphicsSystem.update();
-				scoreSystem.update();
-			} else {
-				++counter;
-			}	
+			scoreSystem.update();
+		}
+		if(!isFocused || !inView || !board.isRunning()) {
+			board.displayPause();
+		} else {
+			board.hidePause();
 		}
 	}
 	
 	private void render() {
 		ScoreComponent score = (ScoreComponent) entityManager.getComponentOfClass(ScoreComponent.class.getName(), pacman);
-		
+		renderLives();
 		if (score != null) {
 			board.refreshScore(score.getScore());
 		}
-	}
 	
+		
+	}
+	private void renderLives() {
+		if(life.getLives() != lives) {
+			lives = life.getLives();
+			board.refreshLives(life.getLives());
+			if (life.getLives() > 0) {
+				moveSystem.respawn();
+			} else {
+			   stopThreads();
+		   }
+		}
+		
+	}
 	public void stopThreads() {
 		physicsSystem.stopThread();
+		audioSystem.stopThread();
+		graphicsSystem.stopThread();
 		try {
 			physicsThread.join(33);
-			if (physicsThread.isAlive())
-			{
+			audioThread.join(33);
+			graphicThread.join(99);
+			if (physicsThread.isAlive()){
 				physicsThread.interrupt();
+			}
+			if (audioThread.isAlive()){
+				audioThread.interrupt();
+			}
+			if (graphicThread.isAlive()){
+				graphicThread.interrupt();
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
