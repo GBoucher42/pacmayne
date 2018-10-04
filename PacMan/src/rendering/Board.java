@@ -47,8 +47,9 @@ public class Board extends BorderPane implements IBoardRenderer{
 	private ArrayList<Sprite> spritesGameOver;
 	private ArrayList<Sprite> spritesTextScore;
 	private ArrayList<Sprite> spritesNumScore;
-	int[]number ;
-	LivesImages imagelives;
+	private int[]number ;
+	private LivesImages imagelives;
+	private boolean isPaused = false;
 	public Board()
 	{	
 		pane.setStyle("-fx-background-color: black;");
@@ -242,10 +243,18 @@ public class Board extends BorderPane implements IBoardRenderer{
 
 	}
 	public void displayPause() {
-		displaySprites(spritesPause);
+		if(!isPaused) {
+			displaySprites(spritesPause);
+			isPaused = true;
+		}
 	}
 	
 	public void hidePause() {
-		hideSprites(spritesPause);
+		if(isPaused) {
+			hideSprites(spritesPause);
+			isPaused = false;
+		}
 	}
+
+	
 }
