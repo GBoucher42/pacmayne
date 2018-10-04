@@ -112,12 +112,15 @@ public class Board extends BorderPane implements IBoardRenderer{
 	public void onKeyPressed(KeyCode keyCode) {
 		// TODO: adopt behavior to current state of state machine 
 		if(keyCode == keyCode.P) {
-			isRunning = !isRunning;
-			if(isRunning) {
-				hideSprites(spritesPause);
-			} else {
-				displaySprites(spritesPause);
+			if(imagelives.getNblives() > 0) {
+				isRunning = !isRunning;
+				if(isRunning) {
+					hideSprites(spritesPause);
+				} else {
+					displaySprites(spritesPause);
+				}
 			}
+
 		}
 		if(keyCode == keyCode.F) {
 			Stage stage = (Stage) this.getScene().getWindow();
@@ -242,13 +245,14 @@ public class Board extends BorderPane implements IBoardRenderer{
 		}
 
 	}
+	@Override
 	public void displayPause() {
 		if(!isPaused) {
 			displaySprites(spritesPause);
 			isPaused = true;
 		}
 	}
-	
+	@Override
 	public void hidePause() {
 		if(isPaused) {
 			hideSprites(spritesPause);
@@ -256,5 +260,5 @@ public class Board extends BorderPane implements IBoardRenderer{
 		}
 	}
 
-	
+
 }
