@@ -32,7 +32,7 @@ public class Board extends BorderPane implements IBoardRenderer{
 	private FontRepository fontRepository = new FontRepository();
 	private MediaPlayer pacmanEatingPlayer;
 	@FXML private ImageView imglogo ;
-    private	int life;
+	private	int life;
 	private Pane paneFooter= new Pane();
 	private Pane paneHeader =new Pane();
 	private Pane pane =new Pane();
@@ -43,71 +43,71 @@ public class Board extends BorderPane implements IBoardRenderer{
 	private ArrayList<Sprite> spritesScore;
 	private Entity pacman;
 	private char[] textScore = {'s', 'c', 'o', 'r', 'e'};
-	private char[] gameOver = {'g', 'a', 'm', 'e', 'o','v','e','r'};
+	private char[] gameOver = {'g', 'a', 'm', 'e', ' ', 'o','v','e','r'};
 	private ArrayList<Sprite> spritesGameOver;
 	private ArrayList<Sprite> spritesTextScore;
 	private ArrayList<Sprite> spritesNumScore;
 	int[]number ;
-	 LivesImages imagelives;
+	LivesImages imagelives;
 	public Board()
 	{	
 		pane.setStyle("-fx-background-color: black;");
 		loadSounds();		
 		spritesPause = createWords(pause, 11*TILE_SIZE + TILE_SIZE/2, 17*TILE_SIZE, pane);
 		hideSprites(spritesPause);
-		
+
 	}	
-	
+
 	public void drawMaze(List<Sprite> sprites) 
 	{	
-	 this.setCenter(pane);		
-     pane.getChildren().addAll(sprites);
-     footer();
-     header();
+		this.setCenter(pane);		
+		pane.getChildren().addAll(sprites);
+		footer();
+		header();
 	}
-    private void header() {
-    Image image = new Image("file:ressource/sprites/logo.png");
-    imglogo = new ImageView();
-    imglogo.setImage(image);
-    imglogo.setFitHeight(HEIGTH_HEADER);
-    imglogo.setFitWidth(GAME_WIDTH);
-    paneHeader.getChildren().add(imglogo);
-    paneHeader.setStyle("-fx-background-color: black;");
-    paneHeader.setPrefSize(GAME_WIDTH,HEIGTH_HEADER);   
-    this.setTop(paneHeader);
-}
+	private void header() {
+		Image image = new Image("file:ressource/sprites/logo.png");
+		imglogo = new ImageView();
+		imglogo.setImage(image);
+		imglogo.setFitHeight(HEIGTH_HEADER);
+		imglogo.setFitWidth(GAME_WIDTH);
+		paneHeader.getChildren().add(imglogo);
+		paneHeader.setStyle("-fx-background-color: black;");
+		paneHeader.setPrefSize(GAME_WIDTH,HEIGTH_HEADER);   
+		this.setTop(paneHeader);
+	}
 	private void footer() {
 		spritesTextScore= createWords(textScore, 350, 0, ScorePane);
-	    paneFooter.getChildren().add(ScorePane);
-	    paneFooter.getChildren().add(livePane);
-        paneFooter.setStyle("-fx-background-color: black;");
-	    paneFooter.setPrefSize(GAME_WIDTH,HEIGTH_FOOTER);
-	    this.setBottom(paneFooter);
-	        
-	      
+		paneFooter.getChildren().add(ScorePane);
+		paneFooter.getChildren().add(livePane);
+		paneFooter.setStyle("-fx-background-color: black;");
+		paneFooter.setPrefSize(GAME_WIDTH,HEIGTH_FOOTER);
+		this.setBottom(paneFooter);
+
+
 	}
-	
+
 	public void refreshScore(int score) {
-		 int []  number =Integer.toString(score).chars().map(c -> c-'0').toArray();
-		  spritesNumScore=CreateScore(number,475,0, ScorePane);
-		
+		int []  number =Integer.toString(score).chars().map(c -> c-'0').toArray();
+		spritesNumScore=CreateScore(number,475,0, ScorePane);
+
 	}
-	
+
 	private void loadSounds() {
 		String musicFile = "ressource/audio/pacman-eating.wav"; 
 		Media sound = new Media(new File(musicFile).toURI().toString());
 		pacmanEatingPlayer = new MediaPlayer(sound);
 	}
-	
+
 	public void spawnAnimatables(List<Sprite> movingSprites)
 	{		
 		pane.getChildren().addAll(movingSprites);
 	}
-	
+
 	public void setPacManEntity(Entity pacman) {
 		this.pacman = pacman;
 	}
-	
+
 	public void onKeyPressed(KeyCode keyCode) {
 		// TODO: adopt behavior to current state of state machine 
 		if(keyCode == keyCode.P) {
@@ -122,6 +122,7 @@ public class Board extends BorderPane implements IBoardRenderer{
 			Stage stage = (Stage) this.getScene().getWindow();
 			stage.setFullScreen(!stage.isFullScreen());
 		}
+
 		if(isRunning) {
 			switch(keyCode) {
 			case UP:
@@ -151,11 +152,11 @@ public class Board extends BorderPane implements IBoardRenderer{
 			}		
 		}		
 	}
-	
+
 	private void playEatingAudio() {
 		if(!Status.PLAYING.equals(pacmanEatingPlayer.getStatus())) {
 			pacmanEatingPlayer.play();
-			
+
 		}
 	}
 
@@ -164,7 +165,7 @@ public class Board extends BorderPane implements IBoardRenderer{
 			pacmanEatingPlayer.stop();
 		}
 	}
-	
+
 	public boolean isRunning() {
 		return isRunning;
 	}
@@ -172,9 +173,9 @@ public class Board extends BorderPane implements IBoardRenderer{
 	public void setRunning(boolean isRunning) {
 		this.isRunning = isRunning;
 	}	
-	
-       private ArrayList<Sprite> CreateScore(int[] Number,int x, int y, Pane myPane) {
-		
+
+	private ArrayList<Sprite> CreateScore(int[] Number,int x, int y, Pane myPane) {
+
 		ArrayList<Sprite> sprites = new ArrayList<Sprite>();
 		for(int myScore: Number) { 
 			try {
@@ -188,34 +189,38 @@ public class Board extends BorderPane implements IBoardRenderer{
 		}
 		return sprites;
 	}
-	
+
 	private ArrayList<Sprite> createWords(char[] letters, int x, int y, Pane myPane) {
 		ArrayList<Sprite> sprites = new ArrayList<Sprite>();
 		for(char myLetter: letters) {
 			try {
-				Sprite letter = new Sprite(fontRepository.getFont(myLetter), x , y); //12*TILE_SIZE, 17*TILE_SIZE
-				x += TILE_SIZE;
-				sprites.add(letter);
-				myPane.getChildren().add(letter);
+				if(myLetter != ' ') {
+					Sprite letter = new Sprite(fontRepository.getFont(myLetter), x , y); //12*TILE_SIZE, 17*TILE_SIZE
+					x += TILE_SIZE;
+					sprites.add(letter);
+					myPane.getChildren().add(letter);
+				} else {
+					x += TILE_SIZE;
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 		return sprites;
 	}
-	
+
 	private void hideSprites(ArrayList<Sprite> sprites) {
 		for(Sprite sprite : sprites) {
 			sprite.setVisible(false);
 		}
 	}
-	
+
 	private void displaySprites(ArrayList<Sprite> sprites) {
 		for(Sprite sprite : sprites) {
 			sprite.setVisible(true);
 		}
 	}
-	
+
 	@Override
 	public void initLives(int lives) {
 		this.life = lives;
@@ -227,7 +232,7 @@ public class Board extends BorderPane implements IBoardRenderer{
 		if (lives == 0 && isRunning == true) {
 			this.setRunning(false);
 			imagelives.removeLife();
-			spritesGameOver = createWords(gameOver, 10 * TILE_SIZE + TILE_SIZE / 2, 17 * TILE_SIZE, pane);
+			spritesGameOver = createWords(gameOver, 9 * TILE_SIZE + TILE_SIZE / 2, 17 * TILE_SIZE, pane);
 			displaySprites(spritesGameOver);
 		} else {
 
@@ -236,4 +241,4 @@ public class Board extends BorderPane implements IBoardRenderer{
 		}
 
 	}
-	}
+}
