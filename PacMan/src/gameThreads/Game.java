@@ -182,7 +182,7 @@ public class Game {
 		if (score != null) {
 			board.refreshScore(score.getScore());
 		}
-		if(!isFocused || !inView || !board.isRunning()) {
+		if(!isFocused || !inView) { // || !board.isRunning() enlever car créer le bug GAMEUOVER
 			board.displayPause();
 		} else {
 			board.hidePause();
