@@ -9,6 +9,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import components.AudioComponent;
 import components.UserInputComponent;
 import entities.Entity;
 import entities.LivesImages;
@@ -42,7 +43,7 @@ public class Board extends BorderPane implements IBoardRenderer{
 	private ArrayList<Sprite> spritesScore;
 	private Entity pacman;
 	private char[] textScore = {'s', 'c', 'o', 'r', 'e'};
-	private char[] gameOver = {'g', 'a', 'm', 'e', 'o','v','e','r'};
+	private char[] gameOver = {'g', 'a', 'm', 'e', ' ', 'o','v','e','r'};
 	private ArrayList<Sprite> spritesGameOver;
 	private ArrayList<Sprite> spritesTextScore;
 	private ArrayList<Sprite> spritesNumScore;
@@ -136,6 +137,16 @@ public class Board extends BorderPane implements IBoardRenderer{
 			case RIGHT:
 				MessageQueue.addMessage(pacman, UserInputComponent.class.getName(), MessageEnum.RIGHT);
 				break;
+			case MINUS:
+				MessageQueue.addMessage(pacman, UserInputComponent.class.getName(), MessageEnum.VOLUME_DOWN);
+				break;
+			case PLUS:
+			case EQUALS:
+				MessageQueue.addMessage(pacman, UserInputComponent.class.getName(), MessageEnum.VOLUME_UP);
+				break;
+			case M:
+				MessageQueue.addMessage(pacman, UserInputComponent.class.getName(), MessageEnum.MUTE);
+				break;
 			default:
 				break;
 			}		
@@ -183,10 +194,14 @@ public class Board extends BorderPane implements IBoardRenderer{
 		ArrayList<Sprite> sprites = new ArrayList<Sprite>();
 		for(char myLetter: letters) {
 			try {
-				Sprite letter = new Sprite(fontRepository.getFont(myLetter), x , y); //12*TILE_SIZE, 17*TILE_SIZE
-				x += TILE_SIZE;
-				sprites.add(letter);
-				myPane.getChildren().add(letter);
+				if(myLetter != ' ') {
+					Sprite letter = new Sprite(fontRepository.getFont(myLetter), x , y); //12*TILE_SIZE, 17*TILE_SIZE
+					x += TILE_SIZE;
+					sprites.add(letter);
+					myPane.getChildren().add(letter);
+				} else {
+					x += TILE_SIZE;
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -217,7 +232,7 @@ public class Board extends BorderPane implements IBoardRenderer{
 		if (lives == 0 && isRunning == true) {
 			this.setRunning(false);
 			imagelives.removeLife();
-			spritesGameOver = createWords(gameOver, 10 * TILE_SIZE + TILE_SIZE / 2, 17 * TILE_SIZE, pane);
+			spritesGameOver = createWords(gameOver, 9 * TILE_SIZE + TILE_SIZE / 2, 17 * TILE_SIZE, pane);
 			displaySprites(spritesGameOver);
 		} else {
 
@@ -226,7 +241,6 @@ public class Board extends BorderPane implements IBoardRenderer{
 		}
 
 	}
-	
 	public void displayPause() {
 		displaySprites(spritesPause);
 	}

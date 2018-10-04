@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineEvent.Type;
 
@@ -23,6 +24,9 @@ public class AudioComponent implements IComponent{
 	private Clip clip;
 	private boolean playing = false;
 	private LineListener listener;
+	private FloatControl gainControl;
+	private double volume = 0.5;
+	private boolean isMuted = false;
 	
 	public AudioComponent(Map<MessageEnum, String> soundMap) {
 		this.soundMap = new HashMap<MessageEnum, AudioInputStream>();
@@ -36,8 +40,8 @@ public class AudioComponent implements IComponent{
 			}	
 		
 			clip = AudioSystem.getClip();
-			
 			clip.open(this.soundMap.get(MessageEnum.EATEN));
+			gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
 
 			listener = new LineListener() {
 				
@@ -65,5 +69,40 @@ public class AudioComponent implements IComponent{
 		if(!playing) {
 			clip.start();
 		}
+	}
+	
+	public void increaseVolume() {
+		if(volume < 1.0) {
+			volume += 0.1;
+			roundVolume();
+			setVolume(volume);
+		}
+	}
+	
+	public void decreaseVolume() {
+		if(volume > 0.0) {
+			volume -= 0.1;
+		    roundVolume();
+		    setVolume(volume);
+		}
+	}
+	
+	public void mute() {
+		isMuted = !isMuted;
+		if(isMuted) {
+			setVolume(0.0);
+		} else {
+			setVolume(volume);
+		}
+	}
+	
+	private void roundVolume() { //without rounding, you may end up with very small divergence that make a big difference in DB calculation
+		int scale = (int) Math.pow(10, 2);
+	    volume = (double) Math.round(volume * scale) / scale;
+	}
+	
+	public void setVolume(double volume) {
+		float dB = (float) (Math.log(volume) / Math.log(10.0) * 20.0);
+		gainControl.setValue(dB);
 	}
 }
