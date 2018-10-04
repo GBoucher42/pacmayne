@@ -11,6 +11,10 @@ public class LivesImages {
 	private ImageView[] livesImages;
 	private int nblives;
 
+	public int getNblives() {
+		return nblives;
+	}
+
 	public LivesImages(Pane pane, int nblives) {
 		this.hbox = new HBox();
 		this.nblives = nblives;
