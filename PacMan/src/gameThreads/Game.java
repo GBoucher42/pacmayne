@@ -173,6 +173,11 @@ public class Game {
 			lifeSystem.update();
 			scoreSystem.update();
 		}
+		if(!isFocused || !inView || !board.isRunning()) {
+			board.displayPause();
+		} else {
+			board.hidePause();
+		}
 	}
 	
 	private void render() {

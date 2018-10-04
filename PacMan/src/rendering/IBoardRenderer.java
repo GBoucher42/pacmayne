@@ -21,5 +21,9 @@ public interface IBoardRenderer {
 	void setRunning(boolean isRunning);
 
 	void initLives(int lives);
+	
+	void displayPause();
+	
+	void hidePause();
 }
 
