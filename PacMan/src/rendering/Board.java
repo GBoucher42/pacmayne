@@ -241,4 +241,11 @@ public class Board extends BorderPane implements IBoardRenderer{
 		}
 
 	}
+	public void displayPause() {
+		displaySprites(spritesPause);
+	}
+	
+	public void hidePause() {
+		hideSprites(spritesPause);
+	}
 }
