@@ -173,11 +173,7 @@ public class Game {
 			lifeSystem.update();
 			scoreSystem.update();
 		}
-		if(!isFocused || !inView || !board.isRunning()) {
-			board.displayPause();
-		} else {
-			board.hidePause();
-		}
+		
 	}
 	
 	private void render() {
@@ -185,6 +181,11 @@ public class Game {
 		renderLives();
 		if (score != null) {
 			board.refreshScore(score.getScore());
+		}
+		if(!isFocused || !inView || !board.isRunning()) {
+			board.displayPause();
+		} else {
+			board.hidePause();
 		}
 	
 		
