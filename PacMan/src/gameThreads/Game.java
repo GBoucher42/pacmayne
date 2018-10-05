@@ -11,7 +11,6 @@ import static configs.GameConfig.PACMAN_SPAWN_POINT_Y;
 import static configs.GameConfig.PINKY_SPAWN_POINT_X;
 import static configs.GameConfig.PINKY_SPAWN_POINT_Y;
 
-import java.awt.image.renderable.RenderedImageFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -28,7 +27,6 @@ import entities.Direction;
 import entities.Entity;
 import entities.EntityManager;
 import entities.Maze;
-import entities.Type;
 import factories.EntityFactory;
 import factories.MazeFactory;
 import javafx.animation.AnimationTimer;
@@ -47,7 +45,6 @@ public class Game {
 
 	private static final Logger LOGGER = Logger.getLogger( Game.class.getName() );
 	private IBoardRenderer board;
-	
 	private EntityManager entityManager;
 	private UserInputSystem userInputSystem;
 	private MoveSystem moveSystem;
@@ -58,8 +55,6 @@ public class Game {
 	private AISystem aiSystem;
 	private LifeSystem lifeSystem;
 	private Entity pacman;
-	private Entity Gum;
-	private Entity SuperGum;
 	private boolean isFocused = true;
 	private boolean inView = true;
 	private Thread physicsThread;
@@ -70,7 +65,6 @@ public class Game {
 	private int level=1;
 	private int fps;
 	Maze map;
-	
 	
 	public Game(IBoardRenderer board)
 	{
@@ -162,14 +156,14 @@ public class Game {
 		new AnimationTimer()
         {     
 			long lastUpdate = System.nanoTime();
-			int Frames=0;
+			int frames=0;
             public void handle(long now)
             {          
-            	Frames++;
+            	frames++;
     
             	if (now - lastUpdate >= 30_000_000) {
             		lastUpdate = System.nanoTime();
-            		fps=Frames;
+            		fps=frames;
             		board.refreshFps(fps/3);
             		update();  
             		render();
@@ -194,7 +188,7 @@ public class Game {
 	private void render() {
 		ScoreComponent score = (ScoreComponent) entityManager.getComponentOfClass(ScoreComponent.class.getName(), pacman);
 		renderLives();
-	    PasseLevel();
+	    NextLevel();
 		if (score != null) {
 			board.refreshScore(score.getScore());
 		}
@@ -204,9 +198,9 @@ public class Game {
 			board.hidePause();
 		}
 	}
-	public void PasseLevel() {
+	public void NextLevel() {
 		List<Entity> entities = entityManager.getAllEntitiesPosessingComponentOfClass(GraphicsComponent.class.getName());
-		boolean Etat=false;
+		boolean etat=false;
 		for(Entity entity: entities) {
 			PhysicsComponent physic = (PhysicsComponent) entityManager.getComponentOfClass(PhysicsComponent.class.getName(), entity);
 			GraphicsComponent graphic = (GraphicsComponent) entityManager.getComponentOfClass(GraphicsComponent.class.getName(), entity);
@@ -216,15 +210,14 @@ public class Game {
 			LifeComponent life=(LifeComponent) entityManager.getComponentOfClass(LifeComponent.class.getName(), entity);
 			UserInputComponent user=(UserInputComponent) entityManager.getComponentOfClass(UserInputComponent.class.getName(), entity);
 			if(graphic != null && physic!=null && move==null && audio==null &&score==null && life==null&& user==null) {
-				Etat=true;
+				etat=true;
 				return ;
-		    
 		    }
 			
 			}
-		 if(Etat=true) {
+		 if(etat=true) {
 		   board.refreshlevel(level+1);
-		   Etat=false;
+		   etat=false;
           
 		 }
 		
