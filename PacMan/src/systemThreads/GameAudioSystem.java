@@ -18,7 +18,10 @@ public class GameAudioSystem extends SystemBase implements Runnable{
 	
 	private volatile boolean isRunning = true;
 	private Clip clip;
-	private boolean playing = false;
+	private boolean playingBackground = false;
+	private boolean updatingMusic = false;
+	
+
 	private LineListener listener;
 
 	public GameAudioSystem(EntityManager entityManager) {
@@ -27,15 +30,20 @@ public class GameAudioSystem extends SystemBase implements Runnable{
 
 	@Override
 	public void update() {
+		
 		List<Entity> entities = entityManager.getAllEntitiesPosessingComponentOfClass(AudioComponent.class.getName());
 		for(Entity entity: entities) {
 			AudioComponent audio = (AudioComponent) entityManager.getComponentOfClass(AudioComponent.class.getName(), entity);
 			MessageEnum message = MessageQueue.consumeEntityMessages(entity, AudioComponent.class.getName());
-			
 			if (message != null) {
 				audio.play();
+				if(updatingMusic != true) {
+					updatingMusic = true;
+				}
 			}
+			
 		}
+		
 	}
 	
 	private void playBackgroundMusic()
@@ -46,7 +54,8 @@ public class GameAudioSystem extends SystemBase implements Runnable{
 	        audioInputStream = AudioSystem.getAudioInputStream(new File("ressource/audio/background-music.wav"));
 	        clip = AudioSystem.getClip();
 	        clip.open(audioInputStream);
-	        clip.loop(Clip.LOOP_CONTINUOUSLY);;
+	        clip.loop(Clip.LOOP_CONTINUOUSLY);
+	        playingBackground = true;
 	    } catch(Exception error) {           
 	        System.out.println("Error with playing sound." + error);
 	    }
@@ -73,6 +82,15 @@ public class GameAudioSystem extends SystemBase implements Runnable{
 				e.printStackTrace();
 			}
 		}
+		updatingMusic = false;
 		System.out.println("Stop audio Thread!");			
+	}
+	
+	public boolean isPlayingBackground() {
+		return playingBackground;
+	}
+	
+	public boolean isUpdatingMusic() {
+		return updatingMusic;
 	}
 }
