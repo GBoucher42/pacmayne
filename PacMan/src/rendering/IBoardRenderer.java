@@ -11,6 +11,9 @@ public interface IBoardRenderer {
 	void refreshScore(int score);
 	
 	void refreshLives(int lives);
+	void refreshFps(int fps);
+	
+	void refreshlevel(int level);
 	
 	void spawnAnimatables(List<Sprite> sprites);
 	

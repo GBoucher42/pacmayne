@@ -1,5 +1,4 @@
 package components;
-
 public class LifeComponent implements IComponent {
 	private int lives;
 	

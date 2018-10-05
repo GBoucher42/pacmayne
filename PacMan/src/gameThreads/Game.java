@@ -11,20 +11,24 @@ import static configs.GameConfig.PACMAN_SPAWN_POINT_Y;
 import static configs.GameConfig.PINKY_SPAWN_POINT_X;
 import static configs.GameConfig.PINKY_SPAWN_POINT_Y;
 
+import java.awt.image.renderable.RenderedImageFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import components.AudioComponent;
 import components.GraphicsComponent;
 import components.LifeComponent;
 import components.MoveComponent;
 import components.PhysicsComponent;
 import components.ScoreComponent;
+import components.UserInputComponent;
 import entities.Direction;
 import entities.Entity;
 import entities.EntityManager;
 import entities.Maze;
+import entities.Type;
 import factories.EntityFactory;
 import factories.MazeFactory;
 import javafx.animation.AnimationTimer;
@@ -54,6 +58,8 @@ public class Game {
 	private AISystem aiSystem;
 	private LifeSystem lifeSystem;
 	private Entity pacman;
+	private Entity Gum;
+	private Entity SuperGum;
 	private boolean isFocused = true;
 	private boolean inView = true;
 	private Thread physicsThread;
@@ -61,8 +67,10 @@ public class Game {
 	private Thread graphicThread;
 	private int lives;
 	private LifeComponent life;
-	
+	private int level=1;
+	private int fps;
 	Maze map;
+	
 	
 	public Game(IBoardRenderer board)
 	{
@@ -90,6 +98,7 @@ public class Game {
 		life = (LifeComponent) entityManager.getComponentOfClass(LifeComponent.class.getName(), pacman);
 		lives = life.getLives();
 		board.initLives(lives);
+		board.refreshlevel(level);
 	}
 	
 	private void buildMaze() {
@@ -149,16 +158,22 @@ public class Game {
 		graphicThread = new Thread(graphicsSystem);
 		graphicThread.start();
 		
+		
 		new AnimationTimer()
-        {
+        {     
 			long lastUpdate = System.nanoTime();
+			int Frames=0;
             public void handle(long now)
-            {            
+            {          
+            	Frames++;
+    
             	if (now - lastUpdate >= 30_000_000) {
             		lastUpdate = System.nanoTime();
+            		fps=Frames;
+            		board.refreshFps(fps);
             		update();  
             		render();
-            		
+            	
             	}
             }
         }.start();
@@ -179,6 +194,7 @@ public class Game {
 	private void render() {
 		ScoreComponent score = (ScoreComponent) entityManager.getComponentOfClass(ScoreComponent.class.getName(), pacman);
 		renderLives();
+	    PasseLevel();
 		if (score != null) {
 			board.refreshScore(score.getScore());
 		}
@@ -187,9 +203,32 @@ public class Game {
 		} else {
 			board.hidePause();
 		}
-	
-		
 	}
+	public void PasseLevel() {
+		List<Entity> entities = entityManager.getAllEntitiesPosessingComponentOfClass(GraphicsComponent.class.getName());
+		boolean Etat=false;
+		for(Entity entity: entities) {
+			PhysicsComponent physic = (PhysicsComponent) entityManager.getComponentOfClass(PhysicsComponent.class.getName(), entity);
+			GraphicsComponent graphic = (GraphicsComponent) entityManager.getComponentOfClass(GraphicsComponent.class.getName(), entity);
+			MoveComponent move = (MoveComponent) entityManager.getComponentOfClass(MoveComponent.class.getName(), entity);
+			AudioComponent audio = (AudioComponent) entityManager.getComponentOfClass(AudioComponent.class.getName(), entity);
+			ScoreComponent score= (ScoreComponent) entityManager.getComponentOfClass(ScoreComponent.class.getName(), entity);
+			LifeComponent life=(LifeComponent) entityManager.getComponentOfClass(LifeComponent.class.getName(), entity);
+			UserInputComponent user=(UserInputComponent) entityManager.getComponentOfClass(UserInputComponent.class.getName(), entity);
+			if(graphic != null && physic!=null && move==null && audio==null &&score==null && life==null&& user==null) {
+				Etat=true;
+				return ;
+		    
+		    }
+			
+			}
+		 if(Etat=true) {
+		   board.refreshlevel(level+1);
+		   Etat=false;
+          
+		 }
+		
+			}
 	private void renderLives() {
 		if(life.getLives() != lives) {
 			lives = life.getLives();

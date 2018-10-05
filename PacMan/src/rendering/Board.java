@@ -43,7 +43,11 @@ public class Board extends BorderPane implements IBoardRenderer{
 	private ArrayList<Sprite> spritesScore;
 	private Entity pacman;
 	private char[] textScore = {'s', 'c', 'o', 'r', 'e'};
+	private char[] textLevel = {'l', 'e', 'v', 'e', 'l'};
 	private char[] gameOver = {'g', 'a', 'm', 'e', ' ', 'o','v','e','r'};
+	private char[] textFps = {'f', 'p', 's'};
+	private ArrayList<Sprite> spritesfps;
+	private ArrayList<Sprite> spritesLevel;
 	private ArrayList<Sprite> spritesGameOver;
 	private ArrayList<Sprite> spritesTextScore;
 	private ArrayList<Sprite> spritesNumScore;
@@ -55,8 +59,10 @@ public class Board extends BorderPane implements IBoardRenderer{
 		pane.setStyle("-fx-background-color: black;");
 		loadSounds();		
 		spritesPause = createWords(pause, 11*TILE_SIZE + TILE_SIZE/2, 17*TILE_SIZE, pane);
+		spritesfps = createWords(textFps, 10, 51, paneHeader);
 		hideSprites(spritesPause);
-
+		spritesLevel = createWords(textLevel,170, 0 ,  paneFooter );
+		
 	}	
 
 	public void drawMaze(List<Sprite> sprites) 
@@ -70,7 +76,7 @@ public class Board extends BorderPane implements IBoardRenderer{
 		Image image = new Image("file:ressource/sprites/logo.png");
 		imglogo = new ImageView();
 		imglogo.setImage(image);
-		imglogo.setFitHeight(HEIGTH_HEADER);
+		imglogo.setFitHeight(50);
 		imglogo.setFitWidth(GAME_WIDTH);
 		paneHeader.getChildren().add(imglogo);
 		paneHeader.setStyle("-fx-background-color: black;");
@@ -258,6 +264,20 @@ public class Board extends BorderPane implements IBoardRenderer{
 			hideSprites(spritesPause);
 			isPaused = false;
 		}
+	}
+
+	@Override
+	public void refreshlevel(int level) {
+		int []  numLevel =Integer.toString(level).chars().map(c -> c-'0').toArray();
+		spritesNumScore=CreateScore(numLevel,280,0, ScorePane);
+		
+	}
+
+	@Override
+	public void refreshFps(int fps) {
+		int []  numFPS =Integer.toString(fps).chars().map(c -> c-'0').toArray();
+		spritesNumScore=CreateScore(numFPS,100,51,paneHeader);
+		
 	}
 
 
