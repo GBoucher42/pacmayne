@@ -24,7 +24,4 @@ public class MessageQueue {
 			return messageQueue.get(entity).remove(componentName);
 		}
 	}
-	
-	
-
 }
