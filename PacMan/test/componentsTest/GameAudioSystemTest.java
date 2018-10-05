@@ -56,8 +56,6 @@ class GameAudioSystemTest {
 		assertTimeout(ofMillis(2000), () -> {
 			boolean actualPlaying = gameAudioSystem.isPlayingBackground();
 			assertTrue("audio is not playing in background", actualPlaying);
-						
-			Thread.sleep(500);
 		});
 	}
 	
@@ -75,7 +73,6 @@ class GameAudioSystemTest {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			Thread.sleep(500);
 		});
 	}
 
