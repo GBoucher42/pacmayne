@@ -59,7 +59,7 @@ public class Board extends BorderPane implements IBoardRenderer{
 		pane.setStyle("-fx-background-color: black;");
 		loadSounds();		
 		spritesPause = createWords(pause, 11*TILE_SIZE + TILE_SIZE/2, 17*TILE_SIZE, pane);
-		spritesfps = createWords(textFps, 10, 51, paneHeader);
+		spritesfps = createWords(textFps, 10, 48, paneHeader);
 		hideSprites(spritesPause);
 		spritesLevel = createWords(textLevel,170, 0 ,  paneFooter );
 		
@@ -76,7 +76,7 @@ public class Board extends BorderPane implements IBoardRenderer{
 		Image image = new Image("file:ressource/sprites/logo.png");
 		imglogo = new ImageView();
 		imglogo.setImage(image);
-		imglogo.setFitHeight(50);
+		imglogo.setFitHeight(49);
 		imglogo.setFitWidth(GAME_WIDTH);
 		paneHeader.getChildren().add(imglogo);
 		paneHeader.setStyle("-fx-background-color: black;");
@@ -276,7 +276,7 @@ public class Board extends BorderPane implements IBoardRenderer{
 	@Override
 	public void refreshFps(int fps) {
 		int []  numFPS =Integer.toString(fps).chars().map(c -> c-'0').toArray();
-		spritesNumScore=CreateScore(numFPS,100,51,paneHeader);
+		spritesNumScore=CreateScore(numFPS,100,48,paneHeader);
 		
 	}
 
