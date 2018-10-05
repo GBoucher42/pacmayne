@@ -5,11 +5,11 @@ import javafx.scene.input.KeyCode;
 import scenes.VerticalMenu;
 
 //DESIGN PATTERN : State
-public class ControlMenuState implements IState {
+public class MainMenuGameState implements IState {
 
-private final VerticalMenu menu;
+	private final VerticalMenu menu;
 	
-	public ControlMenuState(VerticalMenu menu) {
+	public MainMenuGameState(VerticalMenu menu) {
 		this.menu = menu;
 	}
 	
@@ -33,8 +33,7 @@ private final VerticalMenu menu;
 			break;
 		default:
 			break;
-		}	
-		
+		}		
 	}
 	
 	@Override

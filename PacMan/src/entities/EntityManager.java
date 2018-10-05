@@ -64,5 +64,13 @@ public class EntityManager {
 		return entities;
 	}
 	
+	public void dispose() {
+		for (Map.Entry<String, Map<Entity, IComponent>> parentEntry : componentsByClass.entrySet()) {
+			parentEntry.getValue().clear();
+			
+		}
+		componentsByClass.clear();
+	}
+	
 
 }

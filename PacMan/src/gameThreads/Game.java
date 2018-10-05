@@ -17,6 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import components.GraphicsComponent;
+import components.LifeComponent;
 import components.MoveComponent;
 import components.ScoreComponent;
 import entities.Direction;
@@ -57,6 +58,9 @@ public class Game {
 	private Thread physicsThread;
 	private Thread audioThread;
 	private Thread graphicThread;
+	private int lives;
+	private LifeComponent life;
+	private volatile boolean isRunning = true;
 	
 	Maze map;
 	
@@ -79,6 +83,13 @@ public class Game {
 		buildMaze();
 		createMovableEntities();
 		initSystems();
+		initLives();
+	}
+	
+	private void initLives() {
+		life = (LifeComponent) entityManager.getComponentOfClass(LifeComponent.class.getName(), pacman);
+		lives = life.getLives();
+		board.initLives(lives);
 	}
 	
 	private void buildMaze() {
@@ -142,11 +153,16 @@ public class Game {
         {
 			long lastUpdate = System.nanoTime();
             public void handle(long now)
-            {            
+            { 
+    			if(!isRunning) {
+    				this.stop();
+    				return;
+    			}
             	if (now - lastUpdate >= 30_000_000) {
             		lastUpdate = System.nanoTime();
             		update();  
             		render();
+            		
             	}
             }
         }.start();
@@ -158,18 +174,38 @@ public class Game {
 			userInputSystem.update();
 			moveSystem.update();
 			aiSystem.update();
-			lifeSystem.update();	
+			lifeSystem.update();
+			scoreSystem.update();
 		}
+		
 	}
 	
 	private void render() {
 		ScoreComponent score = (ScoreComponent) entityManager.getComponentOfClass(ScoreComponent.class.getName(), pacman);
-		
+		renderLives();
 		if (score != null) {
 			board.refreshScore(score.getScore());
 		}
-	}
+		if(!isFocused || !inView) { // || !board.isRunning() enlever car créer le bug GAMEUOVER
+			board.displayPause();
+		} else {
+			board.hidePause();
+		}
 	
+		
+	}
+	private void renderLives() {
+		if(life.getLives() != lives) {
+			lives = life.getLives();
+			board.refreshLives(life.getLives());
+			if (life.getLives() > 0) {
+				moveSystem.respawn();
+			} else {
+			   stopThreads();
+		   }
+		}
+		
+	}
 	public void stopThreads() {
 		physicsSystem.stopThread();
 		audioSystem.stopThread();
@@ -199,5 +235,20 @@ public class Game {
 	
 	public void setInView(boolean inView) {
 		this.inView = inView;
+	}
+	
+	public IBoardRenderer getBoard() {
+		return board;
+	}
+
+	public Entity getPacman() {
+		return pacman;
+	}
+	
+	public void stopGame() {
+		isRunning = false;
+		stopThreads();
+		entityManager.dispose();
+		board.dispose();
 	}
 }
