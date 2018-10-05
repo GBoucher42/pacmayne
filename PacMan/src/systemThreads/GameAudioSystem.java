@@ -30,16 +30,20 @@ public class GameAudioSystem extends SystemBase implements Runnable{
 
 	@Override
 	public void update() {
+		
 		List<Entity> entities = entityManager.getAllEntitiesPosessingComponentOfClass(AudioComponent.class.getName());
 		for(Entity entity: entities) {
 			AudioComponent audio = (AudioComponent) entityManager.getComponentOfClass(AudioComponent.class.getName(), entity);
 			MessageEnum message = MessageQueue.consumeEntityMessages(entity, AudioComponent.class.getName());
-			System.out.println(message);
 			if (message != null) {
 				audio.play();
+				if(updatingMusic != true) {
+					updatingMusic = true;
+				}
 			}
+			
 		}
-		updatingMusic = true;
+		
 	}
 	
 	private void playBackgroundMusic()
