@@ -11,10 +11,13 @@ import static configs.GameConfig.PACMAN_SPAWN_POINT_Y;
 import static configs.GameConfig.PINKY_SPAWN_POINT_X;
 import static configs.GameConfig.PINKY_SPAWN_POINT_Y;
 
+import java.time.temporal.ValueRange;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.omg.PortableServer.THREAD_POLICY_ID;
 
 import components.AudioComponent;
 import components.GraphicsComponent;
@@ -63,7 +66,8 @@ public class Game {
 	private int lives;
 	private LifeComponent life;
 	private int level=1;
-	private int fps;
+	private int fps=30;
+	private double averageFps; 
 	Maze map;
 	
 	public Game(IBoardRenderer board)
@@ -155,18 +159,39 @@ public class Game {
 		
 		new AnimationTimer()
         {     
+		    long waitTime;
+		    long startTime;
+		    long URDTimerMillis;
 			long lastUpdate = System.nanoTime();
 			int frames=0;
+		    int maxFrame=30;
+		    long targetTime =1000/fps;
+		    long totalTime ;
+		   
+			
             public void handle(long now)
             {          
-            	frames++;
-    
+            	
+          	
             	if (now - lastUpdate >= 30_000_000) {
-            		lastUpdate = System.nanoTime();
-            		fps=frames;
-            		board.refreshFps(fps/3);
+            		startTime = System.nanoTime();
             		update();  
             		render();
+            		URDTimerMillis=(System.nanoTime()-startTime)/1000000;
+            		waitTime=targetTime-URDTimerMillis;
+            		try {
+						Thread.sleep(waitTime);
+						;
+					} catch (Exception e) {}
+            		totalTime=System.nanoTime()-startTime;
+            		 int frameFps=frames++;
+            		board.refreshFps(frameFps);
+            		if(frames==maxFrame) {	
+            			averageFps=1000.0/((totalTime/frames)/1000000);
+            		//	frames=0;
+            			totalTime=0;
+            		}
+            		
             	
             	}
             }
@@ -200,7 +225,6 @@ public class Game {
 	}
 	public void NextLevel() {
 		List<Entity> entities = entityManager.getAllEntitiesPosessingComponentOfClass(GraphicsComponent.class.getName());
-		boolean etat=false;
 		for(Entity entity: entities) {
 			PhysicsComponent physic = (PhysicsComponent) entityManager.getComponentOfClass(PhysicsComponent.class.getName(), entity);
 			GraphicsComponent graphic = (GraphicsComponent) entityManager.getComponentOfClass(GraphicsComponent.class.getName(), entity);
@@ -210,18 +234,16 @@ public class Game {
 			LifeComponent life=(LifeComponent) entityManager.getComponentOfClass(LifeComponent.class.getName(), entity);
 			UserInputComponent user=(UserInputComponent) entityManager.getComponentOfClass(UserInputComponent.class.getName(), entity);
 			if(graphic != null && physic!=null && move==null && audio==null &&score==null && life==null&& user==null) {
-				etat=true;
+				
 				return ;
 		    }
-			
 			}
-		 if(etat=true) {
+		
 		   board.refreshlevel(level+1);
-		   etat=false;
-          
+		
 		 }
 		
-			}
+		
 	private void renderLives() {
 		if(life.getLives() != lives) {
 			lives = life.getLives();

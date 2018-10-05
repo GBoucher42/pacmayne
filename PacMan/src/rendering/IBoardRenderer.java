@@ -12,7 +12,7 @@ public interface IBoardRenderer {
 
 	void refreshLives(int lives);
 
-	void refreshFps(int fps);
+	void refreshFps(int Fps);
 
 	void refreshlevel(int level);
 
