@@ -44,7 +44,7 @@ public class GameAudioSystem extends SystemBase implements Runnable{
 	        AudioInputStream audioInputStream; 
 	        
 	        audioInputStream = AudioSystem.getAudioInputStream(new File("ressource/audio/background-music.wav"));
-	        Clip clip = AudioSystem.getClip();
+	        clip = AudioSystem.getClip();
 	        clip.open(audioInputStream);
 	        clip.loop(Clip.LOOP_CONTINUOUSLY);;
 	    } catch(Exception error) {           
@@ -52,8 +52,13 @@ public class GameAudioSystem extends SystemBase implements Runnable{
 	    }
 	}
 	
+	private void stopBackgroundMusic() {
+		clip.stop();
+	}
+	
 	public void stopThread() {
-		isRunning = false;		
+		isRunning = false;	
+		stopBackgroundMusic();
 	}
 
 	@Override

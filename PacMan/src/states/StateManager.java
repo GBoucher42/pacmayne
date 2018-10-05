@@ -23,12 +23,20 @@ public class StateManager {
 	}
 	
 	public static void setCurrentState(IState newState) {
+		if(currentState != null) {
+			currentState.onExit();
+		}
 		IState tempState = currentState;
 		currentState = newState;
 		lastState = tempState;
 	}
 	
+	public static IState getCurrentState() {
+		return currentState;
+	}
+
 	public static void rollBackToLastState() {
+		currentState.onExit();
 		IState tempState = currentState;
 		currentState = lastState;
 		lastState = tempState;

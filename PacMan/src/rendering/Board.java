@@ -9,7 +9,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import components.AudioComponent;
 import components.UserInputComponent;
 import entities.Entity;
 import entities.LivesImages;
@@ -22,8 +21,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.MediaPlayer.Status;
-import javafx.stage.Stage;
 import systemThreads.MessageEnum;
 import systemThreads.MessageQueue;;
 
@@ -53,7 +50,7 @@ public class Board extends BorderPane implements IBoardRenderer{
 		pane.setStyle("-fx-background-color: black;");
 		loadSounds();		
 		spritesPause = createWords(pause, 11*TILE_SIZE + TILE_SIZE/2, 17*TILE_SIZE, pane);
-		displaySprites(spritesPause, false);
+		hideSprites(spritesPause);
 
 	}	
 
@@ -63,6 +60,10 @@ public class Board extends BorderPane implements IBoardRenderer{
 		pane.getChildren().addAll(sprites);
 		footer();
 		header();
+	}
+	
+	public void dispose() {
+		this.getChildren().clear();
 	}
 	
 	private void header() {
@@ -105,49 +106,17 @@ public class Board extends BorderPane implements IBoardRenderer{
 	public void setPacManEntity(Entity pacman) {
 		this.pacman = pacman;
 	}
-
-	public void onKeyPressed(KeyCode keyCode) {
-		// TODO: adopt behavior to current state of state machine 
-		if(keyCode == keyCode.P) {
-			if(imagelives.getNblives() > 0) {
-				isRunning = !isRunning;				
-				displaySprites(spritesPause, !isRunning);
+	
+	@Override
+	public void pauseGame() {
+		if(imagelives.getNblives() > 0) {
+			isRunning = !isRunning;
+			if(isRunning) {
+				hideSprites(spritesPause);
+			} else {
+				displaySprites(spritesPause);
 			}
-
 		}
-//		if(keyCode == KeyCode.F) {
-//			Stage stage = (Stage) this.getScene().getWindow();
-//			stage.setFullScreen(!stage.isFullScreen());
-//		}
-
-		if(isRunning) {
-			switch(keyCode) {
-			case UP:
-				MessageQueue.addMessage(pacman, UserInputComponent.class.getName(), MessageEnum.UP);
-				break;
-			case DOWN:
-				MessageQueue.addMessage(pacman, UserInputComponent.class.getName(), MessageEnum.DOWN);
-				break;
-			case LEFT:
-				MessageQueue.addMessage(pacman, UserInputComponent.class.getName(), MessageEnum.LEFT);
-				break;
-			case RIGHT:
-				MessageQueue.addMessage(pacman, UserInputComponent.class.getName(), MessageEnum.RIGHT);
-				break;
-			case MINUS:
-				MessageQueue.addMessage(pacman, UserInputComponent.class.getName(), MessageEnum.VOLUME_DOWN);
-				break;
-			case PLUS:
-			case EQUALS:
-				MessageQueue.addMessage(pacman, UserInputComponent.class.getName(), MessageEnum.VOLUME_UP);
-				break;
-			case M:
-				MessageQueue.addMessage(pacman, UserInputComponent.class.getName(), MessageEnum.MUTE);
-				break;
-			default:
-				break;
-			}		
-		}		
 	}
 
 	public boolean isRunning() {
@@ -193,9 +162,15 @@ public class Board extends BorderPane implements IBoardRenderer{
 		return sprites;
 	}
 
-	private void displaySprites(ArrayList<Sprite> sprites, boolean isDisplayed) {
+	private void hideSprites(ArrayList<Sprite> sprites) {
 		for(Sprite sprite : sprites) {
-			sprite.setVisible(isDisplayed);
+			sprite.setVisible(false);
+		}
+	}
+
+	private void displaySprites(ArrayList<Sprite> sprites) {
+		for(Sprite sprite : sprites) {
+			sprite.setVisible(true);
 		}
 	}
 
@@ -211,7 +186,7 @@ public class Board extends BorderPane implements IBoardRenderer{
 			this.setRunning(false);
 			imagelives.removeLife();
 			spritesGameOver = createWords(gameOver, 9 * TILE_SIZE + TILE_SIZE / 2, 17 * TILE_SIZE, pane);
-			displaySprites(spritesGameOver, true);
+			displaySprites(spritesGameOver);
 		} else {
 
 			imagelives.removeLife();
@@ -219,10 +194,17 @@ public class Board extends BorderPane implements IBoardRenderer{
 	}
 	
 	@Override
-	public void displayPause(boolean isDisplayed) {
+	public void displayPause() {
 		if(!isPaused) {
-			displaySprites(spritesPause, isDisplayed);
-			isPaused = isDisplayed;
+			displaySprites(spritesPause);
+			isPaused = true;
+		}
+	}
+	@Override
+	public void hidePause() {
+		if(isPaused) {
+			hideSprites(spritesPause);
+			isPaused = false;
 		}
 	}
 }

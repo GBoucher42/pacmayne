@@ -18,6 +18,10 @@ public class VerticalMenu {
 		menuBox.setAlignment(Pos.TOP_CENTER);		
 		menuBox.setTranslateX(100);
 		menuBox.setTranslateY(100);
+		menuBox.setPrefSize(width /2, height);
+		menuBox.setStyle("-fx-padding: 10;" + "-fx-border-style: solid inside;"
+		        + "-fx-border-width: 2;" + "-fx-border-insets: 5;"
+		        + "-fx-border-radius: 5;" + "-fx-border-color: blue;");
 		
 		root.getChildren().add(menuBox);
 	}	

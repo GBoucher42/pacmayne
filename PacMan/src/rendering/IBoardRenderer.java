@@ -22,6 +22,12 @@ public interface IBoardRenderer {
 
 	void initLives(int lives);
 	
-	void displayPause(boolean isDisplayed);
+	void displayPause();
+	
+	void hidePause();
+	
+	void pauseGame();
+	
+	void dispose();
 }
 

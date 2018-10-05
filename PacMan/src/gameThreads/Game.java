@@ -19,7 +19,6 @@ import java.util.logging.Logger;
 import components.GraphicsComponent;
 import components.LifeComponent;
 import components.MoveComponent;
-import components.PhysicsComponent;
 import components.ScoreComponent;
 import entities.Direction;
 import entities.Entity;
@@ -61,6 +60,7 @@ public class Game {
 	private Thread graphicThread;
 	private int lives;
 	private LifeComponent life;
+	private volatile boolean isRunning = true;
 	
 	Maze map;
 	
@@ -153,7 +153,11 @@ public class Game {
         {
 			long lastUpdate = System.nanoTime();
             public void handle(long now)
-            {            
+            { 
+    			if(!isRunning) {
+    				this.stop();
+    				return;
+    			}
             	if (now - lastUpdate >= 30_000_000) {
             		lastUpdate = System.nanoTime();
             		update();  
@@ -183,9 +187,9 @@ public class Game {
 			board.refreshScore(score.getScore());
 		}
 		if(!isFocused || !inView) { // || !board.isRunning() enlever car créer le bug GAMEUOVER
-			board.displayPause(true);
+			board.displayPause();
 		} else {
-			board.displayPause(false);
+			board.hidePause();
 		}
 	
 		
@@ -231,5 +235,20 @@ public class Game {
 	
 	public void setInView(boolean inView) {
 		this.inView = inView;
+	}
+	
+	public IBoardRenderer getBoard() {
+		return board;
+	}
+
+	public Entity getPacman() {
+		return pacman;
+	}
+	
+	public void stopGame() {
+		isRunning = false;
+		stopThreads();
+		entityManager.dispose();
+		board.dispose();
 	}
 }
