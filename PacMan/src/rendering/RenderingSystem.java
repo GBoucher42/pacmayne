@@ -3,6 +3,8 @@ package rendering;
 import static configs.GameConfig.GAME_WIDTH;
 import static configs.GameConfig.HEIGTH_WINDOW;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -12,27 +14,41 @@ import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import scenes.VerticalMenu;
+import states.ControlMenuState;
+import states.InPlayGameState;
+import states.StateManager;
 
 public class RenderingSystem extends Application {
 	
-	private static final Logger LOGGER = Logger.getLogger( RenderingSystem.class.getName() );
+	private static final Logger LOGGER = Logger.getLogger(RenderingSystem.class.getName());
+	private Map<String, Parent> sceneRoots = new HashMap<>();
+	private Stage primaryStage;
 	
-
-	private Stage initStage(Stage primaryStage ,int width ,int height ) {
-		try {
+	private Stage initStage(Stage stage, int width, int height ) {
+		primaryStage = stage;
+		
+		try {			
 			primaryStage.setTitle("PacMan");
 			Board root = new Board();
+			createAllGameMenus();
+
+			Scene scene = new Scene(root, width, height, Color.BLACK);
+//			Scene scene = new Scene(sceneRoots.get("MainMenu"), width, height, Color.BLACK);
 			
-			Scene scene = new Scene(root,width,height,Color.BLACK);
-			scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> root.onKeyPressed(event.getCode()));
+			scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> handleOnKeyPressed(event.getCode()));
+			
 			primaryStage.setScene(scene);
+			
 			primaryStage.setFullScreenExitHint("");
 			primaryStage.setResizable(false);
 			primaryStage.show();
@@ -44,11 +60,11 @@ public class RenderingSystem extends Application {
 		}
 		
 		return primaryStage;
-	}
+	}	
 
 	@Override
-	public void start(Stage primaryStage) throws Exception {
-		initStage(primaryStage,GAME_WIDTH,HEIGTH_WINDOW);
+	public void start(Stage stage) throws Exception {
+		initStage(stage, GAME_WIDTH, HEIGTH_WINDOW);
 		Game gameInstance = new Game((IBoardRenderer) primaryStage.getScene().getRoot());
 		
 		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -65,6 +81,7 @@ public class RenderingSystem extends Application {
 	             });
 	         }
 	     });
+		
 		primaryStage.focusedProperty().addListener(new ChangeListener<Boolean>() {
 			@Override
 			public void changed(ObservableValue<? extends Boolean > ov, Boolean t, Boolean t1) {
@@ -78,7 +95,36 @@ public class RenderingSystem extends Application {
 				gameInstance.setInView(t);
 			}
 		});
+		
  		gameInstance.run();
+	}
+	
+	private void handleOnKeyPressed(KeyCode key) {
+		if (key == KeyCode.F) {			
+			primaryStage.setFullScreen(!primaryStage.isFullScreen());
+		} else {
+			StateManager.handleUserInputs(key);
+		}
+	}
+	
+	private void createAllGameMenus() {
+		VerticalMenu mainMenu = new VerticalMenu(500, 500);
+		mainMenu.addMenuItem("PLAY", () -> StateManager.setCurrentState(new InPlayGameState()));
+		mainMenu.addMenuItem("CONTROLS", () -> StateManager.setCurrentState(new ControlMenuState(mainMenu)));
+		mainMenu.addMenuItem("EXIT", () -> System.exit(0));
+		
+		VerticalMenu controlMenu = new VerticalMenu(500, 500);
+		controlMenu.addMenuItem("P: PAUSE/UNPAUSE THE GAME", () -> {});
+		controlMenu.addMenuItem("M: MUTE/UNMUTE THE GAME", () -> {});
+		controlMenu.addMenuItem("F: TOGGLE FULLSCREEN", () -> {});
+		controlMenu.addMenuItem("ESC: GAME MENU", () -> {});
+		controlMenu.addMenuItem("GO BACK", () -> StateManager.rollBackToLastState());
+		
+		// TODO: Change key to enum or something
+		sceneRoots.put("MainMenu", mainMenu.getContent());
+		sceneRoots.put("ControlsMenu", controlMenu.getContent());
+		
+		// TODO: init other menus here..
 	}
 	
 	private void letterbox(final Scene scene, final Pane contentPane) {

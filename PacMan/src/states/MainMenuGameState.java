@@ -1,15 +1,16 @@
 package states;
 
-import gameThreads.Game;
 import javafx.scene.input.KeyCode;
 
-//DESIGN PATTERN : State
-public class InPlayGameState implements IState{
+import scenes.VerticalMenu;
 
-	private Game game;
+//DESIGN PATTERN : State
+public class MainMenuGameState implements IState {
+
+	private final VerticalMenu menu;
 	
-	public InPlayGameState(Game game) {
-		this.game = game;
+	public MainMenuGameState(VerticalMenu menu) {
+		this.menu = menu;
 	}
 	
 	@Override
@@ -20,10 +21,21 @@ public class InPlayGameState implements IState{
 
 	@Override
 	public void handleInput(KeyCode key) {
-		// TODO Auto-generated method stub
-		
+		switch(key) {
+		case ENTER:
+			menu.getCurrentItem().activate();
+			break;
+		case UP:
+			 menu.selectPreviousItem();
+			break;
+		case DOWN:
+			menu.selectNextItem();
+			break;
+		default:
+			break;
+		}		
 	}
-
+	
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
@@ -41,4 +53,5 @@ public class InPlayGameState implements IState{
 		// TODO Auto-generated method stub
 		
 	}
+
 }

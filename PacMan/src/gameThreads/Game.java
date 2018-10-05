@@ -183,9 +183,9 @@ public class Game {
 			board.refreshScore(score.getScore());
 		}
 		if(!isFocused || !inView) { // || !board.isRunning() enlever car créer le bug GAMEUOVER
-			board.displayPause();
+			board.displayPause(true);
 		} else {
-			board.hidePause();
+			board.displayPause(false);
 		}
 	
 		

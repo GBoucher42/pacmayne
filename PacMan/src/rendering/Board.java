@@ -30,14 +30,13 @@ import systemThreads.MessageQueue;;
 public class Board extends BorderPane implements IBoardRenderer{
 	private boolean isRunning = true;
 	private FontRepository fontRepository = new FontRepository();
-	private MediaPlayer pacmanEatingPlayer;
 	@FXML private ImageView imglogo ;
 	private	int life;
 	private Pane paneFooter= new Pane();
 	private Pane paneHeader =new Pane();
 	private Pane pane =new Pane();
 	private Pane ScorePane= new Pane();
-	Pane livePane =new Pane();
+	private Pane livePane =new Pane();
 	private char[] pause = {'p', 'a', 'u', 's', 'e'};
 	private ArrayList<Sprite> spritesPause;
 	private ArrayList<Sprite> spritesScore;
@@ -46,16 +45,15 @@ public class Board extends BorderPane implements IBoardRenderer{
 	private char[] gameOver = {'g', 'a', 'm', 'e', ' ', 'o','v','e','r'};
 	private ArrayList<Sprite> spritesGameOver;
 	private ArrayList<Sprite> spritesTextScore;
-	private ArrayList<Sprite> spritesNumScore;
-	private int[]number ;
 	private LivesImages imagelives;
 	private boolean isPaused = false;
+	
 	public Board()
 	{	
 		pane.setStyle("-fx-background-color: black;");
 		loadSounds();		
 		spritesPause = createWords(pause, 11*TILE_SIZE + TILE_SIZE/2, 17*TILE_SIZE, pane);
-		hideSprites(spritesPause);
+		displaySprites(spritesPause, false);
 
 	}	
 
@@ -66,6 +64,7 @@ public class Board extends BorderPane implements IBoardRenderer{
 		footer();
 		header();
 	}
+	
 	private void header() {
 		Image image = new Image("file:ressource/sprites/logo.png");
 		imglogo = new ImageView();
@@ -77,6 +76,7 @@ public class Board extends BorderPane implements IBoardRenderer{
 		paneHeader.setPrefSize(GAME_WIDTH,HEIGTH_HEADER);   
 		this.setTop(paneHeader);
 	}
+	
 	private void footer() {
 		spritesTextScore= createWords(textScore, 350, 0, ScorePane);
 		paneFooter.getChildren().add(ScorePane);
@@ -84,20 +84,17 @@ public class Board extends BorderPane implements IBoardRenderer{
 		paneFooter.setStyle("-fx-background-color: black;");
 		paneFooter.setPrefSize(GAME_WIDTH,HEIGTH_FOOTER);
 		this.setBottom(paneFooter);
-
-
 	}
 
 	public void refreshScore(int score) {
-		int []  number =Integer.toString(score).chars().map(c -> c-'0').toArray();
-		spritesNumScore=CreateScore(number,475,0, ScorePane);
-
+		int[] number = Integer.toString(score).chars().map(c -> c-'0').toArray();
+		spritesScore = CreateScore(number,475,0, ScorePane);
 	}
 
 	private void loadSounds() {
 		String musicFile = "ressource/audio/pacman-eating.wav"; 
 		Media sound = new Media(new File(musicFile).toURI().toString());
-		pacmanEatingPlayer = new MediaPlayer(sound);
+		new MediaPlayer(sound);
 	}
 
 	public void spawnAnimatables(List<Sprite> movingSprites)
@@ -113,19 +110,15 @@ public class Board extends BorderPane implements IBoardRenderer{
 		// TODO: adopt behavior to current state of state machine 
 		if(keyCode == keyCode.P) {
 			if(imagelives.getNblives() > 0) {
-				isRunning = !isRunning;
-				if(isRunning) {
-					hideSprites(spritesPause);
-				} else {
-					displaySprites(spritesPause);
-				}
+				isRunning = !isRunning;				
+				displaySprites(spritesPause, !isRunning);
 			}
 
 		}
-		if(keyCode == keyCode.F) {
-			Stage stage = (Stage) this.getScene().getWindow();
-			stage.setFullScreen(!stage.isFullScreen());
-		}
+//		if(keyCode == KeyCode.F) {
+//			Stage stage = (Stage) this.getScene().getWindow();
+//			stage.setFullScreen(!stage.isFullScreen());
+//		}
 
 		if(isRunning) {
 			switch(keyCode) {
@@ -155,19 +148,6 @@ public class Board extends BorderPane implements IBoardRenderer{
 				break;
 			}		
 		}		
-	}
-
-	private void playEatingAudio() {
-		if(!Status.PLAYING.equals(pacmanEatingPlayer.getStatus())) {
-			pacmanEatingPlayer.play();
-
-		}
-	}
-
-	private void stopEatingAudio() {
-		if(Status.PLAYING.equals(pacmanEatingPlayer.getStatus())) {
-			pacmanEatingPlayer.stop();
-		}
 	}
 
 	public boolean isRunning() {
@@ -213,15 +193,9 @@ public class Board extends BorderPane implements IBoardRenderer{
 		return sprites;
 	}
 
-	private void hideSprites(ArrayList<Sprite> sprites) {
+	private void displaySprites(ArrayList<Sprite> sprites, boolean isDisplayed) {
 		for(Sprite sprite : sprites) {
-			sprite.setVisible(false);
-		}
-	}
-
-	private void displaySprites(ArrayList<Sprite> sprites) {
-		for(Sprite sprite : sprites) {
-			sprite.setVisible(true);
+			sprite.setVisible(isDisplayed);
 		}
 	}
 
@@ -237,28 +211,18 @@ public class Board extends BorderPane implements IBoardRenderer{
 			this.setRunning(false);
 			imagelives.removeLife();
 			spritesGameOver = createWords(gameOver, 9 * TILE_SIZE + TILE_SIZE / 2, 17 * TILE_SIZE, pane);
-			displaySprites(spritesGameOver);
+			displaySprites(spritesGameOver, true);
 		} else {
 
 			imagelives.removeLife();
-
 		}
-
 	}
+	
 	@Override
-	public void displayPause() {
+	public void displayPause(boolean isDisplayed) {
 		if(!isPaused) {
-			displaySprites(spritesPause);
-			isPaused = true;
+			displaySprites(spritesPause, isDisplayed);
+			isPaused = isDisplayed;
 		}
 	}
-	@Override
-	public void hidePause() {
-		if(isPaused) {
-			hideSprites(spritesPause);
-			isPaused = false;
-		}
-	}
-
-
 }
