@@ -170,7 +170,7 @@ public class Game {
             	if (now - lastUpdate >= 30_000_000) {
             		lastUpdate = System.nanoTime();
             		fps=Frames;
-            		board.refreshFps(fps);
+            		board.refreshFps(fps/3);
             		update();  
             		render();
             	
