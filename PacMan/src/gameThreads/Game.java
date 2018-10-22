@@ -60,6 +60,7 @@ public class Game {
 	private Thread graphicThread;
 	private int lives;
 	private LifeComponent life;
+	private int frameCounter = 0;
 	private volatile boolean isRunning = true;
 	
 	Maze map;
@@ -152,6 +153,7 @@ public class Game {
 		new AnimationTimer()
         {
 			long lastUpdate = System.nanoTime();
+			long firstTime = lastUpdate;
             public void handle(long now)
             { 
     			if(!isRunning) {
@@ -160,9 +162,14 @@ public class Game {
     			}
             	if (now - lastUpdate >= 30_000_000) {
             		lastUpdate = System.nanoTime();
+            		++frameCounter;
             		update();  
             		render();
-            		
+            	}
+            	if((now - firstTime) >= 1000000000) {
+            		board.refreshFps(frameCounter);
+            		frameCounter = 0;
+            		firstTime = now;
             	}
             }
         }.start();
