@@ -1,10 +1,11 @@
 package configs;
 
 public class GameConfig {
-	
 
-  public static final int HEIGTH_FOOTER=40;
-  public static final int HEIGTH_HEADER=50;
+
+	public static final int HEIGTH_FOOTER=40;
+	public static final int HEIGTH_HEADER=70;
+	public static final int SIZE_IMG_LOGO = 49;
 	public static final int TILE_SIZE = 20;
 	public static final int GAME_TILE_WIDTH_COUNT = 28;
 	public static final int GAME_TILE_HEIGHT_COUNT = 31;
@@ -24,6 +25,6 @@ public class GameConfig {
 	public static final int HEIGTH_WINDOW = HEIGTH_FOOTER + HEIGTH_HEADER + GAME_HEIGHT;
 
 	//TODO: read config file
-	
+
 	// holds resolution, fullscreen params, etc
 }
