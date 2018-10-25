@@ -19,7 +19,6 @@ import java.util.logging.Logger;
 import components.GraphicsComponent;
 import components.LifeComponent;
 import components.MoveComponent;
-import components.PhysicsComponent;
 import components.ScoreComponent;
 import entities.Direction;
 import entities.Entity;
@@ -61,6 +60,8 @@ public class Game {
 	private Thread graphicThread;
 	private int lives;
 	private LifeComponent life;
+	private int frameCounter = 0;
+	private volatile boolean isRunning = true;
 	
 	Maze map;
 	
@@ -119,10 +120,10 @@ public class Game {
 		List<Sprite> sprites = new ArrayList<Sprite>();
 		EntityFactory factory = new EntityFactory(entityManager);
 		pacman = factory.createPacMan(PACMAN_SPAWN_POINT_X, PACMAN_SPAWN_POINT_Y, Direction.RIGHT);
-		factory.createGhost(CLYDE_SPAWN_POINT_X, CLYDE_SPAWN_POINT_Y, Direction.LEFT, "clyde");
-		factory.createGhost(BLINKY_SPAWN_POINT_X, BLINKY_SPAWN_POINT_Y, Direction.LEFT, "blinky");
-		factory.createGhost(INKY_SPAWN_POINT_X, INKY_SPAWN_POINT_Y, Direction.RIGHT, "inky");
-		factory.createGhost(PINKY_SPAWN_POINT_X, PINKY_SPAWN_POINT_Y, Direction.RIGHT, "pinky");
+		factory.createGhost(CLYDE_SPAWN_POINT_X, CLYDE_SPAWN_POINT_Y, Direction.UP, "clyde");
+		factory.createGhost(BLINKY_SPAWN_POINT_X, BLINKY_SPAWN_POINT_Y, Direction.UP, "blinky");
+		factory.createGhost(INKY_SPAWN_POINT_X, INKY_SPAWN_POINT_Y, Direction.UP, "inky");
+		factory.createGhost(PINKY_SPAWN_POINT_X, PINKY_SPAWN_POINT_Y, Direction.UP, "pinky");
 		board.setPacManEntity(pacman);
 		
 		List<Entity> entities = entityManager.getAllEntitiesPosessingComponentOfClass(MoveComponent.class.getName());
@@ -152,13 +153,23 @@ public class Game {
 		new AnimationTimer()
         {
 			long lastUpdate = System.nanoTime();
+			long firstTime = lastUpdate;
             public void handle(long now)
-            {            
+            { 
+    			if(!isRunning) {
+    				this.stop();
+    				return;
+    			}
             	if (now - lastUpdate >= 30_000_000) {
             		lastUpdate = System.nanoTime();
+            		++frameCounter;
             		update();  
             		render();
-            		
+            	}
+            	if((now - firstTime) >= 1000000000) {
+            		board.refreshFps(frameCounter);
+            		frameCounter = 0;
+            		firstTime = now;
             	}
             }
         }.start();
@@ -231,5 +242,20 @@ public class Game {
 	
 	public void setInView(boolean inView) {
 		this.inView = inView;
+	}
+	
+	public IBoardRenderer getBoard() {
+		return board;
+	}
+
+	public Entity getPacman() {
+		return pacman;
+	}
+	
+	public void stopGame() {
+		isRunning = false;
+		stopThreads();
+		entityManager.dispose();
+		board.dispose();
 	}
 }

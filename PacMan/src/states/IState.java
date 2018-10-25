@@ -1,10 +1,16 @@
 package states;
 
+import javafx.scene.input.KeyCode;
+
 //DESIGN PATTERN : State
 public interface IState {
-	void onEnter();
+	void loadResources();
 	
-	void onUpdate();
+	void handleInput(KeyCode key);
+	
+	void update();
+	
+	void onEnter();
 	
 	void onExit();
 }

@@ -3,6 +3,8 @@ package rendering;
 import static configs.GameConfig.GAME_WIDTH;
 import static configs.GameConfig.HEIGTH_WINDOW;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -12,44 +14,55 @@ import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import scenes.VerticalMenu;
+import states.ControlMenuState;
+import states.InPlayGameState;
+import states.MainMenuGameState;
+import states.QuitMenuGameState;
+import states.StateManager;
 
 public class RenderingSystem extends Application {
 	
-	private static final Logger LOGGER = Logger.getLogger( RenderingSystem.class.getName() );
+	private static final Logger LOGGER = Logger.getLogger(RenderingSystem.class.getName());
+	private Map<String, Parent> sceneRoots = new HashMap<>();
+	private Stage primaryStage;
 	
-
-	private Stage initStage(Stage primaryStage ,int width ,int height ) {
-		try {
+	private Stage initStage(Stage stage, int width, int height) {
+		try {			
 			primaryStage.setTitle("PacMan");
-			Board root = new Board();
+
+//			Scene scene = new Scene(root, width, height, Color.BLACK);
+			Scene scene = new Scene(sceneRoots.get(MainMenuGameState.class.getName()), width, height, Color.BLACK);
 			
-			Scene scene = new Scene(root,width,height,Color.BLACK);
-			scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> root.onKeyPressed(event.getCode()));
+			scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> handleOnKeyPressed(event.getCode()));
+			
 			primaryStage.setScene(scene);
+			
 			primaryStage.setFullScreenExitHint("");
 			primaryStage.setResizable(false);
 			primaryStage.show();
 			
-			letterbox(scene, root);
+			letterbox(scene, (Pane) sceneRoots.get(MainMenuGameState.class.getName()));
 			
 		} catch(Exception e) {
 			LOGGER.log(Level.SEVERE, e.getMessage());
 		}
 		
 		return primaryStage;
-	}
-
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-		initStage(primaryStage,GAME_WIDTH,HEIGTH_WINDOW);
-		Game gameInstance = new Game((IBoardRenderer) primaryStage.getScene().getRoot());
+	}	
+	
+	private Game startGame(Stage stage) {
+		sceneRoots.put(InPlayGameState.class.getName(), new Board());
+		Game gameInstance = new Game((IBoardRenderer) sceneRoots.get(InPlayGameState.class.getName()));
 		
 		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 
@@ -65,6 +78,7 @@ public class RenderingSystem extends Application {
 	             });
 	         }
 	     });
+		
 		primaryStage.focusedProperty().addListener(new ChangeListener<Boolean>() {
 			@Override
 			public void changed(ObservableValue<? extends Boolean > ov, Boolean t, Boolean t1) {
@@ -78,7 +92,64 @@ public class RenderingSystem extends Application {
 				gameInstance.setInView(t);
 			}
 		});
- 		gameInstance.run();
+		
+		gameInstance.run();
+		
+		return gameInstance;
+	}
+	
+	private void stopGame(){
+		sceneRoots.remove(InPlayGameState.class.getName());
+	}
+	
+
+	@Override
+	public void start(Stage stage) throws Exception {
+		primaryStage = stage;
+		createAllGameMenus();
+		initStage(stage, GAME_WIDTH, HEIGTH_WINDOW);
+	}
+	
+	private void handleOnKeyPressed(KeyCode key) {
+		if (key == KeyCode.F) {			
+			primaryStage.setFullScreen(!primaryStage.isFullScreen());
+		} else {
+			StateManager.handleUserInputs(key);
+		}
+	}
+	
+	private void createAllGameMenus() {
+		VerticalMenu controlMenu = new VerticalMenu(500, 500);
+		controlMenu.addMenuItem("P: PAUSE/UNPAUSE THE GAME", () -> {});
+		controlMenu.addMenuItem("M: MUTE/UNMUTE THE GAME", () -> {});
+		controlMenu.addMenuItem("F: TOGGLE FULLSCREEN", () -> {});
+		controlMenu.addMenuItem("ESC: GAME MENU", () -> {});
+		controlMenu.addMenuItem("GO BACK", () -> {StateManager.rollBackToLastState();
+			primaryStage.getScene().setRoot(sceneRoots.get(StateManager.getCurrentState().getClass().getName()));});
+		
+		
+		VerticalMenu mainMenu = new VerticalMenu(500, 500);
+		
+		VerticalMenu quitMenu = new VerticalMenu(500, 500);
+		quitMenu.addMenuItem("DO YOU WANT TO QUIT?", () -> {});
+		quitMenu.addMenuItem("YES", () -> {StateManager.setCurrentState(new MainMenuGameState(mainMenu));
+		primaryStage.getScene().setRoot(sceneRoots.get(MainMenuGameState.class.getName()));});
+		quitMenu.addMenuItem("NO", () -> {});
+		
+		mainMenu.addMenuItem("PLAY", () -> {StateManager.setCurrentState(new InPlayGameState(startGame(primaryStage), () -> {StateManager.setCurrentState(new QuitMenuGameState(quitMenu));
+		primaryStage.getScene().setRoot(sceneRoots.get(QuitMenuGameState.class.getName()));}));
+			primaryStage.getScene().setRoot(sceneRoots.get(InPlayGameState.class.getName()));});
+		mainMenu.addMenuItem("CONTROLS", () -> {StateManager.setCurrentState(new ControlMenuState(controlMenu));
+			primaryStage.getScene().setRoot(sceneRoots.get(ControlMenuState.class.getName()));});
+		mainMenu.addMenuItem("EXIT", () -> System.exit(0));
+		
+		// TODO: Change key to enum or something
+		sceneRoots.put(MainMenuGameState.class.getName(), mainMenu.getContent());
+		sceneRoots.put(ControlMenuState.class.getName(), controlMenu.getContent());
+		sceneRoots.put(QuitMenuGameState.class.getName(), quitMenu.getContent());
+		StateManager.setCurrentState(new MainMenuGameState(mainMenu));
+		
+		// TODO: init other menus here..
 	}
 	
 	private void letterbox(final Scene scene, final Pane contentPane) {

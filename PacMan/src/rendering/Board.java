@@ -4,12 +4,12 @@ import static configs.GameConfig.GAME_WIDTH;
 import static configs.GameConfig.HEIGTH_FOOTER;
 import static configs.GameConfig.HEIGTH_HEADER;
 import static configs.GameConfig.TILE_SIZE;
+import static configs.GameConfig.SIZE_IMG_LOGO;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import components.AudioComponent;
 import components.UserInputComponent;
 import entities.Entity;
 import entities.LivesImages;
@@ -22,39 +22,39 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.MediaPlayer.Status;
-import javafx.stage.Stage;
 import systemThreads.MessageEnum;
 import systemThreads.MessageQueue;;
 
 public class Board extends BorderPane implements IBoardRenderer{
 	private boolean isRunning = true;
 	private FontRepository fontRepository = new FontRepository();
-	private MediaPlayer pacmanEatingPlayer;
 	@FXML private ImageView imglogo ;
 	private	int life;
 	private Pane paneFooter= new Pane();
 	private Pane paneHeader =new Pane();
 	private Pane pane =new Pane();
 	private Pane ScorePane= new Pane();
-	Pane livePane =new Pane();
+	private Pane livePane =new Pane();
 	private char[] pause = {'p', 'a', 'u', 's', 'e'};
 	private ArrayList<Sprite> spritesPause;
 	private ArrayList<Sprite> spritesScore;
 	private Entity pacman;
 	private char[] textScore = {'s', 'c', 'o', 'r', 'e'};
 	private char[] gameOver = {'g', 'a', 'm', 'e', ' ', 'o','v','e','r'};
+	private char[] textFps = {'f', 'p', 's'};
+	private ArrayList<Sprite> spritesfps;
 	private ArrayList<Sprite> spritesGameOver;
 	private ArrayList<Sprite> spritesTextScore;
 	private ArrayList<Sprite> spritesNumScore;
-	private int[]number ;
 	private LivesImages imagelives;
 	private boolean isPaused = false;
+	
 	public Board()
 	{	
 		pane.setStyle("-fx-background-color: black;");
 		loadSounds();		
 		spritesPause = createWords(pause, 11*TILE_SIZE + TILE_SIZE/2, 17*TILE_SIZE, pane);
+		spritesfps = createWords(textFps, 10, 48, paneHeader);
 		hideSprites(spritesPause);
 
 	}	
@@ -66,17 +66,23 @@ public class Board extends BorderPane implements IBoardRenderer{
 		footer();
 		header();
 	}
+	
+	public void dispose() {
+		this.getChildren().clear();
+	}
+	
 	private void header() {
 		Image image = new Image("file:ressource/sprites/logo.png");
 		imglogo = new ImageView();
 		imglogo.setImage(image);
-		imglogo.setFitHeight(HEIGTH_HEADER);
+		imglogo.setFitHeight(SIZE_IMG_LOGO);
 		imglogo.setFitWidth(GAME_WIDTH);
 		paneHeader.getChildren().add(imglogo);
 		paneHeader.setStyle("-fx-background-color: black;");
 		paneHeader.setPrefSize(GAME_WIDTH,HEIGTH_HEADER);   
 		this.setTop(paneHeader);
 	}
+	
 	private void footer() {
 		spritesTextScore= createWords(textScore, 350, 0, ScorePane);
 		paneFooter.getChildren().add(ScorePane);
@@ -84,20 +90,17 @@ public class Board extends BorderPane implements IBoardRenderer{
 		paneFooter.setStyle("-fx-background-color: black;");
 		paneFooter.setPrefSize(GAME_WIDTH,HEIGTH_FOOTER);
 		this.setBottom(paneFooter);
-
-
 	}
 
 	public void refreshScore(int score) {
-		int []  number =Integer.toString(score).chars().map(c -> c-'0').toArray();
-		spritesNumScore=CreateScore(number,475,0, ScorePane);
-
+		int[] number = Integer.toString(score).chars().map(c -> c-'0').toArray();
+		spritesScore = CreateScore(number,475,0, ScorePane);
 	}
 
 	private void loadSounds() {
 		String musicFile = "ressource/audio/pacman-eating.wav"; 
 		Media sound = new Media(new File(musicFile).toURI().toString());
-		pacmanEatingPlayer = new MediaPlayer(sound);
+		new MediaPlayer(sound);
 	}
 
 	public void spawnAnimatables(List<Sprite> movingSprites)
@@ -108,65 +111,16 @@ public class Board extends BorderPane implements IBoardRenderer{
 	public void setPacManEntity(Entity pacman) {
 		this.pacman = pacman;
 	}
-
-	public void onKeyPressed(KeyCode keyCode) {
-		// TODO: adopt behavior to current state of state machine 
-		if(keyCode == keyCode.P) {
-			if(imagelives.getNblives() > 0) {
-				isRunning = !isRunning;
-				if(isRunning) {
-					hideSprites(spritesPause);
-				} else {
-					displaySprites(spritesPause);
-				}
+	
+	@Override
+	public void pauseGame() {
+		if(imagelives.getNblives() > 0) {
+			isRunning = !isRunning;
+			if(isRunning) {
+				hideSprites(spritesPause);
+			} else {
+				displaySprites(spritesPause);
 			}
-
-		}
-		if(keyCode == keyCode.F) {
-			Stage stage = (Stage) this.getScene().getWindow();
-			stage.setFullScreen(!stage.isFullScreen());
-		}
-
-		if(isRunning) {
-			switch(keyCode) {
-			case UP:
-				MessageQueue.addMessage(pacman, UserInputComponent.class.getName(), MessageEnum.UP);
-				break;
-			case DOWN:
-				MessageQueue.addMessage(pacman, UserInputComponent.class.getName(), MessageEnum.DOWN);
-				break;
-			case LEFT:
-				MessageQueue.addMessage(pacman, UserInputComponent.class.getName(), MessageEnum.LEFT);
-				break;
-			case RIGHT:
-				MessageQueue.addMessage(pacman, UserInputComponent.class.getName(), MessageEnum.RIGHT);
-				break;
-			case MINUS:
-				MessageQueue.addMessage(pacman, UserInputComponent.class.getName(), MessageEnum.VOLUME_DOWN);
-				break;
-			case PLUS:
-			case EQUALS:
-				MessageQueue.addMessage(pacman, UserInputComponent.class.getName(), MessageEnum.VOLUME_UP);
-				break;
-			case M:
-				MessageQueue.addMessage(pacman, UserInputComponent.class.getName(), MessageEnum.MUTE);
-				break;
-			default:
-				break;
-			}		
-		}		
-	}
-
-	private void playEatingAudio() {
-		if(!Status.PLAYING.equals(pacmanEatingPlayer.getStatus())) {
-			pacmanEatingPlayer.play();
-
-		}
-	}
-
-	private void stopEatingAudio() {
-		if(Status.PLAYING.equals(pacmanEatingPlayer.getStatus())) {
-			pacmanEatingPlayer.stop();
 		}
 	}
 
@@ -241,10 +195,9 @@ public class Board extends BorderPane implements IBoardRenderer{
 		} else {
 
 			imagelives.removeLife();
-
 		}
-
 	}
+	
 	@Override
 	public void displayPause() {
 		if(!isPaused) {
@@ -260,5 +213,10 @@ public class Board extends BorderPane implements IBoardRenderer{
 		}
 	}
 
-
+	@Override
+	public void refreshFps(int fps) {
+		int []  numFPS =Integer.toString(fps).chars().map(c -> c-'0').toArray();
+		spritesNumScore = CreateScore(numFPS,100,48,paneHeader);
+		
+	}
 }

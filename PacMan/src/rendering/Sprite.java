@@ -36,8 +36,14 @@ public class Sprite extends StackPane {
 	}
 	
 	public void setImage(String imgPath) {
-		Image img = new Image("file:" + imgPath);
-		image.setImage(img);
+		try {
+			Image img = new Image("file:" + imgPath);
+			image.setImage(img);
+		} catch (Exception e)
+		{
+			// temp fix
+		}
+		
 	}
 	
 	public Bounds getBounds(){

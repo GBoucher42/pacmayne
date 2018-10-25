@@ -42,7 +42,7 @@ public class PhysicsSystem extends SystemBase implements Runnable {
 					MessageQueue.addMessage(pacman, ScoreComponent.class.getName(), MessageEnum.SUPERGUMPOINTS);
 					MessageQueue.addMessage(pacman, AudioComponent.class.getName(), MessageEnum.EATEN);
 				} else if(physic.getCollisionType() == "Ghost") {
-				System.out.println(physic.getCollisionType());
+					System.out.println(physic.getCollisionType());
 					MessageQueue.addMessage(pacman, LifeComponent.class.getName(), MessageEnum.KILLED);
 
                // MessageQueue.addMessage(pacman, GraphicsComponent.class.getName(), MessageEnum.EATEN);
