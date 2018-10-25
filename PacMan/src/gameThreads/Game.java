@@ -32,6 +32,7 @@ import rendering.Sprite;
 import systemThreads.AISystem;
 import systemThreads.GameAudioSystem;
 import systemThreads.GraphicsSystem;
+import systemThreads.InvincibleSystem;
 import systemThreads.LifeSystem;
 import systemThreads.MoveSystem;
 import systemThreads.PhysicsSystem;
@@ -52,6 +53,7 @@ public class Game {
 	private ScoreSystem scoreSystem;
 	private AISystem aiSystem;
 	private LifeSystem lifeSystem;
+	private InvincibleSystem invincibleSystem;
 	private Entity pacman;
 	private boolean isFocused = true;
 	private boolean inView = true;
@@ -113,6 +115,7 @@ public class Game {
 		scoreSystem = new ScoreSystem(entityManager);
 		aiSystem = new AISystem(entityManager);
 		lifeSystem = new LifeSystem(entityManager);
+		invincibleSystem = new InvincibleSystem(entityManager, pacman);
 		audioSystem = new GameAudioSystem(entityManager);
 	}
 	
@@ -183,8 +186,8 @@ public class Game {
 			aiSystem.update();
 			lifeSystem.update();
 			scoreSystem.update();
-		}
-		
+			invincibleSystem.update();
+		}			
 	}
 	
 	private void render() {
@@ -198,9 +201,8 @@ public class Game {
 		} else {
 			board.hidePause();
 		}
-	
-		
 	}
+	
 	private void renderLives() {
 		if(life.getLives() != lives) {
 			lives = life.getLives();
@@ -211,8 +213,8 @@ public class Game {
 			   stopThreads();
 		   }
 		}
-		
 	}
+	
 	public void stopThreads() {
 		physicsSystem.stopThread();
 		audioSystem.stopThread();
@@ -257,5 +259,9 @@ public class Game {
 		stopThreads();
 		entityManager.dispose();
 		board.dispose();
+	}
+	
+	public void pauseGame() {
+		
 	}
 }

@@ -16,15 +16,15 @@ public class GraphicsComponent implements IComponent{
 	boolean isAnimated = false;
 	private Map<Direction, Animation> animationGroup = new HashMap<Direction, Animation>();
 	
-	public GraphicsComponent(Direction direction, List<String> images, double x, double y) {
+	public GraphicsComponent(Direction direction, List<String> images, double x, double y, boolean oversize) {
 		addAnimation(direction, images);
-		this.sprite = new Sprite(currentImage, x, y);
+		this.sprite = new Sprite(currentImage, x, y, oversize);
 		isAnimated = true;
 	}
 	
-	public GraphicsComponent(String image, double x, double y) {
+	public GraphicsComponent(String image, double x, double y, boolean oversize) {
 		this.currentImage = image;
-		this.sprite = new Sprite(image, x, y);
+		this.sprite = new Sprite(image, x, y, oversize);
 		this.direction = Direction.NONE;
 	}
 	

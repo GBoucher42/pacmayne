@@ -13,6 +13,7 @@ import java.util.Map;
 import components.AIComponent;
 import components.AudioComponent;
 import components.GraphicsComponent;
+import components.InvincibleComponent;
 import components.LifeComponent;
 import components.MoveComponent;
 import components.PhysicsComponent;
@@ -31,14 +32,16 @@ public class EntityFactory {
 	public Entity createPacMan(int x, int y, Direction direction) {
 		Entity entity = entityManager.CreateEntity();
 		entityManager.addComponent(new PhysicsComponent("Pacman"), entity);
-		GraphicsComponent graphic = new GraphicsComponent(Direction.RIGHT, ImageRepository.getImages("pacman", Direction.RIGHT), x * TILE_SIZE, y * TILE_SIZE);
+		GraphicsComponent graphic = new GraphicsComponent(Direction.RIGHT, ImageRepository.getImages("pacman", Direction.RIGHT), x * TILE_SIZE, y * TILE_SIZE, true);
 		graphic.addAnimation(Direction.LEFT, ImageRepository.getImages("pacman", Direction.LEFT));
 		graphic.addAnimation(Direction.UP, ImageRepository.getImages("pacman", Direction.UP));
 		graphic.addAnimation(Direction.DOWN, ImageRepository.getImages("pacman", Direction.DOWN));
 		entityManager.addComponent(graphic, entity);
+		entityManager.addComponent(new InvincibleComponent(), entity);
 		
 		Map<MessageEnum, String> pacmanAudioMap = new HashMap<>();
 		pacmanAudioMap.put(MessageEnum.EATEN, "ressource/audio/waka.wav");
+		//pacmanAudioMap.put(MessageEnum.INVINCIBLE_START, "");
 		entityManager.addComponent(new AudioComponent(pacmanAudioMap), entity);
 		
 		entityManager.addComponent(new MoveComponent(x, y, direction, true), entity);
@@ -51,7 +54,7 @@ public class EntityFactory {
 	public Entity createGhost(int x, int y, Direction direction, String ghostName) {
 		Entity entity = entityManager.CreateEntity();
 		entityManager.addComponent(new PhysicsComponent("Ghost"), entity);
-		GraphicsComponent graphic = new GraphicsComponent(Direction.RIGHT, ImageRepository.getImages(ghostName, Direction.RIGHT), x * TILE_SIZE, y * TILE_SIZE);
+		GraphicsComponent graphic = new GraphicsComponent(Direction.RIGHT, ImageRepository.getImages(ghostName, Direction.RIGHT), x * TILE_SIZE, y * TILE_SIZE, true);
 		graphic.addAnimation(Direction.LEFT, ImageRepository.getImages(ghostName, Direction.LEFT));
 		graphic.addAnimation(Direction.UP, ImageRepository.getImages(ghostName, Direction.UP));
 		graphic.addAnimation(Direction.DOWN, ImageRepository.getImages(ghostName, Direction.DOWN));
@@ -64,20 +67,20 @@ public class EntityFactory {
 	public Entity createGum(int x, int y) {
 		Entity entity = entityManager.CreateEntity();
 		entityManager.addComponent(new PhysicsComponent("Gum"), entity);
-		entityManager.addComponent(new GraphicsComponent(ImageRepository.getImages("gum", Direction.NONE).get(0), x * TILE_SIZE, y * TILE_SIZE), entity);
+		entityManager.addComponent(new GraphicsComponent(ImageRepository.getImages("gum", Direction.NONE).get(0), x * TILE_SIZE, y * TILE_SIZE, false), entity);
 		return entity;
 	}
 	
 	public Entity createSuperGum(int x, int y) {
 		Entity entity = entityManager.CreateEntity();
 		entityManager.addComponent(new PhysicsComponent("SuperGum"), entity);
-		entityManager.addComponent(new GraphicsComponent(Direction.NONE, ImageRepository.getImages("gum", Direction.NONE), x * TILE_SIZE, y * TILE_SIZE), entity);
+		entityManager.addComponent(new GraphicsComponent(Direction.NONE, ImageRepository.getImages("gum", Direction.NONE), x * TILE_SIZE, y * TILE_SIZE, false), entity);
 		return entity;
 	}
 	
 	public Entity createWall(int x, int y, int wallIndex) {
 		Entity entity = entityManager.CreateEntity();
-		entityManager.addComponent(new GraphicsComponent(ImageRepository.getImages("wall-" + wallIndex , Direction.NONE).get(0), x * TILE_SIZE, y * TILE_SIZE), entity);
+		entityManager.addComponent(new GraphicsComponent(ImageRepository.getImages("wall-" + wallIndex , Direction.NONE).get(0), x * TILE_SIZE, y * TILE_SIZE, false), entity);
 		return entity;
 	}
 
