@@ -20,10 +20,12 @@ import components.GraphicsComponent;
 import components.LifeComponent;
 import components.MoveComponent;
 import components.ScoreComponent;
+import configs.HighScoreReposity;
 import entities.Direction;
 import entities.Entity;
 import entities.EntityManager;
 import entities.Maze;
+import entities.Score;
 import factories.EntityFactory;
 import factories.MazeFactory;
 import javafx.animation.AnimationTimer;
@@ -62,6 +64,9 @@ public class Game {
 	private LifeComponent life;
 	private int frameCounter = 0;
 	private volatile boolean isRunning = true;
+	private Score finalScore;
+	private HighScoreReposity highScore;
+	private int topScore = 0;
 	
 	Maze map;
 	
@@ -85,7 +90,9 @@ public class Game {
 		createMovableEntities();
 		initSystems();
 		initLives();
+		highScore = new HighScoreReposity();
 	}
+	
 	
 	private void initLives() {
 		life = (LifeComponent) entityManager.getComponentOfClass(LifeComponent.class.getName(), pacman);
@@ -193,6 +200,9 @@ public class Game {
 		if (score != null) {
 			board.refreshScore(score.getScore());
 		}
+		if(life.getLives() == 0) {
+			topScore = score.getScore();
+		}
 		if(!isFocused || !inView) { // || !board.isRunning() enlever car créer le bug GAMEUOVER
 			board.displayPause();
 		} else {
@@ -257,5 +267,7 @@ public class Game {
 		stopThreads();
 		entityManager.dispose();
 		board.dispose();
+		finalScore = new Score(topScore, "FLO"); 
+		highScore.replaceHighScore(finalScore);
 	}
 }
