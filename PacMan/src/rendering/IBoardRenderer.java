@@ -29,5 +29,7 @@ public interface IBoardRenderer {
 	void pauseGame();
 	
 	void dispose();
+	
+	void refreshFps(int fps);
 }
 
