@@ -5,10 +5,12 @@ import java.util.List;
 import components.GraphicsComponent;
 import entities.Entity;
 import entities.EntityManager;
+import entities.SpritesEnum;
 
 public class GraphicsSystem extends SystemBase implements Runnable{
 	
 	private volatile boolean isRunning = true;
+	private int counter = 0;
 	
 	public GraphicsSystem(EntityManager entityManager) {
 		super(entityManager);
@@ -20,13 +22,20 @@ public class GraphicsSystem extends SystemBase implements Runnable{
 		for(Entity entity: entities) {
 			GraphicsComponent graphic = (GraphicsComponent) entityManager.getComponentOfClass(GraphicsComponent.class.getName(), entity);
 			MessageEnum message = MessageQueue.consumeEntityMessages(entity, GraphicsComponent.class.getName());
-			if(message != null && message.equals(MessageEnum.EATEN)) {
-				graphic.removeImage();
-				entityManager.removeEntity(entity);
-			} else {				
-				graphic.updateImage();				
-			}
-		}		
+			if(message != null) {
+				if(message.equals(MessageEnum.EATEN)) {
+					graphic.removeImage();
+					entityManager.removeEntity(entity);
+				} else if(message.equals(MessageEnum.KILLED)) {
+					graphic.setSpriteEnum(SpritesEnum.DEATH);
+				}
+			} 
+			
+			if(counter == 3) {
+				graphic.updateImage();	
+			} 
+		}	
+		counter = counter == 3 ? 0 : counter + 1;
 	}
 
 	public void stopThread() {
@@ -39,7 +48,7 @@ public class GraphicsSystem extends SystemBase implements Runnable{
 		while(isRunning) {
 			update();
 			try {
-				Thread.sleep(99);
+				Thread.sleep(33);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

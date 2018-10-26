@@ -6,6 +6,7 @@ import components.AudioComponent;
 import components.GraphicsComponent;
 import components.InvincibleComponent;
 import components.LifeComponent;
+import components.MoveComponent;
 import components.PhysicsComponent;
 import components.ScoreComponent;
 import entities.Entity;
@@ -44,7 +45,9 @@ public class PhysicsSystem extends SystemBase implements Runnable {
 					MessageQueue.addMessage(pacman, InvincibleComponent.class.getName(), MessageEnum.INVINCIBLE_START);					
 				} else if(physic.getCollisionType() == "Ghost") {
 					System.out.println(physic.getCollisionType());
-					MessageQueue.addMessage(pacman, LifeComponent.class.getName(), MessageEnum.KILLED);
+//					MessageQueue.addMessage(pacman, LifeComponent.class.getName(), MessageEnum.KILLED);
+					MessageQueue.addMessage(pacman, MoveComponent.class.getName(), MessageEnum.KILLED);
+					MessageQueue.addMessage(pacman, GraphicsComponent.class.getName(), MessageEnum.KILLED);
 
                // MessageQueue.addMessage(pacman, GraphicsComponent.class.getName(), MessageEnum.EATEN);
 				}			

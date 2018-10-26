@@ -109,7 +109,7 @@ public class Game {
 	
 	private void initSystems() {
 		userInputSystem = new UserInputSystem(entityManager);
-		moveSystem = new MoveSystem(entityManager, map);
+		moveSystem = new MoveSystem(entityManager, map, pacman);
 		physicsSystem = new PhysicsSystem(entityManager, pacman);
 		graphicsSystem = new GraphicsSystem(entityManager);
 		scoreSystem = new ScoreSystem(entityManager);

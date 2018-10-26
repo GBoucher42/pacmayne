@@ -2,7 +2,6 @@ package systemThreads;
 
 import java.util.List;
 import java.util.Timer;
-import java.util.TimerTask;
 
 import components.AudioComponent;
 import components.InvincibleComponent;
@@ -32,6 +31,7 @@ public class InvincibleSystem extends SystemBase {
 
 			MessageEnum message = MessageQueue.consumeEntityMessages(entity, InvincibleComponent.class.getName());
 			if(message != null && message.equals(MessageEnum.INVINCIBLE_START)) {
+				MessageQueue.addMessage(pacman, AudioComponent.class.getName(), MessageEnum.INVINCIBLE_START); 
 				startInvincibleTimer(invincible.getImmunityTime());
 			}
 		}			
@@ -41,7 +41,7 @@ public class InvincibleSystem extends SystemBase {
 		if(repeatedTask.hasRunStarted()) {
 			timer.cancel();
 			timer = new Timer();
-			repeatedTask = new SyncTimerTask(() -> { MessageQueue.addMessage(pacman, AudioComponent.class.getName(), MessageEnum.INVINCIBLE_END); });
+			repeatedTask = new SyncTimerTask(() -> {  MessageQueue.addMessage(pacman, AudioComponent.class.getName(), MessageEnum.INVINCIBLE_END); });
 		}
 		repeatedTask.startRunning();
 		timer.schedule(repeatedTask, (long) (timeInSeconds * 1000));		

@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import entities.Direction;
+import entities.SpritesEnum;
 import utils.FileFinder;
 
 
@@ -22,16 +22,14 @@ public class ImageRepository {
 	private static String resourceDirectoryPath = "ressource/sprites/";
 	private static Map<String, ArrayList<String>> imagesMap = new HashMap<>();
 	
-	private ImageRepository() {}
-	
-	public static ArrayList<String> getImages(String entityName, Direction direction) {
+	public static ArrayList<String> getImages(String entityName, SpritesEnum sprite) {
 		ArrayList<String> result = new ArrayList<String>();
 		StringBuilder nameFile = new StringBuilder();
 		
 		nameFile.append(entityName);
 		
 		//Récupération de la deuxième partie du nom
-		switch(direction)
+		switch(sprite)
 		{
 		case DOWN:
 			nameFile.append("-d");
@@ -45,6 +43,8 @@ public class ImageRepository {
 		case UP:
 			nameFile.append("-u");
 			break;
+		case DEATH:
+			nameFile.append("-killed");
 		case NONE:
 			break;
 		default:
