@@ -3,6 +3,7 @@ package systemThreads;
 import java.util.List;
 
 import components.GraphicsComponent;
+import components.MoveComponent;
 import entities.Entity;
 import entities.EntityManager;
 import entities.SpritesEnum;
@@ -28,6 +29,12 @@ public class GraphicsSystem extends SystemBase implements Runnable{
 					entityManager.removeEntity(entity);
 				} else if(message.equals(MessageEnum.KILLED)) {
 					graphic.setSpriteEnum(SpritesEnum.DEATH);
+				} else if(message.equals(MessageEnum.INVINCIBLE_START)) {
+					graphic.setSpriteEnum(SpritesEnum.AFRAID);
+				} else if(message.equals(MessageEnum.INVINCIBLE_END)) {
+					System.out.println("RETURN TO N0RMAL");
+					MoveComponent move = (MoveComponent) entityManager.getComponentOfClass(MoveComponent.class.getName(), entity);
+					graphic.setSpriteEnum(move.getDirection());
 				}
 			} 
 			

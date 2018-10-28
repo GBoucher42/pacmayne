@@ -55,6 +55,10 @@ public class Game {
 	private LifeSystem lifeSystem;
 	private InvincibleSystem invincibleSystem;
 	private Entity pacman;
+	private Entity inky;
+	private Entity blinky;
+	private Entity pinky;
+	private Entity clyde;
 	private boolean isFocused = true;
 	private boolean inView = true;
 	private Thread physicsThread;
@@ -110,12 +114,12 @@ public class Game {
 	private void initSystems() {
 		userInputSystem = new UserInputSystem(entityManager);
 		moveSystem = new MoveSystem(entityManager, map, pacman);
-		physicsSystem = new PhysicsSystem(entityManager, pacman);
+		physicsSystem = new PhysicsSystem(entityManager, pacman, inky, blinky, pinky, clyde);
 		graphicsSystem = new GraphicsSystem(entityManager);
 		scoreSystem = new ScoreSystem(entityManager);
 		aiSystem = new AISystem(entityManager);
 		lifeSystem = new LifeSystem(entityManager);
-		invincibleSystem = new InvincibleSystem(entityManager, pacman);
+		invincibleSystem = new InvincibleSystem(entityManager, pacman, inky, blinky, pinky, clyde);
 		audioSystem = new GameAudioSystem(entityManager);
 	}
 	
@@ -123,10 +127,10 @@ public class Game {
 		List<Sprite> sprites = new ArrayList<Sprite>();
 		EntityFactory factory = new EntityFactory(entityManager);
 		pacman = factory.createPacMan(PACMAN_SPAWN_POINT_X, PACMAN_SPAWN_POINT_Y, Direction.RIGHT);
-		factory.createGhost(CLYDE_SPAWN_POINT_X, CLYDE_SPAWN_POINT_Y, Direction.UP, "clyde");
-		factory.createGhost(BLINKY_SPAWN_POINT_X, BLINKY_SPAWN_POINT_Y, Direction.UP, "blinky");
-		factory.createGhost(INKY_SPAWN_POINT_X, INKY_SPAWN_POINT_Y, Direction.UP, "inky");
-		factory.createGhost(PINKY_SPAWN_POINT_X, PINKY_SPAWN_POINT_Y, Direction.UP, "pinky");
+		clyde = factory.createGhost(CLYDE_SPAWN_POINT_X, CLYDE_SPAWN_POINT_Y, Direction.UP, "clyde");
+		blinky = factory.createGhost(BLINKY_SPAWN_POINT_X, BLINKY_SPAWN_POINT_Y, Direction.UP, "blinky");
+		inky = factory.createGhost(INKY_SPAWN_POINT_X, INKY_SPAWN_POINT_Y, Direction.UP, "inky");
+		pinky = factory.createGhost(PINKY_SPAWN_POINT_X, PINKY_SPAWN_POINT_Y, Direction.UP, "pinky");
 		board.setPacManEntity(pacman);
 		
 		List<Entity> entities = entityManager.getAllEntitiesPosessingComponentOfClass(MoveComponent.class.getName());

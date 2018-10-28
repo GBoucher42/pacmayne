@@ -45,6 +45,10 @@ public class ImageRepository {
 			break;
 		case DEATH:
 			nameFile.append("-killed");
+			break;
+		case AFRAID:
+			nameFile.append("-b");
+			break;
 		case NONE:
 			break;
 		default:

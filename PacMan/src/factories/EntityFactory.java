@@ -60,6 +60,7 @@ public class EntityFactory {
 		graphic.addAnimation(SpritesEnum.LEFT, ImageRepository.getImages(ghostName, SpritesEnum.LEFT));
 		graphic.addAnimation(SpritesEnum.UP, ImageRepository.getImages(ghostName, SpritesEnum.UP));
 		graphic.addAnimation(SpritesEnum.DOWN, ImageRepository.getImages(ghostName, SpritesEnum.DOWN));
+		graphic.addAnimation(SpritesEnum.AFRAID, ImageRepository.getImages("frightened", SpritesEnum.AFRAID));
 		entityManager.addComponent(graphic, entity);
 		entityManager.addComponent(new MoveComponent(x , y, direction, false), entity);
 		entityManager.addComponent(new AIComponent(Strategy.RANDOM), entity);

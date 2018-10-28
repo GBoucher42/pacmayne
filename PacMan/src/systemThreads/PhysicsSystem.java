@@ -11,14 +11,23 @@ import components.PhysicsComponent;
 import components.ScoreComponent;
 import entities.Entity;
 import entities.EntityManager;
+import entities.SpritesEnum;
 
 public class PhysicsSystem extends SystemBase implements Runnable {
 	private Entity pacman;
+	private Entity inky;
+	private Entity blinky;
+	private Entity pinky;
+	private Entity clyde;
 	private volatile boolean isRunning = true;
 	
-	public PhysicsSystem(EntityManager entityManager, Entity pacman) {
+	public PhysicsSystem(EntityManager entityManager, Entity pacman, Entity inky, Entity blinky, Entity pinky, Entity clyde) {
 		super(entityManager);
 		this.pacman = pacman;
+		this.inky = inky;
+		this.blinky = blinky;
+		this.pinky = pinky;
+		this.clyde = clyde;
 	}
 	
 
@@ -40,16 +49,23 @@ public class PhysicsSystem extends SystemBase implements Runnable {
 					MessageQueue.addMessage(pacman, AudioComponent.class.getName(), MessageEnum.EATEN);
 				} else if (physic.getCollisionType() == "SuperGum"){
 					MessageQueue.addMessage(entity, GraphicsComponent.class.getName(), MessageEnum.EATEN);
+					MessageQueue.addMessage(inky, GraphicsComponent.class.getName(), MessageEnum.INVINCIBLE_START);	
+					MessageQueue.addMessage(blinky, GraphicsComponent.class.getName(), MessageEnum.INVINCIBLE_START);
+					MessageQueue.addMessage(pinky, GraphicsComponent.class.getName(), MessageEnum.INVINCIBLE_START);
+					MessageQueue.addMessage(clyde, GraphicsComponent.class.getName(), MessageEnum.INVINCIBLE_START);
+					
 					MessageQueue.addMessage(pacman, ScoreComponent.class.getName(), MessageEnum.SUPERGUMPOINTS);
 					MessageQueue.addMessage(pacman, AudioComponent.class.getName(), MessageEnum.EATEN);
 					MessageQueue.addMessage(pacman, InvincibleComponent.class.getName(), MessageEnum.INVINCIBLE_START);					
 				} else if(physic.getCollisionType() == "Ghost") {
 					System.out.println(physic.getCollisionType());
 //					MessageQueue.addMessage(pacman, LifeComponent.class.getName(), MessageEnum.KILLED);
-					MessageQueue.addMessage(pacman, MoveComponent.class.getName(), MessageEnum.KILLED);
-					MessageQueue.addMessage(pacman, GraphicsComponent.class.getName(), MessageEnum.KILLED);
-
-               // MessageQueue.addMessage(pacman, GraphicsComponent.class.getName(), MessageEnum.EATEN);
+					if(graphic.getSpriteEnum().equals(SpritesEnum.AFRAID)) {
+						MessageQueue.addMessage(entity, GraphicsComponent.class.getName(), MessageEnum.EATEN);
+					} else {
+						MessageQueue.addMessage(pacman, MoveComponent.class.getName(), MessageEnum.KILLED);
+						MessageQueue.addMessage(pacman, GraphicsComponent.class.getName(), MessageEnum.KILLED);
+					}
 				}			
 			}
 		}		

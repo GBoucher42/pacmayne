@@ -76,6 +76,26 @@ public class GraphicsComponent implements IComponent{
 		}
 	}
 	
+	public void setSpriteEnum(Direction direction) {
+		switch(direction) {
+			case UP:
+				this.spriteEnum = SpritesEnum.UP;
+				break;
+			case DOWN:
+				this.spriteEnum = SpritesEnum.DOWN;
+				break;
+			case RIGHT:
+				this.spriteEnum = SpritesEnum.RIGHT;
+				break;
+			case LEFT:
+				this.spriteEnum = SpritesEnum.LEFT;
+				break;
+			default:
+				break;
+		}
+		this.currentAnimation = animationGroup.get(spriteEnum);
+	}
+	
 	
 	public void updatePosition(double x, double y, Direction direction) {
 		if(!spriteEnum.equals(SpritesEnum.DEATH) && !spriteEnum.equals(SpritesEnum.AFRAID)) {
@@ -132,4 +152,10 @@ public class GraphicsComponent implements IComponent{
 			return images.get(index);
 		}
 	}
+
+	public SpritesEnum getSpriteEnum() {
+		return spriteEnum;
+	}
+	
+	
 }
