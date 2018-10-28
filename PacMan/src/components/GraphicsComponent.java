@@ -73,6 +73,7 @@ public class GraphicsComponent implements IComponent{
 		if(this.spriteEnum != spriteEnum) {
 			this.spriteEnum = spriteEnum;
 			this.currentAnimation = animationGroup.get(spriteEnum);
+			this.currentAnimation.imageIndex = 0;
 		}
 	}
 	
@@ -94,6 +95,7 @@ public class GraphicsComponent implements IComponent{
 				break;
 		}
 		this.currentAnimation = animationGroup.get(spriteEnum);
+		this.currentAnimation.imageIndex = 0;
 	}
 	
 	
@@ -135,6 +137,7 @@ public class GraphicsComponent implements IComponent{
 		
 		public String getNextImage()
 		{
+			
 			if (currentAnimation != this) {
 				currentAnimation = this;
 				this.imageIndex = 0;

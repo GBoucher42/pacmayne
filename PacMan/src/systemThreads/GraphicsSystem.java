@@ -10,35 +10,39 @@ import entities.SpritesEnum;
 
 public class GraphicsSystem extends SystemBase implements Runnable{
 	
+	private Entity pacman;
 	private volatile boolean isRunning = true;
 	private int counter = 0;
 	
-	public GraphicsSystem(EntityManager entityManager) {
+	public GraphicsSystem(EntityManager entityManager, Entity pacman) {
 		super(entityManager);
+		this.pacman = pacman;
 	}
 
 	@Override
 	public void update() {
 		List<Entity> entities = entityManager.getAllEntitiesPosessingComponentOfClass(GraphicsComponent.class.getName());
+		boolean eaten;
 		for(Entity entity: entities) {
+			eaten = false;
 			GraphicsComponent graphic = (GraphicsComponent) entityManager.getComponentOfClass(GraphicsComponent.class.getName(), entity);
 			MessageEnum message = MessageQueue.consumeEntityMessages(entity, GraphicsComponent.class.getName());
 			if(message != null) {
 				if(message.equals(MessageEnum.EATEN)) {
 					graphic.removeImage();
 					entityManager.removeEntity(entity);
-				} else if(message.equals(MessageEnum.KILLED)) {
+					eaten = true; //there was a leg of an updated image called after image was removed leaving supergums visible after being eaten
+				} else if(message.equals(MessageEnum.KILLED) && entity == pacman) {
 					graphic.setSpriteEnum(SpritesEnum.DEATH);
 				} else if(message.equals(MessageEnum.INVINCIBLE_START)) {
 					graphic.setSpriteEnum(SpritesEnum.AFRAID);
-				} else if(message.equals(MessageEnum.INVINCIBLE_END)) {
-					System.out.println("RETURN TO N0RMAL");
+				} else if(message.equals(MessageEnum.INVINCIBLE_END) || (entity != pacman && message.equals(MessageEnum.KILLED))) {
 					MoveComponent move = (MoveComponent) entityManager.getComponentOfClass(MoveComponent.class.getName(), entity);
 					graphic.setSpriteEnum(move.getDirection());
 				}
 			} 
 			
-			if(counter == 3) {
+			if(counter == 3 && !eaten) {
 				graphic.updateImage();	
 			} 
 		}	

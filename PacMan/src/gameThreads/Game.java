@@ -115,7 +115,7 @@ public class Game {
 		userInputSystem = new UserInputSystem(entityManager);
 		moveSystem = new MoveSystem(entityManager, map, pacman);
 		physicsSystem = new PhysicsSystem(entityManager, pacman, inky, blinky, pinky, clyde);
-		graphicsSystem = new GraphicsSystem(entityManager);
+		graphicsSystem = new GraphicsSystem(entityManager, pacman);
 		scoreSystem = new ScoreSystem(entityManager);
 		aiSystem = new AISystem(entityManager);
 		lifeSystem = new LifeSystem(entityManager);

@@ -27,7 +27,7 @@ public class MoveSystem extends SystemBase {
 	@Override
 	public void update() {
 		List<Entity> entities = entityManager.getAllEntitiesPosessingComponentOfClass(MoveComponent.class.getName());
-		MessageEnum message = MessageQueue.consumeEntityMessages(pacman, MoveComponent.class.getName());
+		MessageEnum pacmanMessage = MessageQueue.consumeEntityMessages(pacman, MoveComponent.class.getName());
 		for(Entity entity: entities) {	
 			MoveComponent move = (MoveComponent) entityManager.getComponentOfClass(MoveComponent.class.getName(), entity);
 			GraphicsComponent graphic = (GraphicsComponent) entityManager.getComponentOfClass(GraphicsComponent.class.getName(), entity);
@@ -36,10 +36,18 @@ public class MoveSystem extends SystemBase {
 			if(graphic == null) 
 				continue;
 			
-			if(message != null && message == MessageEnum.KILLED) {
+			if(pacmanMessage != null && pacmanMessage == MessageEnum.KILLED) {
 				move.setDirection(Direction.NONE);
 				move.setAwaitingDirection(Direction.NONE);
 			}
+			
+			if(entity != pacman) {
+				MessageEnum message = MessageQueue.consumeEntityMessages(entity, MoveComponent.class.getName());
+				if(message != null && message == MessageEnum.KILLED) {
+					move.resetPosition();
+				}
+			}
+			
 
 			CollisionType awaitingCollisionType = maze.validateMove(move, move.getAwaitingDirection());
 			
@@ -72,6 +80,7 @@ public class MoveSystem extends SystemBase {
 				continue;
 			move.resetPosition();
 			graphic.updatePosition(move.getX(), move.getY(), move.getDirection());
+			graphic.setSpriteEnum(move.getDirection());
 		}
 	}
 

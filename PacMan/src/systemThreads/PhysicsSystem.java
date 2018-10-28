@@ -43,7 +43,7 @@ public class PhysicsSystem extends SystemBase implements Runnable {
 			
 			if(pacmanGraphic.getBounds().intersects(graphic.getBounds())) {
 				
-				if (physic.getCollisionType() == "Gum") {
+				if (physic.getCollisionType() == "Gum") { 
 					MessageQueue.addMessage(entity, GraphicsComponent.class.getName(), MessageEnum.EATEN);
 					MessageQueue.addMessage(pacman, ScoreComponent.class.getName(), MessageEnum.GUMPOINTS);
 					MessageQueue.addMessage(pacman, AudioComponent.class.getName(), MessageEnum.EATEN);
@@ -58,11 +58,11 @@ public class PhysicsSystem extends SystemBase implements Runnable {
 					MessageQueue.addMessage(pacman, AudioComponent.class.getName(), MessageEnum.EATEN);
 					MessageQueue.addMessage(pacman, InvincibleComponent.class.getName(), MessageEnum.INVINCIBLE_START);					
 				} else if(physic.getCollisionType() == "Ghost") {
-					System.out.println(physic.getCollisionType());
-//					MessageQueue.addMessage(pacman, LifeComponent.class.getName(), MessageEnum.KILLED);
 					if(graphic.getSpriteEnum().equals(SpritesEnum.AFRAID)) {
-						MessageQueue.addMessage(entity, GraphicsComponent.class.getName(), MessageEnum.EATEN);
-					} else {
+						MessageQueue.addMessage(entity, MoveComponent.class.getName(), MessageEnum.KILLED);
+						MessageQueue.addMessage(entity, GraphicsComponent.class.getName(), MessageEnum.KILLED);
+					} else if(!pacmanGraphic.getSpriteEnum().equals(SpritesEnum.DEATH)) {
+						MessageQueue.addMessage(pacman, LifeComponent.class.getName(), MessageEnum.KILLED);
 						MessageQueue.addMessage(pacman, MoveComponent.class.getName(), MessageEnum.KILLED);
 						MessageQueue.addMessage(pacman, GraphicsComponent.class.getName(), MessageEnum.KILLED);
 					}
