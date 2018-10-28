@@ -60,5 +60,13 @@ public class VerticalMenu {
 		if (menuBox.getChildren().size() == 1) {
 			getMenuItem(0).setActive(true);
 		}
-	}	
+	}
+	
+	public void deleteMenuItem() {
+		menuBox.getChildren().clear();
+	}
+	
+	public void addMenuText(String text) {
+		
+	}
 }
