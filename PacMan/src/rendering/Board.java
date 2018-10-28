@@ -4,10 +4,14 @@ import static configs.GameConfig.GAME_WIDTH;
 import static configs.GameConfig.HEIGTH_FOOTER;
 import static configs.GameConfig.HEIGTH_HEADER;
 import static configs.GameConfig.TILE_SIZE;
+import static configs.GameConfig.SIZE_IMG_LOGO;
 
 import java.io.File;
+import java.lang.invoke.VolatileCallSite;
+import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import components.UserInputComponent;
 import entities.Entity;
@@ -37,19 +41,28 @@ public class Board extends BorderPane implements IBoardRenderer{
 	private char[] pause = {'p', 'a', 'u', 's', 'e'};
 	private ArrayList<Sprite> spritesPause;
 	private ArrayList<Sprite> spritesScore;
+	private ArrayList<Sprite> spritesfps;
 	private Entity pacman;
+	private char[] textFps = {'f', 'p', 's'};
 	private char[] textScore = {'s', 'c', 'o', 'r', 'e'};
 	private char[] gameOver = {'g', 'a', 'm', 'e', ' ', 'o','v','e','r'};
+	private char[] textLevel = {'l', 'e', 'v', 'e', 'l'};
+	private ArrayList<Sprite> spritesLevel;
 	private ArrayList<Sprite> spritesGameOver;
 	private ArrayList<Sprite> spritesTextScore;
+	private ArrayList<Sprite> spritesNumScore;
 	private LivesImages imagelives;
 	private boolean isPaused = false;
+	private  int MAX_LIFE_BONUS=4;
+	
 	
 	public Board()
 	{	
 		pane.setStyle("-fx-background-color: black;");
 		loadSounds();		
 		spritesPause = createWords(pause, 11*TILE_SIZE + TILE_SIZE/2, 17*TILE_SIZE, pane);
+		spritesfps = createWords(textFps, 10, 48, paneHeader);
+		spritesLevel = createWords(textLevel,170, 0 ,  paneFooter );
 		hideSprites(spritesPause);
 
 	}	
@@ -69,8 +82,9 @@ public class Board extends BorderPane implements IBoardRenderer{
 	private void header() {
 		Image image = new Image("file:ressource/sprites/logo.png");
 		imglogo = new ImageView();
+		
 		imglogo.setImage(image);
-		imglogo.setFitHeight(HEIGTH_HEADER);
+		imglogo.setFitHeight(SIZE_IMG_LOGO);
 		imglogo.setFitWidth(GAME_WIDTH);
 		paneHeader.getChildren().add(imglogo);
 		paneHeader.setStyle("-fx-background-color: black;");
@@ -178,19 +192,30 @@ public class Board extends BorderPane implements IBoardRenderer{
 	public void initLives(int lives) {
 		this.life = lives;
 		imagelives = new LivesImages(livePane, this.life);
+		System.out.println("lives :"+lives);
 	}
 
 	@Override
 	public void refreshLives(int lives) {
-		if (lives == 0 && isRunning == true) {
-			this.setRunning(false);
-			imagelives.removeLife();
-			spritesGameOver = createWords(gameOver, 9 * TILE_SIZE + TILE_SIZE / 2, 17 * TILE_SIZE, pane);
-			displaySprites(spritesGameOver);
-		} else {
-
-			imagelives.removeLife();
-		}
+	if (lives == 0 && isRunning == true  ) {
+					this.setRunning(false);
+					imagelives.removeLife();
+					spritesGameOver = createWords(gameOver, 9 * TILE_SIZE + TILE_SIZE / 2, 17 * TILE_SIZE, pane);
+					displaySprites(spritesGameOver);
+			 }
+		   else {
+				imagelives.removeLife();
+				 System.out.println("remove");
+			}
+	
+	}
+	@Override
+	public void addBonusLife() {
+	boolean  excuteOnce= false;
+		if(!excuteOnce)
+		imagelives.adddLife();
+		System.out.println("add");
+		excuteOnce= true;
 	}
 	
 	@Override
@@ -207,4 +232,17 @@ public class Board extends BorderPane implements IBoardRenderer{
 			isPaused = false;
 		}
 	}
+	@Override
+	public void refreshFps(int fps) {
+		int []  numFPS =Integer.toString(fps).chars().map(c -> c-'0').toArray();
+		spritesNumScore = CreateScore(numFPS,100,48,paneHeader);
+		
+	}
+	@Override
+	public void refreshlevel(int level) {
+		int []  numLevel =Integer.toString(level).chars().map(c -> c-'0').toArray();
+		spritesNumScore=CreateScore(numLevel,280,0, ScorePane);
+		
+	}
+
 }

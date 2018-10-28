@@ -20,7 +20,7 @@ public class LifeSystem extends SystemBase {
 			LifeComponent life = (LifeComponent) entityManager.getComponentOfClass(LifeComponent.class.getName(), entity);
 			MessageEnum message = MessageQueue.consumeEntityMessages(entity, LifeComponent.class.getName());
 			
-			if (message != null) {
+			if (message != null ) {
 				life.removeLife();
 				
 			}	
