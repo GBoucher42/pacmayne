@@ -6,6 +6,7 @@ import javax.swing.plaf.synth.SynthSeparatorUI;
 
 import components.GraphicsComponent;
 import components.MoveComponent;
+import components.ScoreComponent;
 import entities.CollisionType;
 import entities.Direction;
 import entities.Entity;
@@ -14,22 +15,40 @@ import entities.Maze;
 
 public class MoveSystem extends SystemBase {
 	private Maze maze;
+	private Entity pacman;
 	
-	public MoveSystem(EntityManager entityManager, Maze maze) {
+	public MoveSystem(EntityManager entityManager, Maze maze, Entity pacman) {
 		super(entityManager);
 		this.maze = maze;
+		this.pacman = pacman;
 	}
 	
 
 	@Override
 	public void update() {
 		List<Entity> entities = entityManager.getAllEntitiesPosessingComponentOfClass(MoveComponent.class.getName());
+		MessageEnum pacmanMessage = MessageQueue.consumeEntityMessages(pacman, MoveComponent.class.getName());
 		for(Entity entity: entities) {	
 			MoveComponent move = (MoveComponent) entityManager.getComponentOfClass(MoveComponent.class.getName(), entity);
 			GraphicsComponent graphic = (GraphicsComponent) entityManager.getComponentOfClass(GraphicsComponent.class.getName(), entity);
+			
+			
 			if(graphic == null) 
 				continue;
 			
+			if(pacmanMessage != null && pacmanMessage == MessageEnum.KILLED) {
+				move.setDirection(Direction.NONE);
+				move.setAwaitingDirection(Direction.NONE);
+			}
+			
+			if(entity != pacman) {
+				MessageEnum message = MessageQueue.consumeEntityMessages(entity, MoveComponent.class.getName());
+				if(message != null && message == MessageEnum.KILLED) {
+					move.resetPosition();
+				}
+			}
+			
+
 			CollisionType awaitingCollisionType = maze.validateMove(move, move.getAwaitingDirection());
 			
 			if(!move.isInTunnel() && move.canTurn() &&!move.getAwaitingDirection().equals(Direction.NONE) && 
@@ -61,6 +80,7 @@ public class MoveSystem extends SystemBase {
 				continue;
 			move.resetPosition();
 			graphic.updatePosition(move.getX(), move.getY(), move.getDirection());
+			graphic.setSpriteEnum(move.getDirection());
 		}
 	}
 

@@ -1,11 +1,13 @@
 package systemThreads;
 
 import java.util.List;
+import java.util.Timer;
 
 import components.LifeComponent;
 import components.ScoreComponent;
 import entities.Entity;
 import entities.EntityManager;
+import utils.SyncTimerTask;
 
 public class LifeSystem extends SystemBase {
 	
@@ -21,11 +23,18 @@ public class LifeSystem extends SystemBase {
 			MessageEnum message = MessageQueue.consumeEntityMessages(entity, LifeComponent.class.getName());
 			
 			if (message != null) {
-				life.removeLife();
+				death(life);
 				
 			}	
 		}
 		
+	}
+	
+	private void death(LifeComponent life) {
+		Timer timer = new Timer();
+		SyncTimerTask repeatedTask = new SyncTimerTask(() -> life.removeLife());
+		repeatedTask.startRunning();
+		timer.schedule(repeatedTask, (long) (1500));
 	}
 
 }

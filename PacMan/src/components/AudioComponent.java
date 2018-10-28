@@ -21,9 +21,10 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 public class AudioComponent implements IComponent{
 	
 	private final Map<MessageEnum, AudioInputStream> soundMap;
-	private Clip clip;
-	private boolean playing = false;
-	private LineListener listener;
+	private Clip clipWaka;
+	private Clip clipInvincible;
+	private boolean playingWaka = false;
+	private boolean playingInvincible = false;
 	private FloatControl gainControl;
 	private double volume = 0.5;
 	private boolean isMuted = false;
@@ -39,23 +40,36 @@ public class AudioComponent implements IComponent{
 				this.soundMap.put(entry.getKey(), inputStream);
 			}	
 		
-			clip = AudioSystem.getClip();
-			clip.open(this.soundMap.get(MessageEnum.EATEN));
-			gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+			clipWaka = AudioSystem.getClip();
+			clipWaka.open(this.soundMap.get(MessageEnum.EATEN));
+			clipInvincible = AudioSystem.getClip();
+			clipInvincible.open(this.soundMap.get(MessageEnum.INVINCIBLE_START));
+			gainControl = (FloatControl) clipWaka.getControl(FloatControl.Type.MASTER_GAIN);
 
-			listener = new LineListener() {
+			clipWaka.addLineListener(new LineListener() {
 				
 				@Override
 				public void update(LineEvent event) {
 					if (event.getType() != Type.STOP) {						
 						return;
 					} else if (event.getType() == Type.STOP) {
-						clip.setFramePosition(0);
-						playing = false;
+						clipWaka.setFramePosition(0);
+						playingWaka = false;
 					}
 				}
-			};	
-			clip.addLineListener(listener);
+			});
+			clipInvincible.addLineListener(new LineListener() {
+				
+				@Override
+				public void update(LineEvent event) {
+					if (event.getType() != Type.STOP) {						
+						return;
+					} else if (event.getType() == Type.STOP) {
+						clipInvincible.setFramePosition(0);
+						playingInvincible = false;
+					}
+				}
+			});
 		} catch (LineUnavailableException e) {
 			e.printStackTrace();
 		} catch (UnsupportedAudioFileException e) {
@@ -65,9 +79,23 @@ public class AudioComponent implements IComponent{
 		}
 	}
 
-	public void play() {
-		if(!playing) {
-			clip.start();
+	public void playWaka() {
+		if(!playingWaka) {
+			playingWaka = true;
+			clipWaka.start();
+		}
+	}
+	
+	public void playInvincible() {
+		if(!playingInvincible) {
+			playingInvincible = true;
+			clipInvincible.start();
+		}
+	}
+	
+	public void stopInvincible() {
+		if (playingInvincible) {
+			clipInvincible.stop();
 		}
 	}
 	

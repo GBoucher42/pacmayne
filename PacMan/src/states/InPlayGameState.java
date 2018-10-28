@@ -13,7 +13,7 @@ public class InPlayGameState implements IState{
 
 	private Game game;
 	private Runnable r;
-	private boolean isRunning = true;
+	private static boolean isRunning = true;
 	
 	public InPlayGameState(Game game, Runnable r) {
 		this.game = game;
@@ -58,7 +58,7 @@ public class InPlayGameState implements IState{
 			case M:
 				MessageQueue.addMessage(pacman, UserInputComponent.class.getName(), MessageEnum.MUTE);
 				break;
-			case ESCAPE:
+			case ESCAPE:				
 				r.run();
 				break;
 			default:
@@ -76,13 +76,19 @@ public class InPlayGameState implements IState{
 
 	@Override
 	public void onEnter() {
-		// TODO Auto-generated method stub
+		if (!isRunning) {
+			game.getBoard().pauseGame();
+			isRunning = !isRunning;	
+		}
 		
 	}
 
 	@Override
 	public void onExit() {
-		game.stopGame();
+		if (isRunning) {
+			game.getBoard().pauseGame();
+			isRunning = !isRunning;	
+		}
 		// TODO Auto-generated method stub
 		
 	}

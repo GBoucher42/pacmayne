@@ -137,7 +137,7 @@ public class Board extends BorderPane implements IBoardRenderer{
 		ArrayList<Sprite> sprites = new ArrayList<Sprite>();
 		for(int myScore: Number) { 
 			try {
-				Sprite num = new Sprite(fontRepository.getFont(myScore), x , y); //12*TILE_SIZE, 17*TILE_SIZE
+				Sprite num = new Sprite(fontRepository.getFont(myScore), x , y, false); //12*TILE_SIZE, 17*TILE_SIZE
 				x += TILE_SIZE;
 				sprites.add(num);
 				myPane.getChildren().add(num);
@@ -153,7 +153,7 @@ public class Board extends BorderPane implements IBoardRenderer{
 		for(char myLetter: letters) {
 			try {
 				if(myLetter != ' ') {
-					Sprite letter = new Sprite(fontRepository.getFont(myLetter), x , y); //12*TILE_SIZE, 17*TILE_SIZE
+					Sprite letter = new Sprite(fontRepository.getFont(myLetter), x , y, false); //12*TILE_SIZE, 17*TILE_SIZE
 					x += TILE_SIZE;
 					sprites.add(letter);
 					myPane.getChildren().add(letter);
