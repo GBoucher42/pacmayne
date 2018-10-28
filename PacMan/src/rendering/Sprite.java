@@ -12,11 +12,14 @@ public class Sprite extends StackPane {
 	
 	private ImageView image;
 	private Bounds bounds;
+	private boolean oversize;
 	
-	public Sprite(String imgPath, double x, double y)
+	public Sprite(String imgPath, double x, double y, boolean oversize)
 	{
-		this.setWidth(TILE_SIZE);
-		this.setHeight(TILE_SIZE);
+		double size = oversize ? TILE_SIZE * 1.25 : TILE_SIZE;
+		this.oversize = oversize;
+		this.setWidth(size);
+		this.setHeight(size);
 		updatePosition(x,y);	
 
 		image = new ImageView();
@@ -54,7 +57,7 @@ public class Sprite extends StackPane {
 	{
 		setLayoutX(x);
 		setLayoutY(y);
-		this.bounds = new BoundingBox(this.getLayoutX(), this.getLayoutY(), this.getWidth() -5, this.getHeight() -5);
+		this.bounds = !this.oversize ? new BoundingBox(this.getLayoutX(), this.getLayoutY(), this.getWidth() -5, this.getHeight() -5) : new BoundingBox(this.getLayoutX(), this.getLayoutY(), this.getWidth() -10, this.getHeight() -10);
 	}
 
 }

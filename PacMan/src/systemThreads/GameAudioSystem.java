@@ -36,7 +36,16 @@ public class GameAudioSystem extends SystemBase implements Runnable{
 			AudioComponent audio = (AudioComponent) entityManager.getComponentOfClass(AudioComponent.class.getName(), entity);
 			MessageEnum message = MessageQueue.consumeEntityMessages(entity, AudioComponent.class.getName());
 			if (message != null) {
-				audio.play();
+				if (message == MessageEnum.EATEN) {
+					audio.playWaka();
+				} else if (message == MessageEnum.INVINCIBLE_START) {
+					audio.playInvincible();
+				} else if (message == MessageEnum.INVINCIBLE_END) {
+					System.out.println("STOP");
+					audio.stopInvincible();
+				}
+				
+				
 				if(updatingMusic != true) {
 					updatingMusic = true;
 				}

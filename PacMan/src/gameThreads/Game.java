@@ -20,10 +20,12 @@ import components.GraphicsComponent;
 import components.LifeComponent;
 import components.MoveComponent;
 import components.ScoreComponent;
+import configs.HighScoreReposity;
 import entities.Direction;
 import entities.Entity;
 import entities.EntityManager;
 import entities.Maze;
+import entities.Score;
 import factories.EntityFactory;
 import factories.MazeFactory;
 import javafx.animation.AnimationTimer;
@@ -32,6 +34,7 @@ import rendering.Sprite;
 import systemThreads.AISystem;
 import systemThreads.GameAudioSystem;
 import systemThreads.GraphicsSystem;
+import systemThreads.InvincibleSystem;
 import systemThreads.LifeSystem;
 import systemThreads.MoveSystem;
 import systemThreads.PhysicsSystem;
@@ -52,7 +55,12 @@ public class Game {
 	private ScoreSystem scoreSystem;
 	private AISystem aiSystem;
 	private LifeSystem lifeSystem;
+	private InvincibleSystem invincibleSystem;
 	private Entity pacman;
+	private Entity inky;
+	private Entity blinky;
+	private Entity pinky;
+	private Entity clyde;
 	private boolean isFocused = true;
 	private boolean inView = true;
 	private Thread physicsThread;
@@ -62,6 +70,9 @@ public class Game {
 	private LifeComponent life;
 	private int frameCounter = 0;
 	private volatile boolean isRunning = true;
+	private Score finalScore;
+	private HighScoreReposity highScore;
+	private int topScore = 0;
 	
 	Maze map;
 	
@@ -85,7 +96,9 @@ public class Game {
 		createMovableEntities();
 		initSystems();
 		initLives();
+		highScore = new HighScoreReposity();
 	}
+	
 	
 	private void initLives() {
 		life = (LifeComponent) entityManager.getComponentOfClass(LifeComponent.class.getName(), pacman);
@@ -107,12 +120,13 @@ public class Game {
 	
 	private void initSystems() {
 		userInputSystem = new UserInputSystem(entityManager);
-		moveSystem = new MoveSystem(entityManager, map);
-		physicsSystem = new PhysicsSystem(entityManager, pacman);
-		graphicsSystem = new GraphicsSystem(entityManager);
+		moveSystem = new MoveSystem(entityManager, map, pacman);
+		physicsSystem = new PhysicsSystem(entityManager, pacman, inky, blinky, pinky, clyde);
+		graphicsSystem = new GraphicsSystem(entityManager, pacman);
 		scoreSystem = new ScoreSystem(entityManager);
 		aiSystem = new AISystem(entityManager);
 		lifeSystem = new LifeSystem(entityManager);
+		invincibleSystem = new InvincibleSystem(entityManager, pacman, inky, blinky, pinky, clyde);
 		audioSystem = new GameAudioSystem(entityManager);
 	}
 	
@@ -120,10 +134,10 @@ public class Game {
 		List<Sprite> sprites = new ArrayList<Sprite>();
 		EntityFactory factory = new EntityFactory(entityManager);
 		pacman = factory.createPacMan(PACMAN_SPAWN_POINT_X, PACMAN_SPAWN_POINT_Y, Direction.RIGHT);
-		factory.createGhost(CLYDE_SPAWN_POINT_X, CLYDE_SPAWN_POINT_Y, Direction.UP, "clyde");
-		factory.createGhost(BLINKY_SPAWN_POINT_X, BLINKY_SPAWN_POINT_Y, Direction.UP, "blinky");
-		factory.createGhost(INKY_SPAWN_POINT_X, INKY_SPAWN_POINT_Y, Direction.UP, "inky");
-		factory.createGhost(PINKY_SPAWN_POINT_X, PINKY_SPAWN_POINT_Y, Direction.UP, "pinky");
+		clyde = factory.createGhost(CLYDE_SPAWN_POINT_X, CLYDE_SPAWN_POINT_Y, Direction.UP, "clyde");
+		blinky = factory.createGhost(BLINKY_SPAWN_POINT_X, BLINKY_SPAWN_POINT_Y, Direction.UP, "blinky");
+		inky = factory.createGhost(INKY_SPAWN_POINT_X, INKY_SPAWN_POINT_Y, Direction.UP, "inky");
+		pinky = factory.createGhost(PINKY_SPAWN_POINT_X, PINKY_SPAWN_POINT_Y, Direction.UP, "pinky");
 		board.setPacManEntity(pacman);
 		
 		List<Entity> entities = entityManager.getAllEntitiesPosessingComponentOfClass(MoveComponent.class.getName());
@@ -183,8 +197,8 @@ public class Game {
 			aiSystem.update();
 			lifeSystem.update();
 			scoreSystem.update();
-		}
-		
+			invincibleSystem.update();
+		}			
 	}
 	
 	private void render() {
@@ -193,14 +207,16 @@ public class Game {
 		if (score != null) {
 			board.refreshScore(score.getScore());
 		}
+		if(life.getLives() == 0) {
+			topScore = score.getScore();
+		}
 		if(!isFocused || !inView) { // || !board.isRunning() enlever car créer le bug GAMEUOVER
 			board.displayPause();
 		} else {
 			board.hidePause();
 		}
-	
-		
 	}
+	
 	private void renderLives() {
 		if(life.getLives() != lives) {
 			lives = life.getLives();
@@ -211,8 +227,8 @@ public class Game {
 			   stopThreads();
 		   }
 		}
-		
 	}
+	
 	public void stopThreads() {
 		physicsSystem.stopThread();
 		audioSystem.stopThread();
@@ -257,5 +273,11 @@ public class Game {
 		stopThreads();
 		entityManager.dispose();
 		board.dispose();
+		finalScore = new Score(topScore, "FLO"); 
+		highScore.replaceHighScore(finalScore);
+	}
+	
+	public void pauseGame() {
+		
 	}
 }
