@@ -20,6 +20,8 @@ public class PhysicsSystem extends SystemBase implements Runnable {
 	private Entity pinky;
 	private Entity clyde;
 	private volatile boolean isRunning = true;
+	private int scoreMultiplier = 1;
+	private final int BASE_SCORE_FOR_GHOST = 200;
 	
 	public PhysicsSystem(EntityManager entityManager, Entity pacman, Entity inky, Entity blinky, Entity pinky, Entity clyde) {
 		super(entityManager);
@@ -42,6 +44,10 @@ public class PhysicsSystem extends SystemBase implements Runnable {
 				continue;
 			
 			if(pacmanGraphic.getBounds().intersects(graphic.getBounds())) {
+				MessageEnum message = MessageQueue.consumeEntityMessages(pacman, PhysicsComponent.class.getName());
+				if (message != null && message.equals(MessageEnum.INVINCIBLE_END)) {					
+					scoreMultiplier = 1;
+				}
 				
 				if (physic.getCollisionType() == "Gum") { 
 					MessageQueue.addMessage(entity, GraphicsComponent.class.getName(), MessageEnum.EATEN);
@@ -60,6 +66,8 @@ public class PhysicsSystem extends SystemBase implements Runnable {
 					
 				} else if(physic.getCollisionType() == "Ghost") {
 					if(graphic.getSpriteEnum().equals(SpritesEnum.AFRAID)) {
+						MessageQueue.addMessage(pacman, ScoreComponent.class.getName(), MessageEnum.valueOf("GHOST" + BASE_SCORE_FOR_GHOST * scoreMultiplier));
+						scoreMultiplier = scoreMultiplier == 8 ? 1 : scoreMultiplier * 2;
 						MessageQueue.addMessage(entity, MoveComponent.class.getName(), MessageEnum.KILLED);
 						MessageQueue.addMessage(entity, GraphicsComponent.class.getName(), MessageEnum.KILLED);
 					} else if(!pacmanGraphic.getSpriteEnum().equals(SpritesEnum.DEATH)) {

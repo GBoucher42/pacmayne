@@ -7,6 +7,7 @@ import components.AudioComponent;
 import components.GraphicsComponent;
 import components.InvincibleComponent;
 import components.MoveComponent;
+import components.PhysicsComponent;
 import entities.Entity;
 import entities.EntityManager;
 import utils.SyncTimerTask;
@@ -50,6 +51,7 @@ public class InvincibleSystem extends SystemBase {
 	private void addIncincibleEndMessages() {
 		MessageQueue.addMessage(pacman, AudioComponent.class.getName(), MessageEnum.INVINCIBLE_END);
 		MessageQueue.addMessage(pacman, MoveComponent.class.getName(), MessageEnum.INVINCIBLE_END);					
+		MessageQueue.addMessage(pacman, PhysicsComponent.class.getName(), MessageEnum.INVINCIBLE_END);
 		MessageQueue.addMessage(inky, GraphicsComponent.class.getName(), MessageEnum.INVINCIBLE_END);
 		MessageQueue.addMessage(blinky, GraphicsComponent.class.getName(), MessageEnum.INVINCIBLE_END);
 		MessageQueue.addMessage(pinky, GraphicsComponent.class.getName(), MessageEnum.INVINCIBLE_END);
