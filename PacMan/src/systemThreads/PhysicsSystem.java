@@ -55,14 +55,15 @@ public class PhysicsSystem extends SystemBase implements Runnable {
 					MessageQueue.addMessage(pacman, AudioComponent.class.getName(), MessageEnum.EATEN);
 				} else if (physic.getCollisionType() == "SuperGum"){
 					MessageQueue.addMessage(entity, GraphicsComponent.class.getName(), MessageEnum.EATEN);
+					MessageQueue.addMessage(pacman, AudioComponent.class.getName(), MessageEnum.EATEN);
 					MessageQueue.addMessage(inky, GraphicsComponent.class.getName(), MessageEnum.INVINCIBLE_START);	
 					MessageQueue.addMessage(blinky, GraphicsComponent.class.getName(), MessageEnum.INVINCIBLE_START);
 					MessageQueue.addMessage(pinky, GraphicsComponent.class.getName(), MessageEnum.INVINCIBLE_START);
 					MessageQueue.addMessage(clyde, GraphicsComponent.class.getName(), MessageEnum.INVINCIBLE_START);
-					
-					MessageQueue.addMessage(pacman, ScoreComponent.class.getName(), MessageEnum.SUPERGUMPOINTS);
-					MessageQueue.addMessage(pacman, AudioComponent.class.getName(), MessageEnum.EATEN);
 					MessageQueue.addMessage(pacman, InvincibleComponent.class.getName(), MessageEnum.INVINCIBLE_START);					
+					MessageQueue.addMessage(pacman, MoveComponent.class.getName(), MessageEnum.INVINCIBLE_START);					
+					MessageQueue.addMessage(pacman, ScoreComponent.class.getName(), MessageEnum.SUPERGUMPOINTS);
+					
 				} else if(physic.getCollisionType() == "Ghost") {
 					if(graphic.getSpriteEnum().equals(SpritesEnum.AFRAID)) {
 						MessageQueue.addMessage(pacman, ScoreComponent.class.getName(), MessageEnum.valueOf("GHOST" + BASE_SCORE_FOR_GHOST * scoreMultiplier));

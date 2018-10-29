@@ -41,6 +41,10 @@ class PhysicsSystemTest {
 	EntityManager entityManager;
 	EntityFactory factory;
 	Entity pacman;
+	Entity inky;
+	Entity blinky;
+	Entity pinky;
+	Entity clyde;
 	private Thread physicsSystemThread;
 	
 	@BeforeAll
@@ -48,7 +52,11 @@ class PhysicsSystemTest {
 		entityManager = new EntityManager();
 		factory = new EntityFactory(entityManager);
 		pacman = factory.createPacMan(1, 1 , Direction.RIGHT);
-		system = new PhysicsSystem(entityManager, pacman);	
+		inky = factory.createGhost(15, 15, Direction.RIGHT, "inky");
+		blinky = factory.createGhost(15, 15, Direction.RIGHT, "blinky");
+		pinky = factory.createGhost(15, 15, Direction.RIGHT, "pinky");
+		clyde = factory.createGhost(15, 15, Direction.RIGHT, "clyde");
+		system = new PhysicsSystem(entityManager, pacman, inky, blinky, pinky, clyde);	
 		try {
 			startPysicsThread();
 		} catch (InterruptedException e) {

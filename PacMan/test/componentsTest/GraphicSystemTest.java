@@ -21,6 +21,7 @@ import org.junit.jupiter.api.TestInstance.Lifecycle;
 import components.AudioComponent;
 import components.GraphicsComponent;
 import components.PhysicsComponent;
+import entities.Direction;
 import entities.Entity;
 import entities.EntityManager;
 import factories.EntityFactory;
@@ -37,6 +38,7 @@ public class GraphicSystemTest {
 	private EntityFactory factory;
 	private Thread tGraphicsSystem;
 	private Entity entity;
+	private Entity pacman;
 	
 	private void addMessageQueue() {
 		
@@ -48,12 +50,13 @@ public class GraphicSystemTest {
 		entityManager = new EntityManager();
 		factory = new EntityFactory(entityManager);
 		entity = factory.createSuperGum(2, 5);
+		pacman = factory.createPacMan(1, 1 , Direction.RIGHT);
 	}
 
 
 	@BeforeEach
 	void setUpBeforeEach() throws InterruptedException {
-		graphicsSystem = new GraphicsSystem(entityManager);
+		graphicsSystem = new GraphicsSystem(entityManager, pacman);
 		tGraphicsSystem = new Thread(graphicsSystem);
 		tGraphicsSystem.start();
 		tGraphicsSystem.join(100);
@@ -82,7 +85,7 @@ public class GraphicSystemTest {
 			addMessageQueue();
 			Thread.sleep(100);
 			List<Entity> entities = entityManager.getAllEntitiesPosessingComponentOfClass(GraphicsComponent.class.getName());
-			assertEquals(0, entities.size());
+			assertEquals(1, entities.size());
 		});
 	}
 	

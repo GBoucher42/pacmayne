@@ -40,6 +40,7 @@ class GameAudioSystemTest {
 		entityManager.addComponent(new PhysicsComponent("Pacman"), entity);
 		Map<MessageEnum, String> pacmanAudioMap = new HashMap<>();
 		pacmanAudioMap.put(MessageEnum.EATEN, "ressource/audio/waka.wav");
+		pacmanAudioMap.put(MessageEnum.INVINCIBLE_START, "ressource/audio/pacman-invincible.wav");
 		entityManager.addComponent(new AudioComponent(pacmanAudioMap), entity);
 		
 		MessageQueue.addMessage(entity, AudioComponent.class.getName() , MessageEnum.EATEN);
