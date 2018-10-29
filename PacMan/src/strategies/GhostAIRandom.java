@@ -8,8 +8,8 @@ import systemThreads.MessageEnum;
 public class GhostAIRandom extends GhostAIStrategy{
 	
 	@Override
-	public Direction getPursueDirection(Direction currentDirection, MessageEnum message) {
-		return super.getPursueDirection(currentDirection, message);
+	public Direction getDirection(Direction currentDirection, MessageEnum message) {
+		return super.getDirection(currentDirection, message);
 	}
 	
 	@Override

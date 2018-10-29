@@ -15,14 +15,14 @@ public class GhostAIStupid extends GhostAIStrategy{
 	private boolean canMakeDecision = true;
 	
 	@Override
-	public Direction getPursueDirection(Direction direction, MessageEnum message) {
+	public Direction getDirection(Direction direction, MessageEnum message) {
 		if(message != null && message.equals(MessageEnum.PACMAN_SAW) && canMakeDecision) {
 			chaseTimer();
 			if(random.nextBoolean()) {
 				return direction;
 			}
 		}
-		return super.getPursueDirection(direction, message);
+		return super.getDirection(direction, message);
 	}
 	
 	private void chaseTimer() {

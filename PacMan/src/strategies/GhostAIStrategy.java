@@ -19,7 +19,7 @@ public abstract class GhostAIStrategy {
 		initDirections();
 	}
 
-	public synchronized Direction getPursueDirection(Direction currentDirection, MessageEnum message) {
+	public synchronized Direction getDirection(Direction currentDirection, MessageEnum message) {
 		if(moveIndex == DIRECTION_CHANGE_INDEX || (message != null && message.equals(MessageEnum.HIT_WALL))) {
 			moveIndex = 0;
 			return directions.get(r.nextInt(directions.size()));
@@ -30,25 +30,29 @@ public abstract class GhostAIStrategy {
 	}
 	
 	protected synchronized void removeOppositeDirection(Direction direction) {
-		directions.clear();
-		initDirections();
 		switch(direction) {
 		case UP:
-			directions.remove(Direction.UP);
+			removeDirection(Direction.DOWN);
 			break;
 		case DOWN:
-			directions.remove(Direction.UP);
+			removeDirection(Direction.UP);
 			break;
 		case LEFT:
-			directions.remove(Direction.RIGHT);
+			removeDirection(Direction.RIGHT);
 			break;
 		case RIGHT:
-			directions.remove(Direction.LEFT);
+			removeDirection(Direction.LEFT);
 			break;
 		default:
 			break;
 			
 		}
+	}
+	
+	protected synchronized void removeDirection(Direction direction) {
+		directions.clear();
+		initDirections();
+		directions.remove(direction);
 	}
 	
 	private void initDirections() {
