@@ -83,13 +83,12 @@ public class MoveSystem extends SystemBase {
 
 			} else if (collisionType == CollisionType.GATE) {
 				move.setPassingGate(true);
+				move.moveOneFrameBySpeed();
+				graphic.updatePosition(move.getX(), move.getY(), move.getDirection());
 
 			} else if (entity != pacman && (collisionType == CollisionType.TUNNEL || collisionType == CollisionType.COLLIDEWALL)) {
 				MessageQueue.addMessage(entity, AIComponent.class.getName(), MessageEnum.HIT_WALL);
-			} 
-				move.moveOneFrameBySpeed();
-				graphic.updatePosition(move.getX(), move.getY(), move.getDirection());
-			}
+			} 			
 		}		
 	}
 	
