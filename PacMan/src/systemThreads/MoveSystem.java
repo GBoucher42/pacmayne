@@ -2,11 +2,8 @@ package systemThreads;
 
 import java.util.List;
 
-import javax.swing.plaf.synth.SynthSeparatorUI;
-
 import components.GraphicsComponent;
 import components.MoveComponent;
-import components.ScoreComponent;
 import entities.CollisionType;
 import entities.Direction;
 import entities.Entity;
