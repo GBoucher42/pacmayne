@@ -19,8 +19,11 @@ public class InvincibleSystem extends SystemBase {
 	private Entity blinky;
 	private Entity pinky;
 	private Entity clyde;
-	private SyncTimerTask repeatedTask;
-	private Timer timer = new Timer();
+	private SyncTimerTask invincibleTask;
+	private SyncTimerTask blinkingTask;
+	private Timer invincibleTimer = new Timer();
+	private Timer blinkingTimer = new Timer();
+	
 	public InvincibleSystem(EntityManager entityManager, Entity pacman, Entity inky, Entity blinky, Entity pinky, Entity clyde) {
 		super(entityManager);
 		this.pacman = pacman;
@@ -28,7 +31,9 @@ public class InvincibleSystem extends SystemBase {
 		this.blinky = blinky;
 		this.pinky = pinky;
 		this.clyde = clyde;
-		repeatedTask = new SyncTimerTask(() -> addIncincibleEndMessages());
+		invincibleTask = new SyncTimerTask(() -> addInvincibleEndMessages());
+		blinkingTask = new SyncTimerTask(() -> addBlinkingMessage());
+		
 	}
 
 	@Override
@@ -48,7 +53,7 @@ public class InvincibleSystem extends SystemBase {
 		}			
 	}
 	
-	private void addIncincibleEndMessages() {
+	private void addInvincibleEndMessages() {
 		MessageQueue.addMessage(pacman, AudioComponent.class.getName(), MessageEnum.INVINCIBLE_END);
 		MessageQueue.addMessage(pacman, MoveComponent.class.getName(), MessageEnum.INVINCIBLE_END);					
 		MessageQueue.addMessage(pacman, PhysicsComponent.class.getName(), MessageEnum.INVINCIBLE_END);
@@ -58,13 +63,31 @@ public class InvincibleSystem extends SystemBase {
 		MessageQueue.addMessage(clyde, GraphicsComponent.class.getName(), MessageEnum.INVINCIBLE_END);
 	}
 	
+	private void addBlinkingMessage() {
+		MessageQueue.addMessage(inky, GraphicsComponent.class.getName(), MessageEnum.BLINKING);
+		MessageQueue.addMessage(blinky, GraphicsComponent.class.getName(), MessageEnum.BLINKING);
+		MessageQueue.addMessage(pinky, GraphicsComponent.class.getName(), MessageEnum.BLINKING);
+		MessageQueue.addMessage(clyde, GraphicsComponent.class.getName(), MessageEnum.BLINKING);
+	}
+	
 	private void startInvincibleTimer(double timeInSeconds) {
-		if(repeatedTask.hasRunStarted()) {
-			timer.cancel();
+		if(invincibleTask.hasRunStarted()) {
+			invincibleTimer.cancel();
 		}
-		timer = new Timer();
-		repeatedTask = new SyncTimerTask(() -> addIncincibleEndMessages());
-		repeatedTask.startRunning();
-		timer.schedule(repeatedTask, (long) (timeInSeconds * 1000));		
+		
+		if(blinkingTask.hasRunStarted()) {
+			blinkingTimer.cancel();
+		}
+		
+		blinkingTimer = new Timer();
+		invincibleTimer = new Timer();
+		
+		invincibleTask = new SyncTimerTask(() -> addInvincibleEndMessages());
+		blinkingTask = new SyncTimerTask(() -> addBlinkingMessage());
+		invincibleTask.startRunning();		
+		blinkingTask.startRunning();
+		
+		invincibleTimer.schedule(invincibleTask, (long) (timeInSeconds * 1000));		
+		blinkingTimer.schedule(blinkingTask, (long) (timeInSeconds * 1000 * 3 / 4));
 	}
 }

@@ -100,7 +100,7 @@ public class GraphicsComponent implements IComponent{
 	
 	
 	public void updatePosition(double x, double y, Direction direction) {
-		if(!spriteEnum.equals(SpritesEnum.DEATH) && !spriteEnum.equals(SpritesEnum.AFRAID)) {
+		if(!spriteEnum.equals(SpritesEnum.DEATH) && !spriteEnum.equals(SpritesEnum.AFRAID) && !spriteEnum.equals(SpritesEnum.BLINKING)) {
 			switch(direction) {
 				case UP:
 					this.spriteEnum = SpritesEnum.UP;

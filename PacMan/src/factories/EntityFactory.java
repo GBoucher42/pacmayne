@@ -61,6 +61,7 @@ public class EntityFactory {
 		graphic.addAnimation(SpritesEnum.UP, ImageRepository.getImages(ghostName, SpritesEnum.UP));
 		graphic.addAnimation(SpritesEnum.DOWN, ImageRepository.getImages(ghostName, SpritesEnum.DOWN));
 		graphic.addAnimation(SpritesEnum.AFRAID, ImageRepository.getImages("frightened", SpritesEnum.AFRAID));
+		graphic.addAnimation(SpritesEnum.BLINKING, ImageRepository.getImages("blinking", SpritesEnum.BLINKING));
 		entityManager.addComponent(graphic, entity);
 		entityManager.addComponent(new MoveComponent(x , y, direction, false), entity);
 		entityManager.addComponent(new AIComponent(Strategy.RANDOM), entity);
