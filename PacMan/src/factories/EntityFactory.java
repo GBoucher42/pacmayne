@@ -46,7 +46,7 @@ public class EntityFactory {
 		pacmanAudioMap.put(MessageEnum.INVINCIBLE_START, "ressource/audio/pacman-invincible.wav");
 		entityManager.addComponent(new AudioComponent(pacmanAudioMap), entity);
 		
-		entityManager.addComponent(new MoveComponent(x, y, direction, true), entity);
+		entityManager.addComponent(new MoveComponent(x, y, direction, true, false), entity);
 		entityManager.addComponent(new ScoreComponent(), entity);
 		entityManager.addComponent(new UserInputComponent(), entity);
 		entityManager.addComponent(new LifeComponent(3), entity);
@@ -63,7 +63,7 @@ public class EntityFactory {
 		graphic.addAnimation(SpritesEnum.AFRAID, ImageRepository.getImages("frightened", SpritesEnum.AFRAID));
 		graphic.addAnimation(SpritesEnum.BLINKING, ImageRepository.getImages("blinking", SpritesEnum.BLINKING));
 		entityManager.addComponent(graphic, entity);
-		entityManager.addComponent(new MoveComponent(x , y, direction, false), entity);
+		entityManager.addComponent(new MoveComponent(x , y, direction, false, true), entity);
 		entityManager.addComponent(new AIComponent(Strategy.RANDOM), entity);
 		return entity;
 	}

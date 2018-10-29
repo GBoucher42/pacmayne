@@ -21,6 +21,10 @@ public class Tile {
 		return type == TileType.TUNNEL;
 	}
 	
+	public boolean isGate() {
+		return type == TileType.GATE;
+	}
+	
 	public int getX()
 	{
 		return x;

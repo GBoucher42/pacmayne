@@ -61,6 +61,10 @@ public class InvincibleSystem extends SystemBase {
 		MessageQueue.addMessage(blinky, GraphicsComponent.class.getName(), MessageEnum.INVINCIBLE_END);
 		MessageQueue.addMessage(pinky, GraphicsComponent.class.getName(), MessageEnum.INVINCIBLE_END);
 		MessageQueue.addMessage(clyde, GraphicsComponent.class.getName(), MessageEnum.INVINCIBLE_END);
+		MessageQueue.addMessage(inky, MoveComponent.class.getName(), MessageEnum.INVINCIBLE_END);
+		MessageQueue.addMessage(blinky, MoveComponent.class.getName(), MessageEnum.INVINCIBLE_END);
+		MessageQueue.addMessage(pinky, MoveComponent.class.getName(), MessageEnum.INVINCIBLE_END);
+		MessageQueue.addMessage(clyde, MoveComponent.class.getName(), MessageEnum.INVINCIBLE_END);
 	}
 	
 	private void addBlinkingMessage() {

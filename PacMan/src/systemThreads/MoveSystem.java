@@ -2,11 +2,8 @@ package systemThreads;
 
 import java.util.List;
 
-import javax.swing.plaf.synth.SynthSeparatorUI;
-
 import components.GraphicsComponent;
 import components.MoveComponent;
-import components.ScoreComponent;
 import entities.CollisionType;
 import entities.Direction;
 import entities.Entity;
@@ -46,19 +43,23 @@ public class MoveSystem extends SystemBase {
 				
 			}
 			
-			
 			if(entity != pacman) {
 				MessageEnum message = MessageQueue.consumeEntityMessages(entity, MoveComponent.class.getName());
-				if(message != null && message == MessageEnum.KILLED) {
+				if(message != null && message == MessageEnum.KILLED) {		
+					message = MessageQueue.consumeEntityMessages(entity, MoveComponent.class.getName());
+					move.setCanMoveWhenAble(false);
 					move.resetPosition();
+					move.setPassedGate(false);
+				} else if (message != null && message.equals(MessageEnum.INVINCIBLE_END)) {
+					move.setCanMoveWhenAble(true);	
 				}
+					
 			}
-			
 
 			CollisionType awaitingCollisionType = maze.validateMove(move, move.getAwaitingDirection());
 			
 			if(!move.isInTunnel() && move.canTurn() &&!move.getAwaitingDirection().equals(Direction.NONE) && 
-					( awaitingCollisionType == CollisionType.NONE ||  awaitingCollisionType == CollisionType.TUNNEL && move.canPassTunnel())) {
+					( awaitingCollisionType == CollisionType.NONE || (awaitingCollisionType == CollisionType.TUNNEL && move.canPassTunnel()) || (awaitingCollisionType == CollisionType.GATE && move.canPassGate() && !move.canPassGate()))) {
 				move.updateDirection();
 			} 
 			
@@ -73,6 +74,10 @@ public class MoveSystem extends SystemBase {
 				graphic.updatePosition(move.getX(), move.getY(), move.getDirection());
 			} else if (collisionType == CollisionType.OVERBOUND) {
 				move.passTunnel();
+			} else if (collisionType == CollisionType.GATE) {
+				move.setPassedGate(true);
+				move.moveOneFrameBySpeed();
+				graphic.updatePosition(move.getX(), move.getY(), move.getDirection());
 			}
 		}		
 	}
