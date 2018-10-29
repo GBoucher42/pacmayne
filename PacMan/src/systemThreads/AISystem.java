@@ -13,7 +13,7 @@ import entities.Maze;
 public class AISystem extends SystemBase {
 	private Entity pacman;
 	private Maze maze;
-	Random random = new Random();
+	
 	public AISystem(EntityManager entityManager, Entity pacman, Maze maze) {
 		super(entityManager);
 		this.pacman = pacman;
@@ -40,11 +40,9 @@ public class AISystem extends SystemBase {
 			case AMBUSH:
 				handleAmbush(move, pacmanMove, ai, entity);
 				break;
+			case STUPID:
 			case CHASE:
 				handleChase(move, pacmanMove, ai, entity);
-				break;
-			case STUPID:
-				handleStupid(move, pacmanMove, ai, entity);
 				break;
 			default:
 				break;
@@ -74,17 +72,9 @@ public class AISystem extends SystemBase {
 		}
 	}
 	
-	private void handleStupid(MoveComponent move, MoveComponent pacmanMove,  AIComponent ai, Entity entity) {
-	    if(random.nextBoolean()) {
-	    	handleChase(move, pacmanMove, ai, entity);
-	    } else {
-	    	handleRandom(move, ai, entity);
-	    }
-	}
-	
 	private void handleChase(MoveComponent move, MoveComponent pacmanMove,  AIComponent ai, Entity entity) {
 		boolean chasing = false;
-		if(move.getTileX() == pacmanMove.getTileX()) {
+		if(Math.abs(move.getX() - pacmanMove.getX()) < 5) {
 			if(move.getY() < pacmanMove.getY()) {
 				if(maze.isInSameCorridor(move.getTileY(), pacmanMove.getTileY(), move.getTileX(), pacmanMove.getTileX(), Direction.DOWN)) {
 					chasing = true;
@@ -96,7 +86,7 @@ public class AISystem extends SystemBase {
 					move.setAwaitingDirection(ai.getDirection(Direction.UP, MessageEnum.PACMAN_SAW));
 				}
 			}
-		} else if(Math.abs(move.getY() - pacmanMove.getY()) < 4) {
+		} else if(Math.abs(move.getY() - pacmanMove.getY()) < 5) {
 			if(move.getX() < pacmanMove.getX()) {
 				if(maze.isInSameCorridor(move.getTileY(), pacmanMove.getTileY(), move.getTileX(), pacmanMove.getTileX(), Direction.RIGHT)) {
 					chasing = true;

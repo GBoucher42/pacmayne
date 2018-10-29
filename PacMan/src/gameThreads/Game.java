@@ -34,6 +34,7 @@ import rendering.Sprite;
 import strategies.GhostAIAmbusher;
 import strategies.GhostAIChaser;
 import strategies.GhostAIRandom;
+import strategies.GhostAIStupid;
 import systemThreads.AISystem;
 import systemThreads.GameAudioSystem;
 import systemThreads.GraphicsSystem;
@@ -137,10 +138,10 @@ public class Game {
 		List<Sprite> sprites = new ArrayList<Sprite>();
 		EntityFactory factory = new EntityFactory(entityManager);
 		pacman = factory.createPacMan(PACMAN_SPAWN_POINT_X, PACMAN_SPAWN_POINT_Y, Direction.RIGHT);
-		clyde = factory.createGhost(CLYDE_SPAWN_POINT_X, CLYDE_SPAWN_POINT_Y, Direction.UP, "clyde", new GhostAIChaser());
+		clyde = factory.createGhost(CLYDE_SPAWN_POINT_X, CLYDE_SPAWN_POINT_Y, Direction.UP, "clyde", new GhostAIStupid());
 		blinky = factory.createGhost(BLINKY_SPAWN_POINT_X, BLINKY_SPAWN_POINT_Y, Direction.UP, "blinky", new GhostAIChaser());
-		inky = factory.createGhost(INKY_SPAWN_POINT_X, INKY_SPAWN_POINT_Y, Direction.UP, "inky", new GhostAIChaser());
-		pinky = factory.createGhost(PINKY_SPAWN_POINT_X, PINKY_SPAWN_POINT_Y, Direction.UP, "pinky", new GhostAIChaser());
+		inky = factory.createGhost(INKY_SPAWN_POINT_X, INKY_SPAWN_POINT_Y, Direction.UP, "inky", new GhostAIRandom());
+		pinky = factory.createGhost(PINKY_SPAWN_POINT_X, PINKY_SPAWN_POINT_Y, Direction.UP, "pinky", new GhostAIAmbusher());
 		board.setPacManEntity(pacman);
 		
 		List<Entity> entities = entityManager.getAllEntitiesPosessingComponentOfClass(MoveComponent.class.getName());
