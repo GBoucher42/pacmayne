@@ -13,7 +13,7 @@ public class GhostAIRandom extends GhostAIStrategy{
 	}
 	
 	@Override
-	public Strategy getStragtyEnum() {
+	public Strategy getStrategyEnum() {
 		return Strategy.RANDOM;
 	}
 	

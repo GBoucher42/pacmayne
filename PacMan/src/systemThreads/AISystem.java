@@ -10,8 +10,6 @@ import entities.Entity;
 import entities.EntityManager;
 import entities.Maze;
 import entities.SpritesEnum;
-import strategies.GhostAIAfraid;
-import strategies.GhostAIStrategy;
 
 public class AISystem extends SystemBase {
 	private Entity pacman;
@@ -38,20 +36,23 @@ public class AISystem extends SystemBase {
 				continue;
 			}
 			
-			isScared = graphic.getSpriteEnum().equals(SpritesEnum.AFRAID) || graphic.getSpriteEnum().equals(SpritesEnum.AFRAID);
-			switch(ai.getStrategy().getStragtyEnum()) {
-			case RANDOM:
-				handleRandom(move, ai, entity, isScared);
-				break;
-			case AMBUSH:
-				handleAmbush(move, pacmanMove, ai, entity, isScared);
-				break;
-			case STUPID:
-			case CHASE:
-				handleChase(move, pacmanMove, ai, entity, isScared);
-				break;
-			default:
-				break;
+			if(graphic.getSpriteEnum().equals(SpritesEnum.AFRAID) || graphic.getSpriteEnum().equals(SpritesEnum.BLINKING)) {
+				handleChase(move, pacmanMove, ai, entity, true);
+			} else {
+				switch(ai.getStrategy().getStrategyEnum()) {
+				case RANDOM:
+					handleRandom(move, ai, entity, false);
+					break;
+				case AMBUSH:
+					handleAmbush(move, pacmanMove, ai, entity, false);
+					break;
+				case STUPID:
+				case CHASE:
+					handleChase(move, pacmanMove, ai, entity, false);
+					break;
+				default:
+					break;
+				}
 			}
 		}
 	}
@@ -78,24 +79,24 @@ public class AISystem extends SystemBase {
 		boolean chasing = false;
 		if(Math.abs(move.getX() - pacmanMove.getX()) < 5) {
 			if(move.getY() < pacmanMove.getY()) {
-				if(maze.isInSameCorridor(move.getTileY(), pacmanMove.getTileY(), move.getTileX(), pacmanMove.getTileX(), Direction.DOWN)) {
+				if(maze.isInSameCorridor(move.getTileY(), pacmanMove.getTileY(), move.getTileX(), pacmanMove.getTileX(), "y")) {
 					chasing = true;
 					move.setAwaitingDirection(ai.getDirection(Direction.DOWN, isScared, MessageEnum.PACMAN_SAW));
 				}
 			} else {
-				if(maze.isInSameCorridor(pacmanMove.getTileY(), move.getTileY(), pacmanMove.getTileX(), move.getTileX(), Direction.UP)) {
+				if(maze.isInSameCorridor(pacmanMove.getTileY(), move.getTileY(), pacmanMove.getTileX(), move.getTileX(), "y")) {
 					chasing = true;
 					move.setAwaitingDirection(ai.getDirection(Direction.UP, isScared, MessageEnum.PACMAN_SAW));
 				}
 			}
 		} else if(Math.abs(move.getY() - pacmanMove.getY()) < 5) {
 			if(move.getX() < pacmanMove.getX()) {
-				if(maze.isInSameCorridor(move.getTileY(), pacmanMove.getTileY(), move.getTileX(), pacmanMove.getTileX(), Direction.RIGHT)) {
+				if(maze.isInSameCorridor(move.getTileY(), pacmanMove.getTileY(), move.getTileX(), pacmanMove.getTileX(), "x")) {
 					chasing = true;
 					move.setAwaitingDirection(ai.getDirection(Direction.RIGHT, isScared, MessageEnum.PACMAN_SAW));
 				}
 			} else {
-				if(maze.isInSameCorridor(pacmanMove.getTileY(), move.getTileY(), pacmanMove.getTileX(), move.getTileX(), Direction.LEFT)) {
+				if(maze.isInSameCorridor(pacmanMove.getTileY(), move.getTileY(), pacmanMove.getTileX(), move.getTileX(), "x")) {
 					chasing = true;
 					move.setAwaitingDirection(ai.getDirection(Direction.LEFT, isScared, MessageEnum.PACMAN_SAW));
 				}

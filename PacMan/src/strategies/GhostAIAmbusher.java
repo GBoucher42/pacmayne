@@ -17,7 +17,7 @@ public class GhostAIAmbusher extends GhostAIStrategy{
 	}
 
 	@Override
-	public Strategy getStragtyEnum() {
+	public Strategy getStrategyEnum() {
 		return Strategy.AMBUSH;
 	}
 

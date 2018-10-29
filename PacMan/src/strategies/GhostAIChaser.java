@@ -16,7 +16,7 @@ public class GhostAIChaser extends GhostAIStrategy{
 	}
 
 	@Override
-	public Strategy getStragtyEnum() {
+	public Strategy getStrategyEnum() {
 		return Strategy.CHASE;
 	}
 

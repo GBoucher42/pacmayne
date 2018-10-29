@@ -48,6 +48,9 @@ public abstract class GhostAIStrategy {
 			
 		}
 	}
+	protected void moveNow() {
+		this.moveIndex = DIRECTION_CHANGE_INDEX;
+	}
 	
 	protected synchronized void removeDirection(Direction direction) {
 		directions.clear();
@@ -55,14 +58,14 @@ public abstract class GhostAIStrategy {
 		directions.remove(direction);
 	}
 	
-	private void initDirections() {
+	protected synchronized void initDirections() {
 		directions.add(Direction.UP);
 		directions.add(Direction.DOWN);
 		directions.add(Direction.LEFT);
 		directions.add(Direction.RIGHT);
 	}
 	
-	public abstract Strategy getStragtyEnum();
+	public abstract Strategy getStrategyEnum();
 
 	
 	// TODO: getEvadeDirection()

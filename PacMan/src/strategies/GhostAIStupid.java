@@ -34,7 +34,7 @@ public class GhostAIStupid extends GhostAIStrategy{
 	}
 
 	@Override
-	public Strategy getStragtyEnum() {
+	public Strategy getStrategyEnum() {
 		return Strategy.STUPID;
 	}
 

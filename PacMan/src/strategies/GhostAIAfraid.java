@@ -10,12 +10,15 @@ public class GhostAIAfraid extends GhostAIStrategy {
 	public Direction getDirection(Direction direction, MessageEnum message) {
 		if(message != null && message.equals(MessageEnum.PACMAN_SAW)) {
 			super.removeDirection(direction);
+			super.moveNow();
+		} else {
+			super.initDirections();
 		}
 		return super.getDirection(direction, message);
 	}
 
 	@Override
-	public Strategy getStragtyEnum() {
+	public Strategy getStrategyEnum() {
 		return Strategy.AFRAID;
 	}
 
