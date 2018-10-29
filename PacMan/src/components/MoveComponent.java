@@ -16,6 +16,15 @@ public class MoveComponent implements IComponent {
 	private boolean canTurn = false;
 	private boolean inTunnel = false;
 	private boolean passedGate = false;
+	private boolean passingGate = false;
+	public boolean isPassingGate() {
+		return passingGate;
+	}
+
+	public void setPassingGate(boolean passingGate) {
+		this.passingGate = passingGate;
+	}
+
 	private final boolean canPassTunnel;
 	private final boolean canPassGate;
 	private boolean canMoveWhenAble = true;
@@ -40,6 +49,7 @@ public class MoveComponent implements IComponent {
 		x = spawnX * TILE_SIZE;
 		y = spawnY * TILE_SIZE;
 		direction = spawnDirection;
+		awaitingDirection = Direction.NONE;
 	}
 	
 	public void passTunnel() {
