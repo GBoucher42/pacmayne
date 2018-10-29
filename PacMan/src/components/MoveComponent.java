@@ -40,7 +40,6 @@ public class MoveComponent implements IComponent {
 		x = spawnX * TILE_SIZE;
 		y = spawnY * TILE_SIZE;
 		direction = spawnDirection;
-		passedGate = false;
 	}
 	
 	public void passTunnel() {
@@ -179,7 +178,9 @@ public class MoveComponent implements IComponent {
 	}
 
 	public void setDirection(Direction direction) {
-		this.direction = direction;
+		if ((passedGate && canPassGate) || !canPassGate) {
+			this.direction = direction;
+		}		
 	}
 
 	public Direction getAwaitingDirection() {
@@ -195,7 +196,7 @@ public class MoveComponent implements IComponent {
 	}	
 	
 	public void updateDirection() {
-		direction = awaitingDirection;
+		setDirection(awaitingDirection);
 		awaitingDirection = Direction.NONE;
 	}
 	

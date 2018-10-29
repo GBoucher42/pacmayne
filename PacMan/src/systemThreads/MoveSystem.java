@@ -48,9 +48,15 @@ public class MoveSystem extends SystemBase {
 			
 			if(entity != pacman) {
 				MessageEnum message = MessageQueue.consumeEntityMessages(entity, MoveComponent.class.getName());
-				if(message != null && message == MessageEnum.KILLED) {
+				if(message != null && message == MessageEnum.KILLED) {		
+					message = MessageQueue.consumeEntityMessages(entity, MoveComponent.class.getName());
+					move.setCanMoveWhenAble(false);
 					move.resetPosition();
+					move.setPassedGate(false);
+				} else if (message != null && message.equals(MessageEnum.INVINCIBLE_END)) {
+					move.setCanMoveWhenAble(true);	
 				}
+					
 			}
 
 			CollisionType awaitingCollisionType = maze.validateMove(move, move.getAwaitingDirection());
