@@ -240,7 +240,7 @@ public class Game {
 		try {
 			physicsThread.join(33);
 			audioThread.join(33);
-			graphicThread.join(99);
+			graphicThread.join(33);
 			if (physicsThread.isAlive()){
 				physicsThread.interrupt();
 			}

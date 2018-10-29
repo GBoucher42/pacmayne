@@ -12,12 +12,6 @@ public class MainMenuGameState implements IState {
 	public MainMenuGameState(VerticalMenu menu) {
 		this.menu = menu;
 	}
-	
-	@Override
-	public void loadResources() {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public void handleInput(KeyCode key) {

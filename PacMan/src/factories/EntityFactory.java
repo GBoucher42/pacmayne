@@ -66,7 +66,9 @@ public class EntityFactory {
 		graphic.addAnimation(SpritesEnum.BLINKING, ImageRepository.getImages("blinking", SpritesEnum.BLINKING));
 		entityManager.addComponent(graphic, entity);
 		entityManager.addComponent(new MoveComponent(x , y, direction, false, true), entity);
+
 		entityManager.addComponent(new AIComponent(strategy), entity);
+
 		return entity;
 	}
 	

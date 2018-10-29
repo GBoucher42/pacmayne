@@ -26,6 +26,7 @@ public class GraphicsSystem extends SystemBase implements Runnable{
 		for(Entity entity: entities) {
 			eaten = false;
 			GraphicsComponent graphic = (GraphicsComponent) entityManager.getComponentOfClass(GraphicsComponent.class.getName(), entity);
+			MoveComponent move = (MoveComponent) entityManager.getComponentOfClass(MoveComponent.class.getName(), entity);
 			MessageEnum message = MessageQueue.consumeEntityMessages(entity, GraphicsComponent.class.getName());
 			if(message != null) {
 				if(message.equals(MessageEnum.EATEN)) {
@@ -35,13 +36,16 @@ public class GraphicsSystem extends SystemBase implements Runnable{
 				} else if(message.equals(MessageEnum.KILLED) && entity == pacman) {
 					graphic.setSpriteEnum(SpritesEnum.DEATH);
 				} else if(message.equals(MessageEnum.INVINCIBLE_START)) {
-					graphic.setSpriteEnum(SpritesEnum.AFRAID);
+
+					if (move != null && move.getPassedGate()) {
+						graphic.setSpriteEnum(SpritesEnum.AFRAID);
+					}					
 				} else if (message.equals(MessageEnum.BLINKING) && graphic.getSpriteEnum() == SpritesEnum.AFRAID) {
-					graphic.setSpriteEnum(SpritesEnum.BLINKING);
-				} else if(message.equals(MessageEnum.INVINCIBLE_END) || (entity != pacman && message.equals(MessageEnum.KILLED))) {
-					MoveComponent move = (MoveComponent) entityManager.getComponentOfClass(MoveComponent.class.getName(), entity);					
-					graphic.setSpriteEnum(move.getDirection());
-					
+					if (move != null && move.getPassedGate()) {
+						graphic.setSpriteEnum(SpritesEnum.BLINKING);
+					}
+				} else if(message.equals(MessageEnum.INVINCIBLE_END) || (entity != pacman && message.equals(MessageEnum.KILLED))) {				
+					graphic.setSpriteEnum(move.getDirection());					
 				}
 			} 
 			
