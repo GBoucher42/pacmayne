@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import entities.Direction;
+import entities.Entity;
 import entities.EntityManager;
 import entities.Maze;
 import entities.Tile;
@@ -21,6 +22,7 @@ class MoveSystemTest {
 	MoveSystem system;
 	EntityManager entityManager;
 	EntityFactory factory;
+	Entity pacman;
 	Tile tile1;
 	Tile tile2; 
 	Tile tile3; 
@@ -61,8 +63,9 @@ class MoveSystemTest {
 		maze = new Maze();
 		initTiles();
 		entityManager = new EntityManager();
-		system = new MoveSystem(entityManager, maze);
 		factory = new EntityFactory(entityManager);
+		pacman = factory.createPacMan(1, 1 , Direction.RIGHT);
+		system = new MoveSystem(entityManager, maze, pacman);
 		
 	}
 	

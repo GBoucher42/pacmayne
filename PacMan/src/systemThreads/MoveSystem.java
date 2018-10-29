@@ -36,10 +36,16 @@ public class MoveSystem extends SystemBase {
 			if(graphic == null) 
 				continue;
 			
-			if(pacmanMessage != null && pacmanMessage == MessageEnum.KILLED) {
-				move.setDirection(Direction.NONE);
-				move.setAwaitingDirection(Direction.NONE);
+			if(pacmanMessage != null) {
+				if(pacmanMessage == MessageEnum.KILLED) {
+					move.setDirection(Direction.NONE);
+					move.setAwaitingDirection(Direction.NONE);
+				} else if((pacmanMessage == MessageEnum.INVINCIBLE_START || pacmanMessage == MessageEnum.INVINCIBLE_END) && entity.equals(pacman)) {
+					move.setIsFast(pacmanMessage == MessageEnum.INVINCIBLE_START);
+				}
+				
 			}
+			
 			
 			if(entity != pacman) {
 				MessageEnum message = MessageQueue.consumeEntityMessages(entity, MoveComponent.class.getName());

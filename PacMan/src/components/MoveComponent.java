@@ -11,7 +11,8 @@ public class MoveComponent implements IComponent {
 	private double x, y;
 	private Direction direction, awaitingDirection;
 	private final Direction spawnDirection;
-	private final double moveIncrementer = TILE_SIZE/5;
+	private double moveIncrementer = TILE_SIZE/5;
+	private double awaitingSpeed = 0;
 	private boolean canTurn = false;
 	private boolean inTunnel = false;
 	private final boolean canPassTunnel;
@@ -69,6 +70,7 @@ public class MoveComponent implements IComponent {
 		case DOWN:
 			y+=moveIncrementer;
 			if(isNewTile(y)) {
+				reviewSpeed();
 				++tileY;
 				canTurn = true;
 			}
@@ -76,6 +78,7 @@ public class MoveComponent implements IComponent {
 		case LEFT:
 			x-=moveIncrementer;
 			if(isNewTile(x)) {
+				reviewSpeed();
 				--tileX;
 				canTurn = true;
 			}
@@ -83,6 +86,7 @@ public class MoveComponent implements IComponent {
 		case RIGHT:
 			x+=moveIncrementer;
 			if(isNewTile(x)) {
+				reviewSpeed();
 				++tileX;
 				canTurn = true;
 			}
@@ -90,6 +94,7 @@ public class MoveComponent implements IComponent {
 		case UP:
 			y-=moveIncrementer;
 			if(isNewTile(y)) {
+				reviewSpeed();
 				--tileY;
 				canTurn = true;
 			}
@@ -99,6 +104,12 @@ public class MoveComponent implements IComponent {
 		}
 	}
 
+	private void reviewSpeed() {
+		if(awaitingSpeed != 0) {
+			moveIncrementer = awaitingSpeed;
+			awaitingSpeed = 0;
+		}
+	}
 	private boolean isNewTile(double position) {
 		return position % TILE_SIZE == 0;
 	}
@@ -180,6 +191,10 @@ public class MoveComponent implements IComponent {
 	
 	public boolean canPassTunnel() {
 		return canPassTunnel;
+	}
+	
+	public void setIsFast(boolean isFast) {
+		awaitingSpeed = isFast ? TILE_SIZE/4 : TILE_SIZE/5;
 	}
 	
 }
