@@ -2,6 +2,7 @@ package systemThreads;
 
 import java.util.List;
 
+import components.AIComponent;
 import components.GraphicsComponent;
 import components.MoveComponent;
 import entities.CollisionType;
@@ -74,6 +75,8 @@ public class MoveSystem extends SystemBase {
 				graphic.updatePosition(move.getX(), move.getY(), move.getDirection());
 			} else if (collisionType == CollisionType.OVERBOUND) {
 				move.passTunnel();
+			} else if (entity != pacman && (collisionType == CollisionType.TUNNEL || collisionType == CollisionType.COLLIDEWALL)) {
+				MessageQueue.addMessage(entity, AIComponent.class.getName(), MessageEnum.HIT_WALL);
 			} else if (collisionType == CollisionType.GATE) {
 				move.setPassedGate(true);
 				move.moveOneFrameBySpeed();

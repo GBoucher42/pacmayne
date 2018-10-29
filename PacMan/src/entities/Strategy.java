@@ -1,5 +1,5 @@
 package entities;
 
 public enum Strategy {
-	RANDOM
+	RANDOM, AMBUSH, CHASE, STUPID, AFRAID
 }
