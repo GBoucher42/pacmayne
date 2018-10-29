@@ -3,6 +3,7 @@ package systemThreads;
 import java.util.List;
 
 import components.AIComponent;
+
 import components.GraphicsComponent;
 import components.MoveComponent;
 import entities.CollisionType;
@@ -51,6 +52,9 @@ public class MoveSystem extends SystemBase {
 					move.setCanMoveWhenAble(false);
 					move.resetPosition();
 					move.setPassedGate(false);
+
+					move.setPassingGate(false);
+
 				} else if (message != null && message.equals(MessageEnum.INVINCIBLE_END)) {
 					move.setCanMoveWhenAble(true);	
 				}
@@ -66,6 +70,7 @@ public class MoveSystem extends SystemBase {
 			
 			CollisionType collisionType = maze.validateMove(move, move.getDirection());
 			if(collisionType == CollisionType.NONE) {
+				move.setPassedGate(move.isPassingGate());
 				move.moveOneFrameBySpeed();
 				move.setInTunnel(false);
 				graphic.updatePosition(move.getX(), move.getY(), move.getDirection());
@@ -75,17 +80,20 @@ public class MoveSystem extends SystemBase {
 				graphic.updatePosition(move.getX(), move.getY(), move.getDirection());
 			} else if (collisionType == CollisionType.OVERBOUND) {
 				move.passTunnel();
+
+			} else if (collisionType == CollisionType.GATE) {
+				move.setPassingGate(true);
+
 			} else if (entity != pacman && (collisionType == CollisionType.TUNNEL || collisionType == CollisionType.COLLIDEWALL)) {
 				MessageQueue.addMessage(entity, AIComponent.class.getName(), MessageEnum.HIT_WALL);
-			} else if (collisionType == CollisionType.GATE) {
-				move.setPassedGate(true);
+			} 
 				move.moveOneFrameBySpeed();
 				graphic.updatePosition(move.getX(), move.getY(), move.getDirection());
 			}
 		}		
 	}
 	
-	public void respawn() {
+	public synchronized void respawn() {
 		List<Entity> entities = entityManager.getAllEntitiesPosessingComponentOfClass(MoveComponent.class.getName());
 		for(Entity entity: entities) {	
 			MoveComponent move = (MoveComponent) entityManager.getComponentOfClass(MoveComponent.class.getName(), entity);
@@ -93,6 +101,8 @@ public class MoveSystem extends SystemBase {
 			if(graphic == null) 
 				continue;
 			move.resetPosition();
+			move.setPassedGate(false);
+			move.setPassingGate(false);
 			graphic.updatePosition(move.getX(), move.getY(), move.getDirection());
 			graphic.setSpriteEnum(move.getDirection());
 		}
