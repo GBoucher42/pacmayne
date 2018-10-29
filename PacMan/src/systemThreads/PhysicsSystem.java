@@ -65,7 +65,7 @@ public class PhysicsSystem extends SystemBase implements Runnable {
 					MessageQueue.addMessage(pacman, ScoreComponent.class.getName(), MessageEnum.SUPERGUMPOINTS);
 					
 				} else if(physic.getCollisionType() == "Ghost") {
-					if(graphic.getSpriteEnum().equals(SpritesEnum.AFRAID)) {
+					if(graphic.getSpriteEnum().equals(SpritesEnum.AFRAID) || graphic.getSpriteEnum().equals(SpritesEnum.BLINKING)) {
 						MessageQueue.addMessage(pacman, ScoreComponent.class.getName(), MessageEnum.valueOf("GHOST" + BASE_SCORE_FOR_GHOST * scoreMultiplier));
 						scoreMultiplier = scoreMultiplier == 8 ? 1 : scoreMultiplier * 2;
 						MessageQueue.addMessage(entity, MoveComponent.class.getName(), MessageEnum.KILLED);
