@@ -70,6 +70,8 @@ public class Maze {
 				collisionType = CollisionType.COLLIDEWALL;
 			} else if(tiles[y + 1][x].isTunnel()) {
 				collisionType = CollisionType.TUNNEL;
+			} else if(tiles[y + 1][x].isGate()) {
+				collisionType = CollisionType.GATE;
 			} 
 			break;
 		case LEFT:
@@ -79,6 +81,8 @@ public class Maze {
 				collisionType = CollisionType.COLLIDEWALL;
 			} else if(tiles[y][x - 1].isTunnel()) {
 				collisionType = CollisionType.TUNNEL;
+			} else if(tiles[y][x - 1].isGate()) {
+				collisionType = CollisionType.GATE;
 			} 
 			break;
 		case RIGHT:
@@ -88,6 +92,8 @@ public class Maze {
 				collisionType = CollisionType.COLLIDEWALL;
 			} else if(tiles[y][x + 1].isTunnel()) {
 				collisionType = CollisionType.TUNNEL;
+			} else if(tiles[y][x + 1].isGate()) {
+				collisionType = CollisionType.GATE;
 			}
 			break;
 		case UP:
@@ -97,6 +103,8 @@ public class Maze {
 				collisionType = CollisionType.COLLIDEWALL;
 			} else if(tiles[y - 1][x].isTunnel()) {
 				collisionType = CollisionType.TUNNEL;
+			} else if(tiles[y - 1][x].isGate()) {
+				collisionType = CollisionType.GATE;
 			}  
 			break;
 		case NONE:

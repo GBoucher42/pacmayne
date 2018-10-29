@@ -1,5 +1,5 @@
 package entities;
 
 public enum TileType {
-	WALL, VOID, TUNNEL
+	WALL, VOID, TUNNEL, GATE
 }

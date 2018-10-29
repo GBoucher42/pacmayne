@@ -154,11 +154,11 @@ public class RenderingSystem extends Application {
 		
 		mainMenu.addMenuItem("PLAY", () -> {			
 			StateManager.setCurrentState(new InPlayGameState(startGame(primaryStage), () -> {
-					StateManager.setCurrentState(new QuitMenuGameState(quitMenu));
-					primaryStage.getScene().setRoot(sceneRoots.get(QuitMenuGameState.class.getName()));
-				}));
-				primaryStage.getScene().setRoot(sceneRoots.get(InPlayGameState.class.getName()));
-			});
+				StateManager.setCurrentState(new QuitMenuGameState(quitMenu));
+				primaryStage.getScene().setRoot(sceneRoots.get(QuitMenuGameState.class.getName()));
+			}));
+			primaryStage.getScene().setRoot(sceneRoots.get(InPlayGameState.class.getName()));
+		});
 		mainMenu.addMenuItem("CONTROLS", () -> {StateManager.setCurrentState(new ControlMenuState(controlMenu));
 			primaryStage.getScene().setRoot(sceneRoots.get(ControlMenuState.class.getName()));});
 		mainMenu.addMenuItem("HIGH SCORES", () -> {
@@ -179,7 +179,6 @@ public class RenderingSystem extends Application {
 		sceneRoots.put(QuitMenuGameState.class.getName(), quitMenu.getContent());
 		StateManager.setCurrentState(new MainMenuGameState(mainMenu));
 		
-		// TODO: init other menus here..
 	}
 	
 	private void letterbox(final Scene scene, final Pane contentPane) {

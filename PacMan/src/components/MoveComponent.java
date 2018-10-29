@@ -15,9 +15,12 @@ public class MoveComponent implements IComponent {
 	private double awaitingSpeed = 0;
 	private boolean canTurn = false;
 	private boolean inTunnel = false;
+	private boolean passedGate = false;
 	private final boolean canPassTunnel;
+	private final boolean canPassGate;
+	private boolean canMoveWhenAble = true;
 	
-	public MoveComponent(double x, double y, Direction direction, boolean canPassTunnel ) {
+	public MoveComponent(double x, double y, Direction direction, boolean canPassTunnel, boolean canPassGate) {
 		this.tileX = (int)x;
 		this.tileY = (int)y;
 		this.spawnX = (int)x;
@@ -28,6 +31,7 @@ public class MoveComponent implements IComponent {
 		this.spawnDirection = direction;
 		this.awaitingDirection = Direction.NONE;
 		this.canPassTunnel = canPassTunnel;
+		this.canPassGate = canPassGate;
 	}
 	
 	public void resetPosition() {
@@ -64,6 +68,10 @@ public class MoveComponent implements IComponent {
 	
 	public void moveOneFrameBySpeed()
 	{
+		if (!canMoveWhenAble) {
+			return;
+		}
+		
 		canTurn = false;
 		switch(direction)
 		{
@@ -110,10 +118,18 @@ public class MoveComponent implements IComponent {
 			awaitingSpeed = 0;
 		}
 	}
+	
 	private boolean isNewTile(double position) {
 		return position % TILE_SIZE == 0;
 	}
 	
+	public void setCanMoveWhenAble(boolean canMove) {
+		this.canMoveWhenAble = canMove;
+	}
+	
+	public boolean getCanMoveWhenAble() {
+		return this.canMoveWhenAble;
+	}
 	
 	public int getTileX() {
 		return tileX;
@@ -124,12 +140,17 @@ public class MoveComponent implements IComponent {
 		this.tileX = tileX;
 	}
 
-
-	public int getTileY() {
-		return tileY;
+	public void setPassedGate(boolean passedGate) {
+		this.passedGate = passedGate;
 	}
 
+	public boolean getPassedGate() {
+		return this.passedGate;
+	}
 	
+	public int getTileY() {
+		return tileY;
+	}	
 
 	public double getX() {
 		return x;
@@ -157,7 +178,9 @@ public class MoveComponent implements IComponent {
 	}
 
 	public void setDirection(Direction direction) {
-		this.direction = direction;
+		if ((passedGate && canPassGate) || !canPassGate) {
+			this.direction = direction;
+		}		
 	}
 
 	public Direction getAwaitingDirection() {
@@ -173,7 +196,7 @@ public class MoveComponent implements IComponent {
 	}	
 	
 	public void updateDirection() {
-		direction = awaitingDirection;
+		setDirection(awaitingDirection);
 		awaitingDirection = Direction.NONE;
 	}
 	
@@ -191,6 +214,10 @@ public class MoveComponent implements IComponent {
 	
 	public boolean canPassTunnel() {
 		return canPassTunnel;
+	}
+	
+	public boolean canPassGate() {
+		return canPassGate;
 	}
 	
 	public void setIsFast(boolean isFast) {
