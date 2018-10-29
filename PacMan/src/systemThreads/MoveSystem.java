@@ -46,19 +46,17 @@ public class MoveSystem extends SystemBase {
 				
 			}
 			
-			
 			if(entity != pacman) {
 				MessageEnum message = MessageQueue.consumeEntityMessages(entity, MoveComponent.class.getName());
 				if(message != null && message == MessageEnum.KILLED) {
 					move.resetPosition();
 				}
 			}
-			
 
 			CollisionType awaitingCollisionType = maze.validateMove(move, move.getAwaitingDirection());
 			
 			if(!move.isInTunnel() && move.canTurn() &&!move.getAwaitingDirection().equals(Direction.NONE) && 
-					( awaitingCollisionType == CollisionType.NONE ||  awaitingCollisionType == CollisionType.TUNNEL && move.canPassTunnel())) {
+					( awaitingCollisionType == CollisionType.NONE || (awaitingCollisionType == CollisionType.TUNNEL && move.canPassTunnel()) || (awaitingCollisionType == CollisionType.GATE && move.canPassGate() && !move.canPassGate()))) {
 				move.updateDirection();
 			} 
 			
@@ -73,6 +71,10 @@ public class MoveSystem extends SystemBase {
 				graphic.updatePosition(move.getX(), move.getY(), move.getDirection());
 			} else if (collisionType == CollisionType.OVERBOUND) {
 				move.passTunnel();
+			} else if (collisionType == CollisionType.GATE) {
+				move.setPassedGate(true);
+				move.moveOneFrameBySpeed();
+				graphic.updatePosition(move.getX(), move.getY(), move.getDirection());
 			}
 		}		
 	}

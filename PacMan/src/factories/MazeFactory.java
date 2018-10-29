@@ -13,7 +13,7 @@ public class MazeFactory {
 		WALL, GUM, WALL2, WALL3, WALL4, WALL5, WALL6, WALL7, WALL8, WALL9, WALL10, WALL11, WALL12, 
 		WALL13, WALL14, WALL15, WALL16, WALL17, WALL18, WALL19, WALL20, WALL21, WALL22,
 		WALL23, WALL24, WALL25, WALL26, WALL27, WALL28, WALL29, WALL30, WALL31, WALL32,
-		WALL33, WALL34, WALL35, WALL36, WALL37, SUPERGUM, VOID, FRUIT, TUNNEL;
+		WALL33, WALL34, WALL35, WALL36, WALL37, SUPERGUM, VOID, FRUIT, TUNNEL, GATE;
 	}
 	
 	private static TileCode[] tileCodes = TileCode.values();
@@ -32,7 +32,7 @@ public class MazeFactory {
 			{13,  15,  15,  15,  15,  20,   1,  29,  25,  27,  27,  32,  39,  29,  30,  39,  31,  27,  27,  26,  30,   1,  19,  15,  15,  15,  15,  14},
 			{39,  39,  39,  39,  39,  18,   1,  29,  23,  28,  28,  34,  39,  33,  34,  39,  33,  28,  28,  24,  30,   1,  17,  39,  39,  39,  39,  39},
 			{39,  39,  39,  39,  39,  18,   1,  29,  30,  39,  39,  39,  39,  39,  39,  39,  39,  39,  39,  29,  30,   1,  17,  39,  39,  39,  39,  39},
-			{39,  39,  39,  39,  39,  18,   1,  29,  30,  39,  19,  15,  36,  39,  39,  35,  15,  20,  39,  29,  30,   1,  17,  39,  39,  39,  39,  39},
+			{39,  39,  39,  39,  39,  18,   1,  29,  30,  39,  19,  15,  36,  42,  42,  35,  15,  20,  39,  29,  30,   1,  17,  39,  39,  39,  39,  39},
 			{16,  16,  16,  16,  16,  22,   1,  33,  34,  39,  17,  39,  39,  39,  39,  39,  39,  18,  39,  33,  34,   1,  21,  16,  16,  16,  16,  16},
 			{41,  41,  41,  41,  41,  41,   1,  39,  39,  39,  17,  39,  39,  39,  39,  39,  39,  18,  39,  39,  39,   1,  41,  41,  41,  41,  41,  41},
 			{15,  15,  15,  15,  15,  20,   1,  31,  32,  39,  17,  39,  39,  39,  39,  39,  39,  18,  39,  31,  32,   1,  19,  15,  15,  15,  15,  15},
@@ -60,7 +60,6 @@ public class MazeFactory {
 		
 		if (levelOneTileGrid.length != GAME_TILE_HEIGHT_COUNT || levelOneTileGrid[0].length != GAME_TILE_WIDTH_COUNT)
 		{
-			// TODO: custom exception
 			throw new Exception("Map data has invalid size (height/width)");
 		}
 
@@ -74,10 +73,13 @@ public class MazeFactory {
 				
 				TileCode tileCode = tileCodes[levelOneTileGrid[i][j]];
 				TileType tileType;
+				
 				if(tileCode == TileCode.TUNNEL) {
 					tileType = TileType.TUNNEL;
 				} else if (tileCode == TileCode.FRUIT || tileCode == TileCode.GUM || tileCode == TileCode.SUPERGUM || tileCode == TileCode.VOID){
 					tileType = TileType.VOID;
+				} else if (tileCode == TileCode.GATE) {
+					tileType = TileType.GATE;
 				} else {
 					tileType = TileType.WALL;
 				}

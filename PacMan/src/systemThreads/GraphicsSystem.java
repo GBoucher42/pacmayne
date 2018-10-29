@@ -36,10 +36,12 @@ public class GraphicsSystem extends SystemBase implements Runnable{
 					graphic.setSpriteEnum(SpritesEnum.DEATH);
 				} else if(message.equals(MessageEnum.INVINCIBLE_START)) {
 					graphic.setSpriteEnum(SpritesEnum.AFRAID);
-				} else if (message.equals(MessageEnum.BLINKING)) {
+				} else if (message.equals(MessageEnum.BLINKING) && graphic.getSpriteEnum() == SpritesEnum.AFRAID) {
 					graphic.setSpriteEnum(SpritesEnum.BLINKING);
 				} else if(message.equals(MessageEnum.INVINCIBLE_END) || (entity != pacman && message.equals(MessageEnum.KILLED))) {
 					MoveComponent move = (MoveComponent) entityManager.getComponentOfClass(MoveComponent.class.getName(), entity);
+					move.setPassedGate(false);
+					move.setCanMoveWhenAble(message.equals(MessageEnum.INVINCIBLE_END));
 					graphic.setSpriteEnum(move.getDirection());
 				}
 			} 
