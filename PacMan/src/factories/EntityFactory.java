@@ -21,6 +21,8 @@ import components.PhysicsComponent;
 import components.ScoreComponent;
 import components.UserInputComponent;
 import image.ImageRepository;
+import strategies.GhostAIRandom;
+import strategies.GhostAIStrategy;
 import systemThreads.MessageEnum;
 
 public class EntityFactory {
@@ -53,7 +55,7 @@ public class EntityFactory {
 		return entity;
 	}
 	
-	public Entity createGhost(int x, int y, Direction direction, String ghostName) {
+	public Entity createGhost(int x, int y, Direction direction, String ghostName, GhostAIStrategy strategy) {
 		Entity entity = entityManager.CreateEntity();
 		entityManager.addComponent(new PhysicsComponent("Ghost"), entity);
 		GraphicsComponent graphic = new GraphicsComponent(SpritesEnum.RIGHT, ImageRepository.getImages(ghostName, SpritesEnum.RIGHT), x * TILE_SIZE, y * TILE_SIZE, true);
@@ -64,7 +66,9 @@ public class EntityFactory {
 		graphic.addAnimation(SpritesEnum.BLINKING, ImageRepository.getImages("blinking", SpritesEnum.BLINKING));
 		entityManager.addComponent(graphic, entity);
 		entityManager.addComponent(new MoveComponent(x , y, direction, false, true), entity);
-		entityManager.addComponent(new AIComponent(Strategy.RANDOM), entity);
+
+		entityManager.addComponent(new AIComponent(strategy), entity);
+
 		return entity;
 	}
 	

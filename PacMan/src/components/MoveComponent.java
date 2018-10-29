@@ -16,6 +16,7 @@ public class MoveComponent implements IComponent {
 	private boolean canTurn = false;
 	private boolean inTunnel = false;
 	private boolean passedGate = false;
+
 	private boolean passingGate = false;
 	public boolean isPassingGate() {
 		return passingGate;

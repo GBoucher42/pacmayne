@@ -2,6 +2,8 @@ package systemThreads;
 
 import java.util.List;
 
+import components.AIComponent;
+
 import components.GraphicsComponent;
 import components.MoveComponent;
 import entities.CollisionType;
@@ -50,7 +52,9 @@ public class MoveSystem extends SystemBase {
 					move.setCanMoveWhenAble(false);
 					move.resetPosition();
 					move.setPassedGate(false);
+
 					move.setPassingGate(false);
+
 				} else if (message != null && message.equals(MessageEnum.INVINCIBLE_END)) {
 					move.setCanMoveWhenAble(true);	
 				}
@@ -76,8 +80,13 @@ public class MoveSystem extends SystemBase {
 				graphic.updatePosition(move.getX(), move.getY(), move.getDirection());
 			} else if (collisionType == CollisionType.OVERBOUND) {
 				move.passTunnel();
+
 			} else if (collisionType == CollisionType.GATE) {
 				move.setPassingGate(true);
+
+			} else if (entity != pacman && (collisionType == CollisionType.TUNNEL || collisionType == CollisionType.COLLIDEWALL)) {
+				MessageQueue.addMessage(entity, AIComponent.class.getName(), MessageEnum.HIT_WALL);
+			} 
 				move.moveOneFrameBySpeed();
 				graphic.updatePosition(move.getX(), move.getY(), move.getDirection());
 			}

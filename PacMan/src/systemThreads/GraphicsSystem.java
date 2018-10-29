@@ -36,6 +36,7 @@ public class GraphicsSystem extends SystemBase implements Runnable{
 				} else if(message.equals(MessageEnum.KILLED) && entity == pacman) {
 					graphic.setSpriteEnum(SpritesEnum.DEATH);
 				} else if(message.equals(MessageEnum.INVINCIBLE_START)) {
+
 					if (move != null && move.getPassedGate()) {
 						graphic.setSpriteEnum(SpritesEnum.AFRAID);
 					}					
@@ -44,8 +45,7 @@ public class GraphicsSystem extends SystemBase implements Runnable{
 						graphic.setSpriteEnum(SpritesEnum.BLINKING);
 					}
 				} else if(message.equals(MessageEnum.INVINCIBLE_END) || (entity != pacman && message.equals(MessageEnum.KILLED))) {				
-					graphic.setSpriteEnum(move.getDirection());
-					
+					graphic.setSpriteEnum(move.getDirection());					
 				}
 			} 
 			
