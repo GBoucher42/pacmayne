@@ -19,12 +19,6 @@ public class InPlayGameState implements IState{
 		this.game = game;
 		this.r = r;
 	}
-	
-	@Override
-	public void loadResources() {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public void handleInput(KeyCode key) {
