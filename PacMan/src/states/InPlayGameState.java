@@ -77,10 +77,11 @@ public class InPlayGameState implements IState{
 	@Override
 	public void onEnter() {
 		if (!isRunning) {
-			game.getBoard().pauseGame();
+			if (!game.getBoard().isRunning()) {
+				game.getBoard().pauseGame();
+			}
 			isRunning = !isRunning;	
-		}
-		
+		}		
 	}
 
 	@Override
@@ -88,8 +89,6 @@ public class InPlayGameState implements IState{
 		if (isRunning) {
 			game.getBoard().pauseGame();
 			isRunning = !isRunning;	
-		}
-		// TODO Auto-generated method stub
-		
+		}		
 	}
 }
