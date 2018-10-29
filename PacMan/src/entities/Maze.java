@@ -24,7 +24,36 @@ public class Maze {
 			return tiles[row][column];
 		}
 		return null;
-	}	
+	}
+	
+	public synchronized boolean isInSameCorridor(int beginY, int endY, int beginX, int endX, Direction direction) {
+		switch(direction)
+		{
+		case DOWN:
+		case UP:
+			while(beginY < endY) {
+				if (tiles[beginY][beginX].isWall()) {
+					return false;
+				}
+				beginY++;
+			}
+			break;
+		case RIGHT:
+		case LEFT:
+			while(beginX < endX) {
+				if (tiles[beginY][beginX].isWall()) {
+					return false;
+				}
+				beginX++;
+			}
+			break;
+		case NONE:
+			break;
+		default:
+			break;
+		}
+		return true;
+	}
 	
 	public CollisionType validateMove(MoveComponent move, Direction direction)
 	{

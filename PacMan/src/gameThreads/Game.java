@@ -31,6 +31,9 @@ import factories.MazeFactory;
 import javafx.animation.AnimationTimer;
 import rendering.IBoardRenderer;
 import rendering.Sprite;
+import strategies.GhostAIAmbusher;
+import strategies.GhostAIChaser;
+import strategies.GhostAIRandom;
 import systemThreads.AISystem;
 import systemThreads.GameAudioSystem;
 import systemThreads.GraphicsSystem;
@@ -124,7 +127,7 @@ public class Game {
 		physicsSystem = new PhysicsSystem(entityManager, pacman, inky, blinky, pinky, clyde);
 		graphicsSystem = new GraphicsSystem(entityManager, pacman);
 		scoreSystem = new ScoreSystem(entityManager);
-		aiSystem = new AISystem(entityManager);
+		aiSystem = new AISystem(entityManager, pacman, map);
 		lifeSystem = new LifeSystem(entityManager);
 		invincibleSystem = new InvincibleSystem(entityManager, pacman, inky, blinky, pinky, clyde);
 		audioSystem = new GameAudioSystem(entityManager);
@@ -134,10 +137,10 @@ public class Game {
 		List<Sprite> sprites = new ArrayList<Sprite>();
 		EntityFactory factory = new EntityFactory(entityManager);
 		pacman = factory.createPacMan(PACMAN_SPAWN_POINT_X, PACMAN_SPAWN_POINT_Y, Direction.RIGHT);
-		clyde = factory.createGhost(CLYDE_SPAWN_POINT_X, CLYDE_SPAWN_POINT_Y, Direction.UP, "clyde");
-		blinky = factory.createGhost(BLINKY_SPAWN_POINT_X, BLINKY_SPAWN_POINT_Y, Direction.UP, "blinky");
-		inky = factory.createGhost(INKY_SPAWN_POINT_X, INKY_SPAWN_POINT_Y, Direction.UP, "inky");
-		pinky = factory.createGhost(PINKY_SPAWN_POINT_X, PINKY_SPAWN_POINT_Y, Direction.UP, "pinky");
+		clyde = factory.createGhost(CLYDE_SPAWN_POINT_X, CLYDE_SPAWN_POINT_Y, Direction.UP, "clyde", new GhostAIChaser());
+		blinky = factory.createGhost(BLINKY_SPAWN_POINT_X, BLINKY_SPAWN_POINT_Y, Direction.UP, "blinky", new GhostAIChaser());
+		inky = factory.createGhost(INKY_SPAWN_POINT_X, INKY_SPAWN_POINT_Y, Direction.UP, "inky", new GhostAIChaser());
+		pinky = factory.createGhost(PINKY_SPAWN_POINT_X, PINKY_SPAWN_POINT_Y, Direction.UP, "pinky", new GhostAIChaser());
 		board.setPacManEntity(pacman);
 		
 		List<Entity> entities = entityManager.getAllEntitiesPosessingComponentOfClass(MoveComponent.class.getName());

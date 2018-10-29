@@ -2,11 +2,9 @@ package systemThreads;
 
 import java.util.List;
 
-import javax.swing.plaf.synth.SynthSeparatorUI;
-
+import components.AIComponent;
 import components.GraphicsComponent;
 import components.MoveComponent;
-import components.ScoreComponent;
 import entities.CollisionType;
 import entities.Direction;
 import entities.Entity;
@@ -73,6 +71,8 @@ public class MoveSystem extends SystemBase {
 				graphic.updatePosition(move.getX(), move.getY(), move.getDirection());
 			} else if (collisionType == CollisionType.OVERBOUND) {
 				move.passTunnel();
+			} else if (entity != pacman && (collisionType == CollisionType.TUNNEL || collisionType == CollisionType.COLLIDEWALL)) {
+				MessageQueue.addMessage(entity, AIComponent.class.getName(), MessageEnum.HIT_WALL);
 			}
 		}		
 	}
