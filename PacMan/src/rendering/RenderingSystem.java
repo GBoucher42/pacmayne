@@ -205,7 +205,6 @@ public class RenderingSystem extends Application {
 		sceneRoots.put(QuitMenuGameState.class.getName(), quitMenu.getContent());
 		StateManager.setCurrentState(new MainMenuGameState(mainMenu));
 		
-		// TODO: init other menus here..
 	}
 	
 	private void letterbox(final Scene scene, final Pane contentPane) {

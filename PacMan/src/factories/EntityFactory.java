@@ -21,6 +21,8 @@ import components.PhysicsComponent;
 import components.ScoreComponent;
 import components.UserInputComponent;
 import image.ImageRepository;
+import strategies.GhostAIRandom;
+import strategies.GhostAIStrategy;
 import systemThreads.MessageEnum;
 
 public class EntityFactory {
@@ -46,14 +48,14 @@ public class EntityFactory {
 		pacmanAudioMap.put(MessageEnum.INVINCIBLE_START, "ressource/audio/pacman-invincible.wav");
 		entityManager.addComponent(new AudioComponent(pacmanAudioMap), entity);
 		
-		entityManager.addComponent(new MoveComponent(x, y, direction, true), entity);
+		entityManager.addComponent(new MoveComponent(x, y, direction, true, false), entity);
 		entityManager.addComponent(new ScoreComponent(), entity);
 		entityManager.addComponent(new UserInputComponent(), entity);
 		entityManager.addComponent(new LifeComponent(3), entity);
 		return entity;
 	}
 	
-	public Entity createGhost(int x, int y, Direction direction, String ghostName) {
+	public Entity createGhost(int x, int y, Direction direction, String ghostName, GhostAIStrategy strategy) {
 		Entity entity = entityManager.CreateEntity();
 		entityManager.addComponent(new PhysicsComponent("Ghost"), entity);
 		GraphicsComponent graphic = new GraphicsComponent(SpritesEnum.RIGHT, ImageRepository.getImages(ghostName, SpritesEnum.RIGHT), x * TILE_SIZE, y * TILE_SIZE, true);
@@ -63,8 +65,10 @@ public class EntityFactory {
 		graphic.addAnimation(SpritesEnum.AFRAID, ImageRepository.getImages("frightened", SpritesEnum.AFRAID));
 		graphic.addAnimation(SpritesEnum.BLINKING, ImageRepository.getImages("blinking", SpritesEnum.BLINKING));
 		entityManager.addComponent(graphic, entity);
-		entityManager.addComponent(new MoveComponent(x , y, direction, false), entity);
-		entityManager.addComponent(new AIComponent(Strategy.RANDOM), entity);
+		entityManager.addComponent(new MoveComponent(x , y, direction, false, true), entity);
+
+		entityManager.addComponent(new AIComponent(strategy), entity);
+
 		return entity;
 	}
 	

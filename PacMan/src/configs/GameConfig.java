@@ -18,9 +18,9 @@ public class GameConfig {
 	public static final int PINKY_SPAWN_POINT_Y = 13;
 	public static final int BLINKY_SPAWN_POINT_X = 13;
 	public static final int BLINKY_SPAWN_POINT_Y = 14;
-	public static final int INKY_SPAWN_POINT_X = 13;
-	public static final int INKY_SPAWN_POINT_Y = 15;
-	public static final int CLYDE_SPAWN_POINT_X = 13;
+	public static final int INKY_SPAWN_POINT_X = 14;
+	public static final int INKY_SPAWN_POINT_Y = 13;
+	public static final int CLYDE_SPAWN_POINT_X = 14;
 	public static final int CLYDE_SPAWN_POINT_Y = 14;
 	public static final int HEIGTH_WINDOW = HEIGTH_FOOTER + HEIGTH_HEADER + GAME_HEIGHT;
 

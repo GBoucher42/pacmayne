@@ -31,6 +31,10 @@ import factories.MazeFactory;
 import javafx.animation.AnimationTimer;
 import rendering.IBoardRenderer;
 import rendering.Sprite;
+import strategies.GhostAIAmbusher;
+import strategies.GhostAIChaser;
+import strategies.GhostAIRandom;
+import strategies.GhostAIStupid;
 import systemThreads.AISystem;
 import systemThreads.GameAudioSystem;
 import systemThreads.GraphicsSystem;
@@ -125,7 +129,7 @@ public class Game {
 		physicsSystem = new PhysicsSystem(entityManager, pacman, inky, blinky, pinky, clyde);
 		graphicsSystem = new GraphicsSystem(entityManager, pacman);
 		scoreSystem = new ScoreSystem(entityManager);
-		aiSystem = new AISystem(entityManager);
+		aiSystem = new AISystem(entityManager, pacman, map);
 		lifeSystem = new LifeSystem(entityManager);
 		invincibleSystem = new InvincibleSystem(entityManager, pacman, inky, blinky, pinky, clyde);
 		audioSystem = new GameAudioSystem(entityManager);
@@ -135,10 +139,10 @@ public class Game {
 		List<Sprite> sprites = new ArrayList<Sprite>();
 		EntityFactory factory = new EntityFactory(entityManager);
 		pacman = factory.createPacMan(PACMAN_SPAWN_POINT_X, PACMAN_SPAWN_POINT_Y, Direction.RIGHT);
-		clyde = factory.createGhost(CLYDE_SPAWN_POINT_X, CLYDE_SPAWN_POINT_Y, Direction.UP, "clyde");
-		blinky = factory.createGhost(BLINKY_SPAWN_POINT_X, BLINKY_SPAWN_POINT_Y, Direction.UP, "blinky");
-		inky = factory.createGhost(INKY_SPAWN_POINT_X, INKY_SPAWN_POINT_Y, Direction.UP, "inky");
-		pinky = factory.createGhost(PINKY_SPAWN_POINT_X, PINKY_SPAWN_POINT_Y, Direction.UP, "pinky");
+		clyde = factory.createGhost(CLYDE_SPAWN_POINT_X, CLYDE_SPAWN_POINT_Y, Direction.UP, "clyde", new GhostAIStupid());
+		blinky = factory.createGhost(BLINKY_SPAWN_POINT_X, BLINKY_SPAWN_POINT_Y, Direction.UP, "blinky", new GhostAIChaser());
+		inky = factory.createGhost(INKY_SPAWN_POINT_X, INKY_SPAWN_POINT_Y, Direction.UP, "inky", new GhostAIRandom());
+		pinky = factory.createGhost(PINKY_SPAWN_POINT_X, PINKY_SPAWN_POINT_Y, Direction.UP, "pinky", new GhostAIAmbusher());
 		board.setPacManEntity(pacman);
 		
 		List<Entity> entities = entityManager.getAllEntitiesPosessingComponentOfClass(MoveComponent.class.getName());
@@ -238,7 +242,7 @@ public class Game {
 		try {
 			physicsThread.join(33);
 			audioThread.join(33);
-			graphicThread.join(99);
+			graphicThread.join(33);
 			if (physicsThread.isAlive()){
 				physicsThread.interrupt();
 			}

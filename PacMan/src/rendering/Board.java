@@ -10,20 +10,16 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import components.UserInputComponent;
 import entities.Entity;
 import entities.LivesImages;
 import image.FontRepository;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import systemThreads.MessageEnum;
-import systemThreads.MessageQueue;;
+import javafx.scene.media.MediaPlayer;;
 
 public class Board extends BorderPane implements IBoardRenderer{
 	private boolean isRunning = true;
@@ -51,8 +47,7 @@ public class Board extends BorderPane implements IBoardRenderer{
 	
 	public Board()
 	{	
-		pane.setStyle("-fx-background-color: black;");
-		loadSounds();		
+		pane.setStyle("-fx-background-color: black;");	
 		spritesPause = createWords(pause, 11*TILE_SIZE + TILE_SIZE/2, 17*TILE_SIZE, pane);
 		spritesfps = createWords(textFps, 10, 48, paneHeader);
 		hideSprites(spritesPause);
@@ -95,12 +90,6 @@ public class Board extends BorderPane implements IBoardRenderer{
 	public void refreshScore(int score) {
 		int[] number = Integer.toString(score).chars().map(c -> c-'0').toArray();
 		spritesScore = CreateScore(number,475,0, ScorePane);
-	}
-
-	private void loadSounds() {
-		String musicFile = "ressource/audio/pacman-eating.wav"; 
-		Media sound = new Media(new File(musicFile).toURI().toString());
-		new MediaPlayer(sound);
 	}
 
 	public void spawnAnimatables(List<Sprite> movingSprites)
