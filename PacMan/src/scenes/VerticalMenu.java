@@ -65,8 +65,4 @@ public class VerticalMenu {
 	public void deleteMenuItem() {
 		menuBox.getChildren().clear();
 	}
-	
-	public void addMenuText(String text) {
-		
-	}
 }
