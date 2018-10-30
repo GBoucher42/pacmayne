@@ -51,15 +51,12 @@ public class Board extends BorderPane implements IBoardRenderer{
 	private boolean isPaused = false;
 	private boolean  BonusIsAdded= false;
 	private boolean LevelPassed = false;
-	
-	
+
 	public Board()
 	{	
 		pane.setStyle("-fx-background-color: black;");	
-		spritesPause = createWords(pause, 11*TILE_SIZE + TILE_SIZE/2, 17*TILE_SIZE, pane);
 		spritesfps = createWords(textFps, 10, 48, paneHeader);
 		spritesLevel = createWords(textLevel,170, 0 ,  paneFooter );
-
 	}	
 
 	public void drawMaze(List<Sprite> sprites) 

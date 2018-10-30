@@ -111,12 +111,10 @@ public class Game {
 		
 	}
 	
-	
 	private void initLives() {
 		life = (LifeComponent) entityManager.getComponentOfClass(LifeComponent.class.getName(), pacman);
 		lives = life.getLives();
 		board.initLives(lives);
-	
 	}
 	private void initLevel() {
 		board.refreshlevel(level);
@@ -288,16 +286,13 @@ public class Game {
 		}			
 	}
 	
-
-
-	
 	private void render() {
 		 score = (ScoreComponent) entityManager.getComponentOfClass(ScoreComponent.class.getName(), pacman);
 		renderLives();
 		NextLevel();
 		if (score != null) {
 			board.refreshScore(score.getScore());
-			if (score.getScore() == 1000 && !board.getBonusIsAdded()) {
+			if (score.getScore() == 10000 && !board.getBonusIsAdded()) {
 				life.addLife();
 				lives = life.getLives();
 				board.addBonusLife();

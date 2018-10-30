@@ -104,27 +104,5 @@ public class MazeFactory {
 		
 		return maze;
 	}
-	public static Maze  AddAllGum(EntityManager manager) throws Exception {
-		Maze maze = new Maze();
-		EntityFactory factory = new EntityFactory(manager);
-		for (int i = 0; i < levelOneTileGrid.length; ++i) // rows
-		{
-			for (int j = 0; j < levelOneTileGrid[0].length; ++j) // columns
-			{
-
-		TileCode tileCode = tileCodes[levelOneTileGrid[i][j]];
-		TileType tileType = null; 
-		Tile newTile = new Tile(j, i, tileType);
-		if (tileCode == TileCode.GUM) {
-			factory.createGum(j, i);
-		}
-	    if (tileCode == TileCode.SUPERGUM) {
-			factory.createSuperGum(j, i);
-		}
-		maze.addTile(newTile, i, j);
-		
-			}
-		}
-		return maze;
-	}
+	
 }
