@@ -15,6 +15,7 @@ public class InPlayGameState implements IState{
 	private Runnable r;
 	private static boolean isRunning = true;
 	
+	
 	public InPlayGameState(Game game, Runnable r) {
 		this.game = game;
 		this.r = r;

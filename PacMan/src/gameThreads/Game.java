@@ -77,6 +77,7 @@ public class Game {
 	private Score finalScore;
 	private HighScoreReposity highScore;
 	private int topScore = 0;
+	private boolean gameOver = false;
 	
 	Maze map;
 	
@@ -212,6 +213,7 @@ public class Game {
 			board.refreshScore(score.getScore());
 		}
 		if(life.getLives() == 0) {
+			gameOver = true;
 			topScore = score.getScore();
 		}
 		if(!isFocused || !inView) { // || !board.isRunning() enlever car créer le bug GAMEUOVER
@@ -274,14 +276,27 @@ public class Game {
 	
 	public void stopGame() {
 		isRunning = false;
+		gameOver = true;
 		stopThreads();
 		entityManager.dispose();
 		board.dispose();
-		finalScore = new Score(topScore, "FLO"); 
-		highScore.replaceHighScore(finalScore);
+		
 	}
 	
+	public HighScoreReposity getHighScore() {
+		return highScore;
+	}
+
+	public boolean isGameOver() {
+		return gameOver;
+	}
+
 	public void pauseGame() {
 		
+	}
+	
+	public void setTopScore(String name) {
+		finalScore = new Score(topScore, name); 
+		highScore.replaceHighScore(finalScore);
 	}
 }
