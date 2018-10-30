@@ -29,6 +29,7 @@ public class StateManager {
 		IState tempState = currentState;
 		currentState = newState;
 		lastState = tempState;
+		currentState.onEnter();
 	}
 	
 	public static IState getCurrentState() {

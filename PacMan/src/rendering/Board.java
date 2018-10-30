@@ -13,20 +13,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import components.UserInputComponent;
 import entities.Entity;
 import entities.LivesImages;
 import image.FontRepository;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import systemThreads.MessageEnum;
-import systemThreads.MessageQueue;;
+import javafx.scene.media.MediaPlayer;;
 
 public class Board extends BorderPane implements IBoardRenderer{
 	private boolean isRunning = true;
@@ -53,36 +49,57 @@ public class Board extends BorderPane implements IBoardRenderer{
 	private ArrayList<Sprite> spritesNumScore;
 	private LivesImages imagelives;
 	private boolean isPaused = false;
-	private  int MAX_LIFE_BONUS=4;
+	private boolean  BonusIsAdded= false;
+	private boolean LevelPassed = false;
 	
 	
 	public Board()
 	{	
-		pane.setStyle("-fx-background-color: black;");
-		loadSounds();		
+		pane.setStyle("-fx-background-color: black;");	
 		spritesPause = createWords(pause, 11*TILE_SIZE + TILE_SIZE/2, 17*TILE_SIZE, pane);
 		spritesfps = createWords(textFps, 10, 48, paneHeader);
 		spritesLevel = createWords(textLevel,170, 0 ,  paneFooter );
-		hideSprites(spritesPause);
 
 	}	
 
 	public void drawMaze(List<Sprite> sprites) 
-	{	
-		this.setCenter(pane);		
-		pane.getChildren().addAll(sprites);
+	{
+		pane.getChildren().clear();
+	    if(pane.getChildren().isEmpty()) {
+		this.setCenter(pane);
+		spritesPause = createWords(pause, 11*TILE_SIZE + TILE_SIZE/2, 17*TILE_SIZE, pane);
+		hideSprites(spritesPause);
+		pane.getChildren().addAll(sprites);	
+		}
+		
+	}
+	public void drawHeaderAndFooter() {
 		footer();
-		header();
+		header();	
 	}
 	
 	public void dispose() {
 		this.getChildren().clear();
 	}
+	public void Removesprites(List<Sprite> sprites) {
+		pane.getChildren().removeAll(sprites);
+	}
+	
+	public void RemovespritesMoving(List<Sprite> movingSprites){   
+	  if(!pane.getChildren().isEmpty()){
+       pane.getChildren().removeAll(movingSprites);
+	}
+	}
+	@Override
+	public void addSpritesMoving (List<Sprite> movingSprites){
+		if(!pane.getChildren().isEmpty()){
+		       pane.getChildren().addAll(movingSprites);
+			}
+	}
 	
 	private void header() {
 		Image image = new Image("file:ressource/sprites/logo.png");
 		imglogo = new ImageView();
-		
 		imglogo.setImage(image);
 		imglogo.setFitHeight(SIZE_IMG_LOGO);
 		imglogo.setFitWidth(GAME_WIDTH);
@@ -104,12 +121,6 @@ public class Board extends BorderPane implements IBoardRenderer{
 	public void refreshScore(int score) {
 		int[] number = Integer.toString(score).chars().map(c -> c-'0').toArray();
 		spritesScore = CreateScore(number,475,0, ScorePane);
-	}
-
-	private void loadSounds() {
-		String musicFile = "ressource/audio/pacman-eating.wav"; 
-		Media sound = new Media(new File(musicFile).toURI().toString());
-		new MediaPlayer(sound);
 	}
 
 	public void spawnAnimatables(List<Sprite> movingSprites)
@@ -146,7 +157,7 @@ public class Board extends BorderPane implements IBoardRenderer{
 		ArrayList<Sprite> sprites = new ArrayList<Sprite>();
 		for(int myScore: Number) { 
 			try {
-				Sprite num = new Sprite(fontRepository.getFont(myScore), x , y); //12*TILE_SIZE, 17*TILE_SIZE
+				Sprite num = new Sprite(fontRepository.getFont(myScore), x , y, false); //12*TILE_SIZE, 17*TILE_SIZE
 				x += TILE_SIZE;
 				sprites.add(num);
 				myPane.getChildren().add(num);
@@ -162,7 +173,7 @@ public class Board extends BorderPane implements IBoardRenderer{
 		for(char myLetter: letters) {
 			try {
 				if(myLetter != ' ') {
-					Sprite letter = new Sprite(fontRepository.getFont(myLetter), x , y); //12*TILE_SIZE, 17*TILE_SIZE
+					Sprite letter = new Sprite(fontRepository.getFont(myLetter), x , y, false); //12*TILE_SIZE, 17*TILE_SIZE
 					x += TILE_SIZE;
 					sprites.add(letter);
 					myPane.getChildren().add(letter);
@@ -211,11 +222,10 @@ public class Board extends BorderPane implements IBoardRenderer{
 	}
 	@Override
 	public void addBonusLife() {
-	boolean  excuteOnce= false;
-		if(!excuteOnce)
-		imagelives.adddLife();
+		if(!BonusIsAdded)
+		imagelives.addLife();
 		System.out.println("add");
-		excuteOnce= true;
+        setBonusIsAdded(true);
 	}
 	
 	@Override
@@ -232,17 +242,37 @@ public class Board extends BorderPane implements IBoardRenderer{
 			isPaused = false;
 		}
 	}
+
 	@Override
 	public void refreshFps(int fps) {
 		int []  numFPS =Integer.toString(fps).chars().map(c -> c-'0').toArray();
 		spritesNumScore = CreateScore(numFPS,100,48,paneHeader);
-		
 	}
+		
 	@Override
 	public void refreshlevel(int level) {
 		int []  numLevel =Integer.toString(level).chars().map(c -> c-'0').toArray();
 		spritesNumScore=CreateScore(numLevel,280,0, ScorePane);
 		
 	}
+	
+
+	@Override
+	public boolean getBonusIsAdded() {
+		return BonusIsAdded;
+	}
+
+	public void setBonusIsAdded(boolean bonusIsAdded) {
+		BonusIsAdded = bonusIsAdded;
+	}
+	@Override 
+	public boolean isLevelPassed() {
+		return LevelPassed;
+	}
+   @Override
+	public void setLevelPassed(boolean levelPassed) {
+		LevelPassed = levelPassed;
+	}
+
 
 }

@@ -8,7 +8,8 @@ import javafx.scene.layout.Pane;
 public class LivesImages {
 	private final Image imagelife = new Image("file:ressource/sprites/pacman-r2.png");
 	private HBox hbox;
-	private ImageView[] livesImages= new ImageView[5];
+	private static final int MAXLIVES=5;
+	private ImageView[] livesImages;
 	private int nblives;
 
 	public int getNblives() {
@@ -22,23 +23,21 @@ public class LivesImages {
 	public LivesImages(Pane pane, int nblives) {
 		this.hbox = new HBox();
 		this.nblives = nblives;
+		livesImages= new ImageView[MAXLIVES];
 		for (int i = 0; i <nblives; i++) {
 			livesImages[i] = new ImageView(imagelife);
 			hbox.getChildren().add(livesImages[i]);
-
 		}
-		
 		pane.getChildren().add(hbox);
 
 	}
-    public void adddLife() {
-        ++nblives;
-		for (int i = 0; i <nblives; i++) {
-			if(i==nblives-1) {
-			livesImages[i] = new ImageView(imagelife);
-			this.hbox.getChildren().add(livesImages[i]);}
-		}
- }
+    public void addLife() {
+     ++nblives;
+	livesImages[nblives-1] = new ImageView(imagelife);
+	this.hbox.getChildren().add(livesImages[nblives-1]);
+	}
+		
+ 
 
 	public void removeLife() {
 	--nblives;

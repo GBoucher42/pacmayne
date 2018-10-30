@@ -24,7 +24,26 @@ public class Maze {
 			return tiles[row][column];
 		}
 		return null;
-	}	
+	}
+	
+	public synchronized boolean isInSameCorridor(int beginY, int endY, int beginX, int endX, String axe) {
+		if("y".equals(axe)) {
+			while(beginY < endY) {
+				if (tiles[beginY][beginX].isWall()) {
+					return false;
+				}
+				beginY++;
+			}
+		} else if("x".equals(axe)) {
+			while(beginX < endX) {
+				if (tiles[beginY][beginX].isWall()) {
+					return false;
+				}
+				beginX++;
+			}
+		}
+		return true;
+	}
 	
 	public CollisionType validateMove(MoveComponent move, Direction direction)
 	{
@@ -41,6 +60,8 @@ public class Maze {
 				collisionType = CollisionType.COLLIDEWALL;
 			} else if(tiles[y + 1][x].isTunnel()) {
 				collisionType = CollisionType.TUNNEL;
+			} else if(tiles[y + 1][x].isGate()) {
+				collisionType = CollisionType.GATE;
 			} 
 			break;
 		case LEFT:
@@ -50,6 +71,8 @@ public class Maze {
 				collisionType = CollisionType.COLLIDEWALL;
 			} else if(tiles[y][x - 1].isTunnel()) {
 				collisionType = CollisionType.TUNNEL;
+			} else if(tiles[y][x - 1].isGate()) {
+				collisionType = CollisionType.GATE;
 			} 
 			break;
 		case RIGHT:
@@ -59,6 +82,8 @@ public class Maze {
 				collisionType = CollisionType.COLLIDEWALL;
 			} else if(tiles[y][x + 1].isTunnel()) {
 				collisionType = CollisionType.TUNNEL;
+			} else if(tiles[y][x + 1].isGate()) {
+				collisionType = CollisionType.GATE;
 			}
 			break;
 		case UP:
@@ -68,6 +93,8 @@ public class Maze {
 				collisionType = CollisionType.COLLIDEWALL;
 			} else if(tiles[y - 1][x].isTunnel()) {
 				collisionType = CollisionType.TUNNEL;
+			} else if(tiles[y - 1][x].isGate()) {
+				collisionType = CollisionType.GATE;
 			}  
 			break;
 		case NONE:

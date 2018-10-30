@@ -5,27 +5,29 @@ import java.util.List;
 import java.util.Map;
 
 import entities.Direction;
+import entities.SpritesEnum;
 import javafx.geometry.Bounds;
 import rendering.Sprite;
 
 public class GraphicsComponent implements IComponent{
 	private Sprite sprite;
-	private Direction direction;
+	private SpritesEnum spriteEnum;
 	private Animation currentAnimation;
 	private String currentImage;
 	boolean isAnimated = false;
-	private Map<Direction, Animation> animationGroup = new HashMap<Direction, Animation>();
+	private Map<SpritesEnum, Animation> animationGroup = new HashMap<SpritesEnum, Animation>();
 	
-	public GraphicsComponent(Direction direction, List<String> images, double x, double y) {
-		addAnimation(direction, images);
-		this.sprite = new Sprite(currentImage, x, y);
+	public GraphicsComponent(SpritesEnum spriteEnum, List<String> images, double x, double y, boolean oversize) {
+		addAnimation(spriteEnum, images);
+		this.spriteEnum = spriteEnum;
+		this.sprite = new Sprite(currentImage, x, y, oversize);
 		isAnimated = true;
 	}
 	
-	public GraphicsComponent(String image, double x, double y) {
+	public GraphicsComponent(String image, double x, double y, boolean oversize) {
 		this.currentImage = image;
-		this.sprite = new Sprite(image, x, y);
-		this.direction = Direction.NONE;
+		this.sprite = new Sprite(image, x, y, oversize);
+		this.spriteEnum = SpritesEnum.NONE;
 	}
 	
 	public Sprite getSprite() {
@@ -47,12 +49,12 @@ public class GraphicsComponent implements IComponent{
 		sprite.setImage(currentImage);
 	}
 	
-	public void addAnimation(Direction direction, List<String> images)
+	public void addAnimation(SpritesEnum spriteEnum, List<String> images)
 	{
 		
-		if (!animationGroup.containsKey(direction)) {
+		if (!animationGroup.containsKey(spriteEnum)) {
 			Animation anim = new Animation(images);
-			animationGroup.put(direction, anim);
+			animationGroup.put(spriteEnum, anim);
 		}
 		if(currentImage == null || currentImage.isEmpty()) {
 			currentImage = currentAnimation.getNextImage();
@@ -67,10 +69,55 @@ public class GraphicsComponent implements IComponent{
 		sprite.removeImage();
 	}
 	
+	public void setSpriteEnum(SpritesEnum spriteEnum) {
+		if(this.spriteEnum != spriteEnum) {
+			this.spriteEnum = spriteEnum;
+			this.currentAnimation = animationGroup.get(spriteEnum);
+			this.currentAnimation.imageIndex = 0;
+		}
+	}
+	
+	public void setSpriteEnum(Direction direction) {
+		switch(direction) {
+			case UP:
+				this.spriteEnum = SpritesEnum.UP;
+				break;
+			case DOWN:
+				this.spriteEnum = SpritesEnum.DOWN;
+				break;
+			case RIGHT:
+				this.spriteEnum = SpritesEnum.RIGHT;
+				break;
+			case LEFT:
+				this.spriteEnum = SpritesEnum.LEFT;
+				break;
+			default:
+				break;
+		}
+		this.currentAnimation = animationGroup.get(spriteEnum);
+		this.currentAnimation.imageIndex = 0;
+	}
+	
+	
 	public void updatePosition(double x, double y, Direction direction) {
-		if(!direction.equals(this.direction)) {
-			this.direction = direction;
-			this.currentAnimation = animationGroup.get(direction);
+		if(!spriteEnum.equals(SpritesEnum.DEATH) && !spriteEnum.equals(SpritesEnum.AFRAID) && !spriteEnum.equals(SpritesEnum.BLINKING)) {
+			switch(direction) {
+				case UP:
+					this.spriteEnum = SpritesEnum.UP;
+					break;
+				case DOWN:
+					this.spriteEnum = SpritesEnum.DOWN;
+					break;
+				case RIGHT:
+					this.spriteEnum = SpritesEnum.RIGHT;
+					break;
+				case LEFT:
+					this.spriteEnum = SpritesEnum.LEFT;
+					break;
+				default:
+					break;
+			}
+			this.currentAnimation = animationGroup.get(spriteEnum);
 		}
 		
 		sprite.updatePosition(x, y);
@@ -90,6 +137,7 @@ public class GraphicsComponent implements IComponent{
 		
 		public String getNextImage()
 		{
+			
 			if (currentAnimation != this) {
 				currentAnimation = this;
 				this.imageIndex = 0;
@@ -97,10 +145,20 @@ public class GraphicsComponent implements IComponent{
 			
 			int index = (imageIndex++) % images.size();
 			if(imageIndex == images.size()) {
-				imageIndex = 0;
+				if(spriteEnum == SpritesEnum.DEATH) {
+					imageIndex = images.size() -1;
+				} else {
+					imageIndex = 0;
+				}
 			}
-
+			
 			return images.get(index);
 		}
 	}
+
+	public SpritesEnum getSpriteEnum() {
+		return spriteEnum;
+	}
+	
+	
 }

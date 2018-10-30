@@ -30,10 +30,24 @@ public interface IBoardRenderer {
 	
 	void dispose();
 
-	void refreshFps(int fps);
-
 	void refreshlevel(int i);
 
 	void addBonusLife();
+	
+	void refreshFps(int fps);
+
+	void Removesprites(List<Sprite> sprites);
+
+	void addSpritesMoving(List<Sprite> sprites);
+
+	void drawHeaderAndFooter();
+
+	boolean isLevelPassed();
+
+	void setLevelPassed(boolean b);
+
+	boolean getBonusIsAdded();
+
+
 }
 

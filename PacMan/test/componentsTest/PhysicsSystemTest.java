@@ -1,11 +1,8 @@
 package componentsTest;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-
 import java.util.HashMap;
 import java.util.Map;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -15,7 +12,6 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
 import components.AudioComponent;
 import components.GraphicsComponent;
 import components.LifeComponent;
@@ -41,6 +37,10 @@ class PhysicsSystemTest {
 	EntityManager entityManager;
 	EntityFactory factory;
 	Entity pacman;
+	Entity inky;
+	Entity blinky;
+	Entity pinky;
+	Entity clyde;
 	private Thread physicsSystemThread;
 	
 	@BeforeAll
@@ -48,7 +48,11 @@ class PhysicsSystemTest {
 		entityManager = new EntityManager();
 		factory = new EntityFactory(entityManager);
 		pacman = factory.createPacMan(1, 1 , Direction.RIGHT);
-		system = new PhysicsSystem(entityManager, pacman);	
+		inky = factory.createGhost(15, 15, Direction.RIGHT, "inky");
+		blinky = factory.createGhost(15, 15, Direction.RIGHT, "blinky");
+		pinky = factory.createGhost(15, 15, Direction.RIGHT, "pinky");
+		clyde = factory.createGhost(15, 15, Direction.RIGHT, "clyde");
+		system = new PhysicsSystem(entityManager, pacman, inky, blinky, pinky, clyde);	
 		try {
 			startPysicsThread();
 		} catch (InterruptedException e) {
