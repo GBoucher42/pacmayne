@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import components.IComponent;
+import systemThreads.MessageQueue;
 
 public class EntityManager {
 	private List<Entity> entities;
@@ -46,6 +47,7 @@ public class EntityManager {
 			}
 		}
 		entities.remove(entity);
+		MessageQueue.clearEntityMessages(entity);
 	}
 	
 	public synchronized IComponent getComponentOfClass(String className, Entity entity) {
