@@ -21,7 +21,6 @@ public class GhostAIStupid extends GhostAIStrategy{
 			if(canMakeDecision) {
 				chaseTimer();
 			}
-			System.out.println(chasing);
 			return super.getDirection(chasing ? direction : getOppositeDirection(direction), message);
 		}
 		return super.getDirection(direction, message);

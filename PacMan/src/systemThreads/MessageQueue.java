@@ -16,6 +16,10 @@ public class MessageQueue {
 		}
 		messageQueue.get(entity).put(componentName, message);
 	}
+
+	public static synchronized void clearEntityMessages(Entity entity) {
+		messageQueue.remove(entity);
+	}
 	
 	public static synchronized MessageEnum consumeEntityMessages(Entity entity, String componentName) {
 		if(!messageQueue.containsKey(entity)) {
