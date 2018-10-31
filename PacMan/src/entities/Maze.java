@@ -50,57 +50,60 @@ public class Maze {
 		CollisionType collisionType = CollisionType.NONE;
 		int x = move.getTileX();
 		int y = move.getTileY();
-		
-		switch(direction)
-		{
-		case DOWN:
-			if (y >= GAME_TILE_HEIGHT_COUNT - 1) {
-				collisionType = CollisionType.OVERBOUND;
-			} else if (tiles[y + 1][x].isWall()){
-				collisionType = CollisionType.COLLIDEWALL;
-			} else if(tiles[y + 1][x].isTunnel()) {
-				collisionType = CollisionType.TUNNEL;
-			} else if(tiles[y + 1][x].isGate()) {
-				collisionType = CollisionType.GATE;
-			} 
-			break;
-		case LEFT:
-			if (x <= 0) {
-				collisionType = CollisionType.OVERBOUND;
-			} else if (tiles[y][x - 1].isWall()){
-				collisionType = CollisionType.COLLIDEWALL;
-			} else if(tiles[y][x - 1].isTunnel()) {
-				collisionType = CollisionType.TUNNEL;
-			} else if(tiles[y][x - 1].isGate()) {
-				collisionType = CollisionType.GATE;
-			} 
-			break;
-		case RIGHT:
-			if (x >= GAME_TILE_WIDTH_COUNT - 1) {
-				collisionType = CollisionType.OVERBOUND;
-			}else if (tiles[y][x + 1].isWall()){
-				collisionType = CollisionType.COLLIDEWALL;
-			} else if(tiles[y][x + 1].isTunnel()) {
-				collisionType = CollisionType.TUNNEL;
-			} else if(tiles[y][x + 1].isGate()) {
-				collisionType = CollisionType.GATE;
+		try {
+			switch(direction)
+			{
+			case DOWN:
+				if (y >= GAME_TILE_HEIGHT_COUNT - 1) {
+					collisionType = CollisionType.OVERBOUND;
+				} else if (tiles[y + 1][x].isWall()){
+					collisionType = CollisionType.COLLIDEWALL;
+				} else if(tiles[y + 1][x].isTunnel()) {
+					collisionType = CollisionType.TUNNEL;
+				} else if(tiles[y + 1][x].isGate()) {
+					collisionType = CollisionType.GATE;
+				} 
+				break;
+			case LEFT:
+				if (x <= 0) {
+					collisionType = CollisionType.OVERBOUND;
+				} else if (tiles[y][x - 1].isWall()){
+					collisionType = CollisionType.COLLIDEWALL;
+				} else if(tiles[y][x - 1].isTunnel()) {
+					collisionType = CollisionType.TUNNEL;
+				} else if(tiles[y][x - 1].isGate()) {
+					collisionType = CollisionType.GATE;
+				} 
+				break;
+			case RIGHT:
+				if (x >= GAME_TILE_WIDTH_COUNT - 1) {
+					collisionType = CollisionType.OVERBOUND;
+				}else if (tiles[y][x + 1].isWall()){
+					collisionType = CollisionType.COLLIDEWALL;
+				} else if(tiles[y][x + 1].isTunnel()) {
+					collisionType = CollisionType.TUNNEL;
+				} else if(tiles[y][x + 1].isGate()) {
+					collisionType = CollisionType.GATE;
+				}
+				break;
+			case UP:
+				if (y <= 0) {
+					collisionType = CollisionType.OVERBOUND;
+				} else if (tiles[y - 1][x].isWall()){
+					collisionType = CollisionType.COLLIDEWALL;
+				} else if(tiles[y - 1][x].isTunnel()) {
+					collisionType = CollisionType.TUNNEL;
+				} else if(tiles[y - 1][x].isGate()) {
+					collisionType = CollisionType.GATE;
+				}  
+				break;
+			case NONE:
+				break;
+			default:
+				break;
 			}
-			break;
-		case UP:
-			if (y <= 0) {
-				collisionType = CollisionType.OVERBOUND;
-			} else if (tiles[y - 1][x].isWall()){
-				collisionType = CollisionType.COLLIDEWALL;
-			} else if(tiles[y - 1][x].isTunnel()) {
-				collisionType = CollisionType.TUNNEL;
-			} else if(tiles[y - 1][x].isGate()) {
-				collisionType = CollisionType.GATE;
-			}  
-			break;
-		case NONE:
-			break;
-		default:
-			break;
+		} catch(Exception e) {
+			System.out.println("issue with position");
 		}
 		
 		return collisionType;

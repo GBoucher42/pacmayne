@@ -216,7 +216,7 @@ public class Game {
 			gameOver = true;
 			topScore = score.getScore();
 		}
-		if(!isFocused || !inView) { // || !board.isRunning() enlever car créer le bug GAMEUOVER
+		if(!isFocused || !inView) { // || !board.isRunning() enlever car crï¿½er le bug GAMEUOVER
 			board.displayPause();
 		} else {
 			board.hidePause();

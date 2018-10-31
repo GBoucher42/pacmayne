@@ -15,12 +15,6 @@ public class HighScoreNameState implements IState {
 		this.menu = menu;
 	}
 	
-	
-	@Override
-	public void loadResources() {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public void handleInput(KeyCode key) {
