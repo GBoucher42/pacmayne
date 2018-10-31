@@ -1,0 +1,6 @@
+projectKey=cPacmanKey
+serverUrl=http://zeus.gel.usherbrooke.ca:9000
+serverVersion=6.7.1.35068
+dashboardUrl=http://zeus.gel.usherbrooke.ca:9000/dashboard/index/cPacmanKey
+ceTaskId=AWa_2uD276ZjPdA-r9MC
+ceTaskUrl=http://zeus.gel.usherbrooke.ca:9000/api/ce/task?id=AWa_2uD276ZjPdA-r9MC
