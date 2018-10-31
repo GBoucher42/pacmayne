@@ -12,7 +12,7 @@ import systemThreads.MessageEnum;
 public abstract class GhostAIStrategy {
 	private Random r = new Random();
 	private int moveIndex = 0;
-	private final int DIRECTION_CHANGE_INDEX = 15;
+	private final int DIRECTION_CHANGE_INDEX = 200;
 	private List<Direction> directions = new ArrayList<>();
 	
 	public GhostAIStrategy() {
