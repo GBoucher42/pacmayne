@@ -8,6 +8,8 @@ import static configs.GameConfig.TILE_SIZE;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import entities.Entity;
 import entities.LivesImages;
@@ -19,6 +21,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;;
 
 public class Board extends BorderPane implements IBoardRenderer{
+	private static Logger logger = Logger.getAnonymousLogger();
 	private boolean isRunning = true;
 	private FontRepository fontRepository = new FontRepository();
 	@FXML private ImageView imglogo ;
@@ -153,7 +156,7 @@ public class Board extends BorderPane implements IBoardRenderer{
 				sprites.add(num);
 				myPane.getChildren().add(num);
 			} catch (Exception e) {
-				e.printStackTrace();
+				logger.log(Level.SEVERE, e.getMessage());
 			}
 		}
 		return sprites;
@@ -172,7 +175,7 @@ public class Board extends BorderPane implements IBoardRenderer{
 					x += TILE_SIZE;
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				logger.log(Level.SEVERE, e.getMessage());
 			}
 		}
 		return sprites;

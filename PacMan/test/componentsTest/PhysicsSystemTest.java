@@ -4,6 +4,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -28,6 +30,7 @@ import systemThreads.PhysicsSystem;
 @TestInstance(Lifecycle.PER_CLASS)
 class PhysicsSystemTest {
 
+	private static Logger logger = Logger.getAnonymousLogger();
 	PhysicsSystem system;
 	EntityManager entityManager;
 	EntityFactory factory;
@@ -51,7 +54,7 @@ class PhysicsSystemTest {
 		try {
 			startPysicsThread();
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getMessage());
 			Thread.currentThread().interrupt();
 		}
 	}
@@ -61,8 +64,7 @@ class PhysicsSystemTest {
 		try {
 			stopPysicsThread();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getMessage());
 		}
 	}
 
@@ -85,7 +87,7 @@ class PhysicsSystemTest {
 				physicsSystemThread.join(33);
 				actualStop = !physicsSystemThread.isAlive(); //check if thread is dead
 			} catch (Exception e) {
-				e.printStackTrace();
+				logger.log(Level.SEVERE, e.getMessage());
 			}
 			assertEquals("thread not stopped" , expectedStop, actualStop);
 		}

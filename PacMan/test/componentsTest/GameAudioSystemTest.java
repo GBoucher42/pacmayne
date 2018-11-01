@@ -1,17 +1,17 @@
 package componentsTest;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static java.time.Duration.ofMillis;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTimeout;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertTrue;
-import static java.time.Duration.ofMillis;
-
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -19,10 +19,8 @@ import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import components.AudioComponent;
 import components.PhysicsComponent;
-import entities.Direction;
 import entities.Entity;
 import entities.EntityManager;
-import factories.EntityFactory;
 import systemThreads.GameAudioSystem;
 import systemThreads.MessageEnum;
 import systemThreads.MessageQueue;
@@ -30,9 +28,9 @@ import systemThreads.MessageQueue;
 @TestInstance(Lifecycle.PER_CLASS)
 class GameAudioSystemTest {
 
+	private static Logger logger = Logger.getAnonymousLogger();
 	private GameAudioSystem gameAudioSystem;
 	private EntityManager entityManager;
-	private EntityFactory factory;
 	private Thread tGameAudioSystem;
 	
 	private void addMessageQueue() {
@@ -51,7 +49,6 @@ class GameAudioSystemTest {
 	void setUpBeforeClass() throws InterruptedException {
 		
 		entityManager = new EntityManager();
-		factory = new EntityFactory(entityManager);
 		gameAudioSystem = new GameAudioSystem(entityManager);
 		addMessageQueue();
 		tGameAudioSystem = new Thread(gameAudioSystem);
@@ -70,7 +67,7 @@ class GameAudioSystemTest {
 				tGameAudioSystem.join(1500);
 				actualStop = !tGameAudioSystem.isAlive(); //check if thread is dead
 			} catch (Exception e) {
-				e.printStackTrace();
+				logger.log(Level.SEVERE, e.getMessage());
 			}
 			assertEquals("thread not stopped" , expectedStop, actualStop);
 		}
@@ -98,7 +95,7 @@ class GameAudioSystemTest {
 				actualUpdateMusic = gameAudioSystem.isUpdatingMusic();
 				assertFalse("audio is playing", actualUpdateMusic);
 			} catch (Exception e) {
-				e.printStackTrace();
+				logger.log(Level.SEVERE, e.getMessage());
 			}
 		});
 	}

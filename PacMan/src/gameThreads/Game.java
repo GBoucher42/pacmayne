@@ -338,7 +338,7 @@ public class Game {
 				graphicThread.interrupt();
 			}
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, e.getMessage());
 			physicsThread.interrupt();
 			audioThread.interrupt();
 			graphicThread.interrupt();

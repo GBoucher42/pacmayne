@@ -7,11 +7,14 @@ import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import utils.FileFinder;
 
 public class FontRepository {
 
+	private static Logger logger = Logger.getAnonymousLogger();
 	private static String[] fontSprites = new String[26];
 	private static String[] numberSprites = new String[10];
 	private static FileFinder finder = new FileFinder("*.png");
@@ -51,7 +54,7 @@ public class FontRepository {
 			try {
 				Files.walkFileTree(Paths.get(resourceDirectoryPath), finder);
 			} catch (IOException e) {
-				e.printStackTrace();
+				logger.log(Level.SEVERE, e.getMessage());
 			}
 			// get the matched paths
 	        Collection<Path> matchedFiles = finder.getMatchedPaths();
@@ -76,7 +79,7 @@ public class FontRepository {
 			try {
 				Files.walkFileTree(Paths.get(resourceDirectoryPath), finder);
 			} catch (IOException e) {
-				e.printStackTrace();
+				logger.log(Level.SEVERE, e.getMessage());
 			}
 			// get the matched paths
 	        Collection<Path> matchedFiles = finder.getMatchedPaths();
