@@ -1,17 +1,16 @@
 package componentsTest;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+
 import java.util.HashMap;
 import java.util.Map;
+
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+
 import components.AudioComponent;
 import components.GraphicsComponent;
 import components.LifeComponent;
@@ -20,14 +19,10 @@ import components.ScoreComponent;
 import entities.Direction;
 import entities.Entity;
 import entities.EntityManager;
-import entities.Maze;
-import entities.Tile;
-import entities.TileType;
 import factories.EntityFactory;
-import systemThreads.GameAudioSystem;
+import strategies.GhostAIRandom;
 import systemThreads.MessageEnum;
 import systemThreads.MessageQueue;
-import systemThreads.MoveSystem;
 import systemThreads.PhysicsSystem;
 
 @TestInstance(Lifecycle.PER_CLASS)
@@ -48,16 +43,16 @@ class PhysicsSystemTest {
 		entityManager = new EntityManager();
 		factory = new EntityFactory(entityManager);
 		pacman = factory.createPacMan(1, 1 , Direction.RIGHT);
-		inky = factory.createGhost(15, 15, Direction.RIGHT, "inky");
-		blinky = factory.createGhost(15, 15, Direction.RIGHT, "blinky");
-		pinky = factory.createGhost(15, 15, Direction.RIGHT, "pinky");
-		clyde = factory.createGhost(15, 15, Direction.RIGHT, "clyde");
+		inky = factory.createGhost(15, 15, Direction.RIGHT, "inky", new GhostAIRandom());
+		blinky = factory.createGhost(15, 15, Direction.RIGHT, "blinky", new GhostAIRandom());
+		pinky = factory.createGhost(15, 15, Direction.RIGHT, "pinky", new GhostAIRandom());
+		clyde = factory.createGhost(15, 15, Direction.RIGHT, "clyde", new GhostAIRandom());
 		system = new PhysicsSystem(entityManager, pacman, inky, blinky, pinky, clyde);	
 		try {
 			startPysicsThread();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Thread.currentThread().interrupt();
 		}
 	}
 	
@@ -101,12 +96,12 @@ class PhysicsSystemTest {
 	public void testGumCollision() throws Exception {
 		Entity gum = factory.createGum(1, 1);
 
-		Thread.sleep(100);
-		MessageEnum message = MessageQueue.consumeEntityMessages(gum, GraphicsComponent.class.getName());
-		assertTrue("", message == MessageEnum.EATEN);
+		Thread.sleep(150);
+		MessageEnum message = MessageQueue.consumeEntityMessages(pacman, AudioComponent.class.getName());
+		assertTrue("", message == MessageEnum.EATEN);	
 		message = MessageQueue.consumeEntityMessages(pacman, ScoreComponent.class.getName());
 		assertTrue("", message == MessageEnum.GUMPOINTS);
-		message = MessageQueue.consumeEntityMessages(pacman, AudioComponent.class.getName());
+		message = MessageQueue.consumeEntityMessages(gum, GraphicsComponent.class.getName());
 		assertTrue("", message == MessageEnum.EATEN);	
 	}
 	
@@ -126,7 +121,7 @@ class PhysicsSystemTest {
 	
 	@Test
 	public void testGhostCollision() throws Exception {
-		Entity ghost = factory.createGhost(1, 1, Direction.DOWN, "Blinky");
+		Entity ghost = factory.createGhost(1, 1, Direction.DOWN, "Blinky", new GhostAIRandom());
 		Thread.sleep(100);
 		
 		MessageEnum message = MessageQueue.consumeEntityMessages(pacman, LifeComponent.class.getName());

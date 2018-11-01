@@ -69,6 +69,7 @@ public class GraphicsSystem extends SystemBase implements Runnable{
 				Thread.sleep(33);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
+				Thread.currentThread().interrupt();
 			}
 		}
 		System.out.println("Stop graphic Thread!");	

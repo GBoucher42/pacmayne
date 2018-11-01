@@ -6,9 +6,6 @@ import java.util.List;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineEvent;
-import javax.sound.sampled.LineListener;
-import javax.sound.sampled.LineEvent.Type;
 
 import components.AudioComponent;
 import entities.Entity;
@@ -20,9 +17,7 @@ public class GameAudioSystem extends SystemBase implements Runnable{
 	private Clip clip;
 	private boolean playingBackground = false;
 	private boolean updatingMusic = false;
-	
 
-	private LineListener listener;
 
 	public GameAudioSystem(EntityManager entityManager) {
 		super(entityManager);
@@ -41,7 +36,6 @@ public class GameAudioSystem extends SystemBase implements Runnable{
 				} else if (message == MessageEnum.INVINCIBLE_START) {
 					audio.playInvincible();
 				} else if (message == MessageEnum.INVINCIBLE_END) {
-					System.out.println("STOP");
 					audio.stopInvincible();
 				}
 				
@@ -89,6 +83,7 @@ public class GameAudioSystem extends SystemBase implements Runnable{
 				Thread.sleep(33);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
+				Thread.currentThread().interrupt();
 			}
 		}
 		updatingMusic = false;
