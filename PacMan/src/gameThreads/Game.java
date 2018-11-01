@@ -16,10 +16,14 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import components.AudioComponent;
 import components.GraphicsComponent;
 import components.LifeComponent;
 import components.MoveComponent;
+import components.PhysicsComponent;
 import components.ScoreComponent;
+import configs.HighScoreReposity;
+import components.UserInputComponent;
 import configs.HighScoreReposity;
 import entities.Direction;
 import entities.Entity;
@@ -29,6 +33,7 @@ import entities.Score;
 import factories.EntityFactory;
 import factories.MazeFactory;
 import javafx.animation.AnimationTimer;
+import rendering.Board;
 import rendering.IBoardRenderer;
 import rendering.Sprite;
 import strategies.GhostAIAmbusher;
@@ -49,7 +54,6 @@ public class Game {
 
 	private static final Logger LOGGER = Logger.getLogger( Game.class.getName() );
 	private IBoardRenderer board;
-	
 	private EntityManager entityManager;
 	private UserInputSystem userInputSystem;
 	private MoveSystem moveSystem;
@@ -73,12 +77,12 @@ public class Game {
 	private int lives;
 	private LifeComponent life;
 	private int frameCounter = 0;
+	int level=1;
 	private volatile boolean isRunning = true;
 	private Score finalScore;
 	private HighScoreReposity highScore;
 	private int topScore = 0;
 	private boolean gameOver = false;
-	
 	Maze map;
 	
 	public Game(IBoardRenderer board)
@@ -92,15 +96,18 @@ public class Game {
 		entityManager = new EntityManager();
 		
 		try {
-			map = MazeFactory.BuildMaze(entityManager);			
+			map = MazeFactory.BuildMaze(entityManager);	
+		
 		} catch (Exception e) {
 			LOGGER.log(Level.SEVERE, e.getMessage());
 		}
 		
 		buildMaze();
 		createMovableEntities();
+		board.drawHeaderAndFooter();
 		initSystems();
 		initLives();
+	    initLevel();
 		highScore = new HighScoreReposity();
 	}
 	
@@ -109,6 +116,9 @@ public class Game {
 		life = (LifeComponent) entityManager.getComponentOfClass(LifeComponent.class.getName(), pacman);
 		lives = life.getLives();
 		board.initLives(lives);
+	}
+	private void initLevel() {
+		board.refreshlevel(level);
 	}
 	
 	private void buildMaze() {
@@ -121,6 +131,76 @@ public class Game {
 		}	
 		
 		board.drawMaze(sprites);
+	}
+	private void removeallsprites() {
+		List<Sprite> sprites = new ArrayList<Sprite>();
+		List<Entity> entities = entityManager.getAllEntitiesPosessingComponentOfClass(GraphicsComponent.class.getName());
+		for (Entity entity : entities) {
+			GraphicsComponent graphic = (GraphicsComponent) entityManager.getComponentOfClass(GraphicsComponent.class.getName(), entity);
+			sprites.add(graphic.getSprite());	
+		}
+		board.Removesprites(sprites);
+		sprites.clear();
+	}
+	private void removeallspritesMoving() {
+		List<Sprite> sprites = new ArrayList<Sprite>();
+		List<Entity> entities = entityManager.getAllEntitiesPosessingComponentOfClass(MoveComponent.class.getName());
+		for (Entity entity : entities) {
+			GraphicsComponent graphic = (GraphicsComponent) entityManager.getComponentOfClass(GraphicsComponent.class.getName(), entity);
+			sprites.add(graphic.getSprite());	
+		}
+		board.Removesprites(sprites);
+	    sprites.clear();
+	}
+	private void AddAllspritesMoving() {
+		List<Sprite> sprites = new ArrayList<Sprite>();
+		List<Entity> entities = entityManager.getAllEntitiesPosessingComponentOfClass(MoveComponent.class.getName());
+		for (Entity entity : entities) {
+			GraphicsComponent graphic = (GraphicsComponent) entityManager.getComponentOfClass(GraphicsComponent.class.getName(), entity);
+			sprites.add(graphic.getSprite());	
+		}
+		board.addSpritesMoving(sprites);
+	    
+	}
+
+	public void NextLevel() {
+		List<Entity> entities = entityManager.getAllEntitiesPosessingComponentOfClass(GraphicsComponent.class.getName());
+		
+		for (Entity entity : entities) {
+			PhysicsComponent physic = (PhysicsComponent) entityManager
+					.getComponentOfClass(PhysicsComponent.class.getName(), entity);
+			GraphicsComponent graphic = (GraphicsComponent) entityManager
+					.getComponentOfClass(GraphicsComponent.class.getName(), entity);
+			MoveComponent move = (MoveComponent) entityManager.getComponentOfClass(MoveComponent.class.getName(),
+					entity);
+			AudioComponent audio = (AudioComponent) entityManager.getComponentOfClass(AudioComponent.class.getName(),
+					entity);
+			ScoreComponent scores = (ScoreComponent) entityManager.getComponentOfClass(ScoreComponent.class.getName(),
+					entity);
+			LifeComponent life = (LifeComponent) entityManager.getComponentOfClass(LifeComponent.class.getName(),
+					entity);
+			UserInputComponent user = (UserInputComponent) entityManager
+					.getComponentOfClass(UserInputComponent.class.getName(), entity);
+			if (graphic != null && physic != null && move == null && audio == null && scores == null && life == null && user == null) {
+				return;
+			}
+		}
+		
+      if(!board.isLevelPassed()) {
+		board.refreshlevel(++level);
+		board.setLevelPassed(false);
+		removeallsprites();
+		try {
+			map = MazeFactory.BuildMaze(entityManager);
+
+		} catch (Exception e) {
+			LOGGER.log(Level.SEVERE, e.getMessage());
+		}
+		buildMaze();
+		removeallspritesMoving();
+		AddAllspritesMoving();
+	    moveSystem.respawn();		
+      }
 	}
 	
 	private void initSystems() {
@@ -196,7 +276,6 @@ public class Game {
 	
 	private void update() {
 		if(board.isRunning() && isFocused && inView) {
-
 			userInputSystem.update();
 			moveSystem.update();
 			aiSystem.update();
@@ -209,8 +288,16 @@ public class Game {
 	private void render() {
 		ScoreComponent score = (ScoreComponent) entityManager.getComponentOfClass(ScoreComponent.class.getName(), pacman);
 		renderLives();
+		NextLevel();
 		if (score != null) {
 			board.refreshScore(score.getScore());
+			if (score.getScore() >= 10000 && !board.getBonusIsAdded()) {
+				life.addLife();
+				lives = life.getLives();
+				board.addBonusLife();
+			}
+			}
+		if(!isFocused||!inView ) { // || !board.isRunning() enlever car cr�er le bug GAMEUOVER
 		}
 		if(life.getLives() == 0) {
 			gameOver = true;

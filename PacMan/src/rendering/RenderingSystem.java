@@ -62,7 +62,6 @@ public class RenderingSystem extends Application {
 			scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> handleOnKeyPressed(event.getCode()));
 			
 			primaryStage.setScene(scene);
-			
 			primaryStage.setFullScreenExitHint("");
 			primaryStage.setResizable(false);
 			primaryStage.show();

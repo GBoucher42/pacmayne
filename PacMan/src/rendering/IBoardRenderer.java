@@ -31,5 +31,21 @@ public interface IBoardRenderer {
 	void dispose();
 	
 	void refreshFps(int fps);
+
+	void drawHeaderAndFooter();
+
+	void refreshlevel(int level);
+
+	boolean getBonusIsAdded();
+
+	boolean isLevelPassed();
+
+	void setLevelPassed(boolean levelPassed);
+
+	void addSpritesMoving(List<Sprite> movingSprites);
+
+	void Removesprites(List<Sprite> sprites);
+
+	void addBonusLife();
 }
 

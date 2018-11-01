@@ -15,24 +15,31 @@ public class LivesImages {
 		return nblives;
 	}
 
+	public void setNblives(int nblives) {
+		this.nblives = nblives;
+	}
+
 	public LivesImages(Pane pane, int nblives) {
 		this.hbox = new HBox();
 		this.nblives = nblives;
-
-		livesImages = new ImageView[nblives];
-
-		for (int i = 0; i < nblives; i++) {
+		livesImages= new ImageView[nblives+1];
+		for (int i = 0; i <nblives; i++) {
 			livesImages[i] = new ImageView(imagelife);
 			hbox.getChildren().add(livesImages[i]);
-
 		}
 		pane.getChildren().add(hbox);
 
 	}
-
+    public void addLife() {
+     ++nblives;
+	livesImages[nblives-1] = new ImageView(imagelife);
+	this.hbox.getChildren().add(livesImages[nblives-1]);
+	}
+		
 	public void removeLife() {
-		--nblives;
-		hbox.getChildren().remove(livesImages[nblives]);
+	--nblives;
+	hbox.getChildren().remove(livesImages[nblives]);
+	
 	}
 
 }

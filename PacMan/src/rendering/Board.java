@@ -7,8 +7,11 @@ import static configs.GameConfig.TILE_SIZE;
 import static configs.GameConfig.SIZE_IMG_LOGO;
 
 import java.io.File;
+import java.lang.invoke.VolatileCallSite;
+import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import entities.Entity;
 import entities.LivesImages;
@@ -39,31 +42,56 @@ public class Board extends BorderPane implements IBoardRenderer{
 	private char[] gameOver = {'g', 'a', 'm', 'e', ' ', 'o','v','e','r'};
 	private char[] textFps = {'f', 'p', 's'};
 	private ArrayList<Sprite> spritesfps;
+	private char[] textLevel = {'l', 'e', 'v', 'e', 'l'};
+	private ArrayList<Sprite> spritesLevel;
 	private ArrayList<Sprite> spritesGameOver;
 	private ArrayList<Sprite> spritesTextScore;
 	private ArrayList<Sprite> spritesNumScore;
 	private LivesImages imagelives;
 	private boolean isPaused = false;
-	
+	private boolean  BonusIsAdded= false;
+	private boolean LevelPassed = false;
+
 	public Board()
 	{	
 		pane.setStyle("-fx-background-color: black;");	
-		spritesPause = createWords(pause, 11*TILE_SIZE + TILE_SIZE/2, 17*TILE_SIZE, pane);
 		spritesfps = createWords(textFps, 10, 48, paneHeader);
-		hideSprites(spritesPause);
-
+		spritesLevel = createWords(textLevel,170, 0 ,  paneFooter );
 	}	
 
 	public void drawMaze(List<Sprite> sprites) 
-	{	
-		this.setCenter(pane);		
-		pane.getChildren().addAll(sprites);
+	{
+		pane.getChildren().clear();
+	    if(pane.getChildren().isEmpty()) {
+		this.setCenter(pane);
+		spritesPause = createWords(pause, 11*TILE_SIZE + TILE_SIZE/2, 17*TILE_SIZE, pane);
+		hideSprites(spritesPause);
+		pane.getChildren().addAll(sprites);	
+		}
+		
+	}
+	public void drawHeaderAndFooter() {
 		footer();
-		header();
+		header();	
 	}
 	
 	public void dispose() {
 		this.getChildren().clear();
+	}
+	public void Removesprites(List<Sprite> sprites) {
+		pane.getChildren().removeAll(sprites);
+	}
+	
+	public void RemovespritesMoving(List<Sprite> movingSprites){   
+	  if(!pane.getChildren().isEmpty()){
+       pane.getChildren().removeAll(movingSprites);
+	}
+	}
+	@Override
+	public void addSpritesMoving (List<Sprite> movingSprites){
+		if(!pane.getChildren().isEmpty()){
+		       pane.getChildren().addAll(movingSprites);
+			}
 	}
 	
 	private void header() {
@@ -172,19 +200,28 @@ public class Board extends BorderPane implements IBoardRenderer{
 	public void initLives(int lives) {
 		this.life = lives;
 		imagelives = new LivesImages(livePane, this.life);
+		System.out.println("lives :"+lives);
 	}
 
 	@Override
 	public void refreshLives(int lives) {
-		if (lives == 0 && isRunning == true) {
-			this.setRunning(false);
-			imagelives.removeLife();
-			spritesGameOver = createWords(gameOver, 9 * TILE_SIZE + TILE_SIZE / 2, 17 * TILE_SIZE, pane);
-			displaySprites(spritesGameOver);
-		} else {
-
-			imagelives.removeLife();
-		}
+	if (lives == 0 && isRunning == true  ) {
+					this.setRunning(false);
+					imagelives.removeLife();
+					spritesGameOver = createWords(gameOver, 9 * TILE_SIZE + TILE_SIZE / 2, 17 * TILE_SIZE, pane);
+					displaySprites(spritesGameOver);
+			 }
+		   else {
+				imagelives.removeLife();
+				 System.out.println("remove");
+			}
+	
+	}
+	@Override
+	public void addBonusLife() {
+		if(!BonusIsAdded)
+		imagelives.addLife();
+        setBonusIsAdded(true);
 	}
 	
 	@Override
@@ -207,5 +244,26 @@ public class Board extends BorderPane implements IBoardRenderer{
 		int []  numFPS =Integer.toString(fps).chars().map(c -> c-'0').toArray();
 		spritesNumScore = CreateScore(numFPS,100,48,paneHeader);
 		
+	}
+	@Override
+	public void refreshlevel(int level) {
+		int []  numLevel =Integer.toString(level).chars().map(c -> c-'0').toArray();
+		spritesNumScore=CreateScore(numLevel,280,0, ScorePane);
+	}
+	@Override
+	public boolean getBonusIsAdded() {
+		return BonusIsAdded;
+	}
+	public void setBonusIsAdded(boolean bonusIsAdded) {
+		BonusIsAdded = bonusIsAdded;
+	}
+		
+	@Override 
+	public boolean isLevelPassed() {
+		return LevelPassed;
+	}
+   @Override
+	public void setLevelPassed(boolean levelPassed) {
+		LevelPassed = levelPassed;
 	}
 }
