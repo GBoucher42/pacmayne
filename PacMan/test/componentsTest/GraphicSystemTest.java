@@ -2,14 +2,13 @@ package componentsTest;
 
 import static java.time.Duration.ofMillis;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTimeout;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -18,14 +17,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
-import components.AudioComponent;
 import components.GraphicsComponent;
-import components.PhysicsComponent;
 import entities.Direction;
 import entities.Entity;
 import entities.EntityManager;
 import factories.EntityFactory;
-import systemThreads.GameAudioSystem;
 import systemThreads.GraphicsSystem;
 import systemThreads.MessageEnum;
 import systemThreads.MessageQueue;
@@ -33,6 +29,7 @@ import systemThreads.MessageQueue;
 @TestInstance(Lifecycle.PER_CLASS)
 public class GraphicSystemTest {
 	
+	private static Logger logger = Logger.getAnonymousLogger();
 	private GraphicsSystem graphicsSystem;
 	private EntityManager entityManager;
 	private EntityFactory factory;
@@ -73,7 +70,7 @@ public class GraphicSystemTest {
 				tGraphicsSystem.join(1500);
 				actualStop = !tGraphicsSystem.isAlive(); //check if thread is dead
 			} catch (Exception e) {
-				e.printStackTrace();
+				logger.log(Level.SEVERE, e.getMessage());
 			}
 			assertEquals("thread not stopped" , expectedStop, actualStop);
 		}

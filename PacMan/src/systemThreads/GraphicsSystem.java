@@ -1,6 +1,8 @@
 package systemThreads;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import components.GraphicsComponent;
 import components.MoveComponent;
@@ -10,6 +12,7 @@ import entities.SpritesEnum;
 
 public class GraphicsSystem extends SystemBase implements Runnable{
 	
+	private static Logger logger = Logger.getAnonymousLogger();
 	private Entity pacman;
 	private volatile boolean isRunning = true;
 	private int counter = 0;
@@ -68,7 +71,8 @@ public class GraphicsSystem extends SystemBase implements Runnable{
 			try {
 				Thread.sleep(33);
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				logger.log(Level.SEVERE, e.getMessage());
+				Thread.currentThread().interrupt();
 			}
 		}
 		System.out.println("Stop graphic Thread!");	

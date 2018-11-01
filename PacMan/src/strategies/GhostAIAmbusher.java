@@ -1,7 +1,6 @@
 package strategies;
 
 import entities.Direction;
-import entities.Entity;
 import entities.Strategy;
 import systemThreads.MessageEnum;
 

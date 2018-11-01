@@ -3,14 +3,12 @@ package rendering;
 import static configs.GameConfig.GAME_WIDTH;
 import static configs.GameConfig.HEIGTH_FOOTER;
 import static configs.GameConfig.HEIGTH_HEADER;
-import static configs.GameConfig.TILE_SIZE;
 import static configs.GameConfig.SIZE_IMG_LOGO;
+import static configs.GameConfig.TILE_SIZE;
 
-import java.io.File;
-import java.lang.invoke.VolatileCallSite;
-import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import entities.Entity;
@@ -20,11 +18,10 @@ import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;;
+import javafx.scene.layout.Pane;;
 
 public class Board extends BorderPane implements IBoardRenderer{
+	private static Logger logger = Logger.getAnonymousLogger();
 	private boolean isRunning = true;
 	private FontRepository fontRepository = new FontRepository();
 	@FXML private ImageView imglogo ;
@@ -159,7 +156,7 @@ public class Board extends BorderPane implements IBoardRenderer{
 				sprites.add(num);
 				myPane.getChildren().add(num);
 			} catch (Exception e) {
-				e.printStackTrace();
+				logger.log(Level.SEVERE, e.getMessage());
 			}
 		}
 		return sprites;
@@ -178,7 +175,7 @@ public class Board extends BorderPane implements IBoardRenderer{
 					x += TILE_SIZE;
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				logger.log(Level.SEVERE, e.getMessage());
 			}
 		}
 		return sprites;

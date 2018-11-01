@@ -22,7 +22,6 @@ import components.LifeComponent;
 import components.MoveComponent;
 import components.PhysicsComponent;
 import components.ScoreComponent;
-import configs.HighScoreReposity;
 import components.UserInputComponent;
 import configs.HighScoreReposity;
 import entities.Direction;
@@ -33,7 +32,6 @@ import entities.Score;
 import factories.EntityFactory;
 import factories.MazeFactory;
 import javafx.animation.AnimationTimer;
-import rendering.Board;
 import rendering.IBoardRenderer;
 import rendering.Sprite;
 import strategies.GhostAIAmbusher;
@@ -297,13 +295,13 @@ public class Game {
 				board.addBonusLife();
 			}
 			}
-		if(!isFocused||!inView ) { // || !board.isRunning() enlever car cr�er le bug GAMEUOVER
+		if(!isFocused||!inView ) { 
 		}
 		if(life.getLives() == 0) {
 			gameOver = true;
-			topScore = score.getScore();
+			topScore = score != null ? score.getScore() : 0;
 		}
-		if(!isFocused || !inView) { // || !board.isRunning() enlever car cr�er le bug GAMEUOVER
+		if(!isFocused || !inView) { 
 			board.displayPause();
 		} else {
 			board.hidePause();
@@ -340,7 +338,10 @@ public class Game {
 				graphicThread.interrupt();
 			}
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, e.getMessage());
+			physicsThread.interrupt();
+			audioThread.interrupt();
+			graphicThread.interrupt();
 		}
 		
 	}
@@ -376,10 +377,6 @@ public class Game {
 
 	public boolean isGameOver() {
 		return gameOver;
-	}
-
-	public void pauseGame() {
-		
 	}
 	
 	public void setTopScore(String name) {

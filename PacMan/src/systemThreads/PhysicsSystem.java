@@ -1,6 +1,8 @@
 package systemThreads;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import components.AudioComponent;
 import components.GraphicsComponent;
@@ -14,6 +16,8 @@ import entities.EntityManager;
 import entities.SpritesEnum;
 
 public class PhysicsSystem extends SystemBase implements Runnable {
+	
+	private static Logger logger = Logger.getAnonymousLogger();
 	private Entity pacman;
 	private Entity inky;
 	private Entity blinky;
@@ -93,7 +97,8 @@ public class PhysicsSystem extends SystemBase implements Runnable {
 			try {
 				Thread.sleep(33);
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				logger.log(Level.SEVERE, e.getMessage());
+				Thread.currentThread().interrupt();
 			}
 		}
 		System.out.println("Stop Physics Thread!");	

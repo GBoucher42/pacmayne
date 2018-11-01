@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Timer;
 
 import components.LifeComponent;
-import components.ScoreComponent;
 import entities.Entity;
 import entities.EntityManager;
 import utils.SyncTimerTask;

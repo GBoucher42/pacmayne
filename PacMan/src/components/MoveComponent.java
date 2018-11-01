@@ -1,17 +1,22 @@
 package components;
 
-import entities.Direction;
-import static configs.GameConfig.TILE_SIZE;
-import static configs.GameConfig.GAME_TILE_WIDTH_COUNT;
 import static configs.GameConfig.GAME_TILE_HEIGHT_COUNT;
+import static configs.GameConfig.GAME_TILE_WIDTH_COUNT;
+import static configs.GameConfig.TILE_SIZE;
+
+import entities.Direction;
 
 public class MoveComponent implements IComponent {
-	private int tileX, tileY;
-	private final int spawnX, spawnY;
-	private double x, y;
-	private Direction direction, awaitingDirection;
+	private int tileX;
+	private int tileY;
+	private final int spawnX;
+	private final int spawnY;
+	private double x;
+	private double y;
+	private Direction direction;
+	private Direction awaitingDirection;
 	private final Direction spawnDirection;
-	private double moveIncrementer = TILE_SIZE/5;
+	private double moveIncrementer = TILE_SIZE / 5.0;
 	private double awaitingSpeed = 0;
 	private boolean canTurn = false;
 	private boolean inTunnel = false;
@@ -47,8 +52,8 @@ public class MoveComponent implements IComponent {
 	public void resetPosition() {
 		tileX = spawnX;
 		tileY = spawnY;
-		x = spawnX * TILE_SIZE;
-		y = spawnY * TILE_SIZE;
+		x = (double) spawnX * TILE_SIZE;
+		y = (double) spawnY * TILE_SIZE;
 		direction = spawnDirection;
 		awaitingDirection = Direction.NONE;
 	}
@@ -62,7 +67,7 @@ public class MoveComponent implements IComponent {
 			break;
 		case LEFT:
 			tileX = GAME_TILE_WIDTH_COUNT;
-			x = GAME_TILE_WIDTH_COUNT * TILE_SIZE;
+			x = (double) GAME_TILE_WIDTH_COUNT * TILE_SIZE;
 			break;
 		case RIGHT:
 			x = 0;
@@ -70,7 +75,7 @@ public class MoveComponent implements IComponent {
 			break;
 		case UP:
 			tileY = GAME_TILE_HEIGHT_COUNT;
-			y = GAME_TILE_HEIGHT_COUNT * TILE_SIZE;
+			y = (double) GAME_TILE_HEIGHT_COUNT * TILE_SIZE;
 			break;
 		default:
 			break;
@@ -232,7 +237,7 @@ public class MoveComponent implements IComponent {
 	}
 	
 	public void setIsFast(boolean isFast) {
-		awaitingSpeed = isFast ? TILE_SIZE/4 : TILE_SIZE/5;
+		awaitingSpeed = isFast ? TILE_SIZE / 4.0 : TILE_SIZE / 5.0;
 	}
 	
 }

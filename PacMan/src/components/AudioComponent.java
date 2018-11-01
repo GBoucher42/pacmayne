@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -11,15 +13,15 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineEvent.Type;
-
-import systemThreads.MessageEnum;
-
 import javax.sound.sampled.LineListener;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+import systemThreads.MessageEnum;
+
 public class AudioComponent implements IComponent{
 	
+	private static Logger logger = Logger.getAnonymousLogger();
 	private final Map<MessageEnum, AudioInputStream> soundMap;
 	private Clip clipWaka;
 	private Clip clipInvincible;
@@ -71,11 +73,11 @@ public class AudioComponent implements IComponent{
 				}
 			});
 		} catch (LineUnavailableException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getMessage());
 		} catch (UnsupportedAudioFileException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getMessage());;
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getMessage());
 		}
 	}
 
