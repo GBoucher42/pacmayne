@@ -78,16 +78,11 @@ public class Game {
 	private LifeComponent life;
 	private int frameCounter = 0;
 	int level=1;
-	private int frameCounter = 0;
 	private volatile boolean isRunning = true;
 	private Score finalScore;
 	private HighScoreReposity highScore;
 	private int topScore = 0;
 	private boolean gameOver = false;
-	
-	private Score finalScore;
-	private HighScoreReposity highScore;
-	private int topScore = 0;
 	Maze map;
 	
 	public Game(IBoardRenderer board)
@@ -291,7 +286,7 @@ public class Game {
 	}
 	
 	private void render() {
-		 score = (ScoreComponent) entityManager.getComponentOfClass(ScoreComponent.class.getName(), pacman);
+		ScoreComponent score = (ScoreComponent) entityManager.getComponentOfClass(ScoreComponent.class.getName(), pacman);
 		renderLives();
 		NextLevel();
 		if (score != null) {

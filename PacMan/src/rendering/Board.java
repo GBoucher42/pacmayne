@@ -37,9 +37,7 @@ public class Board extends BorderPane implements IBoardRenderer{
 	private char[] pause = {'p', 'a', 'u', 's', 'e'};
 	private ArrayList<Sprite> spritesPause;
 	private ArrayList<Sprite> spritesScore;
-	private ArrayList<Sprite> spritesfps;
 	private Entity pacman;
-	private char[] textFps = {'f', 'p', 's'};
 	private char[] textScore = {'s', 'c', 'o', 'r', 'e'};
 	private char[] gameOver = {'g', 'a', 'm', 'e', ' ', 'o','v','e','r'};
 	private char[] textFps = {'f', 'p', 's'};
@@ -258,8 +256,9 @@ public class Board extends BorderPane implements IBoardRenderer{
 		return BonusIsAdded;
 	}
 	public void setBonusIsAdded(boolean bonusIsAdded) {
-	}
 		BonusIsAdded = bonusIsAdded;
+	}
+		
 	@Override 
 	public boolean isLevelPassed() {
 		return LevelPassed;
