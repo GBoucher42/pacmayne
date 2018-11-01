@@ -291,7 +291,7 @@ public class Game {
 		NextLevel();
 		if (score != null) {
 			board.refreshScore(score.getScore());
-			if (score.getScore() == 10000 && !board.getBonusIsAdded()) {
+			if (score.getScore() >= 10000 && !board.getBonusIsAdded()) {
 				life.addLife();
 				lives = life.getLives();
 				board.addBonusLife();

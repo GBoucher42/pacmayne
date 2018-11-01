@@ -221,7 +221,6 @@ public class Board extends BorderPane implements IBoardRenderer{
 	public void addBonusLife() {
 		if(!BonusIsAdded)
 		imagelives.addLife();
-		System.out.println("add");
         setBonusIsAdded(true);
 	}
 	
