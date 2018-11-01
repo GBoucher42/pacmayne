@@ -26,8 +26,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import scenes.NameMenu;
 import scenes.VerticalMenu;
 import states.ControlMenuState;
+import states.HighScoreNameState;
 import states.HighScoresMenuState;
 import states.InPlayGameState;
 import states.MainMenuGameState;
@@ -42,6 +44,9 @@ public class RenderingSystem extends Application {
 
 	private Game gameInstance = null;
 	private Board board = null;
+	private String[] letters = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N",
+			"O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
+	private int firstIndex = 0;
 
 	private HighScoreReposity highScoreReposity = new HighScoreReposity();
 	private ArrayList<Score> highScores = new ArrayList<>();
@@ -138,6 +143,19 @@ public class RenderingSystem extends Application {
 		VerticalMenu highScoreMenu = new VerticalMenu(500, 500);
 		
 		VerticalMenu mainMenu = new VerticalMenu(500, 500);
+		
+		NameMenu nameMenu = new NameMenu(500, 500);
+		
+		nameMenu.addMenuItem("A", () -> {});
+		nameMenu.addMenuItem("A", () -> {});
+		nameMenu.addMenuItem("A", () -> {});
+		nameMenu.addMenuItem("ENTER", () -> {
+			StateManager.setCurrentState(new MainMenuGameState(mainMenu));
+			primaryStage.getScene().setRoot(sceneRoots.get(MainMenuGameState.class.getName()));
+			gameInstance.setTopScore(nameMenu.getName());
+			gameInstance.stopGame();
+		});
+		
 
 		VerticalMenu quitMenu = new VerticalMenu(500, 500);
 		quitMenu.addMenuItem("DO YOU WANT TO QUIT?", () -> {});
@@ -151,13 +169,20 @@ public class RenderingSystem extends Application {
 			primaryStage.getScene().setRoot(sceneRoots.get(InPlayGameState.class.getName()));
 		});
 		
-		mainMenu.addMenuItem("PLAY", () -> {			
-			StateManager.setCurrentState(new InPlayGameState(startGame(primaryStage), () -> {
-				StateManager.setCurrentState(new QuitMenuGameState(quitMenu));
-				primaryStage.getScene().setRoot(sceneRoots.get(QuitMenuGameState.class.getName()));
-			}));
-			primaryStage.getScene().setRoot(sceneRoots.get(InPlayGameState.class.getName()));
-		});
+		mainMenu.addMenuItem("PLAY", () -> {	
+			Game myGame = startGame(primaryStage);
+			StateManager.setCurrentState(new InPlayGameState(myGame, () -> {
+				if(!myGame.isGameOver()) {
+					StateManager.setCurrentState(new QuitMenuGameState(quitMenu));
+					primaryStage.getScene().setRoot(sceneRoots.get(QuitMenuGameState.class.getName()));
+				} else {
+					StateManager.setCurrentState(new HighScoreNameState(nameMenu));
+					primaryStage.getScene().setRoot(sceneRoots.get(HighScoreNameState.class.getName()));
+				}
+					
+				}));
+				primaryStage.getScene().setRoot(sceneRoots.get(InPlayGameState.class.getName()));
+			});
 		mainMenu.addMenuItem("CONTROLS", () -> {StateManager.setCurrentState(new ControlMenuState(controlMenu));
 			primaryStage.getScene().setRoot(sceneRoots.get(ControlMenuState.class.getName()));});
 		mainMenu.addMenuItem("HIGH SCORES", () -> {
@@ -175,6 +200,7 @@ public class RenderingSystem extends Application {
 		sceneRoots.put(MainMenuGameState.class.getName(), mainMenu.getContent());
 		sceneRoots.put(ControlMenuState.class.getName(), controlMenu.getContent());
 		sceneRoots.put(HighScoresMenuState.class.getName(), highScoreMenu.getContent());
+		sceneRoots.put(HighScoreNameState.class.getName(), nameMenu.getContent());
 		sceneRoots.put(QuitMenuGameState.class.getName(), quitMenu.getContent());
 		StateManager.setCurrentState(new MainMenuGameState(mainMenu));
 		

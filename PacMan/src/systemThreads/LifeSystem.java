@@ -24,7 +24,6 @@ public class LifeSystem extends SystemBase {
 			
 			if (message != null) {
 				death(life);
-
 				
 			}	
 		}

@@ -42,6 +42,8 @@ public class Board extends BorderPane implements IBoardRenderer{
 	private char[] textFps = {'f', 'p', 's'};
 	private char[] textScore = {'s', 'c', 'o', 'r', 'e'};
 	private char[] gameOver = {'g', 'a', 'm', 'e', ' ', 'o','v','e','r'};
+	private char[] textFps = {'f', 'p', 's'};
+	private ArrayList<Sprite> spritesfps;
 	private char[] textLevel = {'l', 'e', 'v', 'e', 'l'};
 	private ArrayList<Sprite> spritesLevel;
 	private ArrayList<Sprite> spritesGameOver;
@@ -244,24 +246,20 @@ public class Board extends BorderPane implements IBoardRenderer{
 	public void refreshFps(int fps) {
 		int []  numFPS =Integer.toString(fps).chars().map(c -> c-'0').toArray();
 		spritesNumScore = CreateScore(numFPS,100,48,paneHeader);
-	}
 		
+	}
 	@Override
 	public void refreshlevel(int level) {
 		int []  numLevel =Integer.toString(level).chars().map(c -> c-'0').toArray();
 		spritesNumScore=CreateScore(numLevel,280,0, ScorePane);
-		
 	}
-	
-
 	@Override
 	public boolean getBonusIsAdded() {
 		return BonusIsAdded;
 	}
-
 	public void setBonusIsAdded(boolean bonusIsAdded) {
-		BonusIsAdded = bonusIsAdded;
 	}
+		BonusIsAdded = bonusIsAdded;
 	@Override 
 	public boolean isLevelPassed() {
 		return LevelPassed;
@@ -270,6 +268,4 @@ public class Board extends BorderPane implements IBoardRenderer{
 	public void setLevelPassed(boolean levelPassed) {
 		LevelPassed = levelPassed;
 	}
-
-
 }

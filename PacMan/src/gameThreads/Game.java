@@ -22,6 +22,7 @@ import components.LifeComponent;
 import components.MoveComponent;
 import components.PhysicsComponent;
 import components.ScoreComponent;
+import configs.HighScoreReposity;
 import components.UserInputComponent;
 import configs.HighScoreReposity;
 import entities.Direction;
@@ -75,10 +76,15 @@ public class Game {
 	private Thread graphicThread;
 	private int lives;
 	private LifeComponent life;
-    private  ScoreComponent score ;
+	private int frameCounter = 0;
 	int level=1;
 	private int frameCounter = 0;
 	private volatile boolean isRunning = true;
+	private Score finalScore;
+	private HighScoreReposity highScore;
+	private int topScore = 0;
+	private boolean gameOver = false;
+	
 	private Score finalScore;
 	private HighScoreReposity highScore;
 	private int topScore = 0;
@@ -108,8 +114,8 @@ public class Game {
 		initLives();
 	    initLevel();
 		highScore = new HighScoreReposity();
-		
 	}
+	
 	
 	private void initLives() {
 		life = (LifeComponent) entityManager.getComponentOfClass(LifeComponent.class.getName(), pacman);
@@ -252,7 +258,6 @@ public class Game {
         {
 			long lastUpdate = System.nanoTime();
 			long firstTime = lastUpdate;
-
             public void handle(long now)
             { 
     			if(!isRunning) {
@@ -265,7 +270,6 @@ public class Game {
             		update();  
             		render();
             	}
-            	
             	if((now - firstTime) >= 1000000000) {
             		board.refreshFps(frameCounter);
             		frameCounter = 0;
@@ -298,12 +302,13 @@ public class Game {
 				board.addBonusLife();
 			}
 			}
-		if(!isFocused||!inView ) { // || !board.isRunning() enlever car créer le bug GAMEUOVER
+		if(!isFocused||!inView ) { // || !board.isRunning() enlever car crï¿½er le bug GAMEUOVER
 		}
 		if(life.getLives() == 0) {
+			gameOver = true;
 			topScore = score.getScore();
 		}
-		if(!isFocused || !inView) { // || !board.isRunning() enlever car créer le bug GAMEUOVER
+		if(!isFocused || !inView) { // || !board.isRunning() enlever car crï¿½er le bug GAMEUOVER
 			board.displayPause();
 		} else {
 			board.hidePause();
@@ -311,9 +316,7 @@ public class Game {
 	}
 	
 	private void renderLives() {
-		
-		
-		if(life.getLives()!=lives ) {
+		if(life.getLives() != lives) {
 			lives = life.getLives();
 			board.refreshLives(life.getLives());
 			if (life.getLives() > 0) {
@@ -365,15 +368,27 @@ public class Game {
 	
 	public void stopGame() {
 		isRunning = false;
+		gameOver = true;
 		stopThreads();
 		entityManager.dispose();
 		board.dispose();
-		finalScore = new Score(topScore, "FLO"); 
-		highScore.replaceHighScore(finalScore);
+		
 	}
 	
+	public HighScoreReposity getHighScore() {
+		return highScore;
+	}
+
+	public boolean isGameOver() {
+		return gameOver;
+	}
+
 	public void pauseGame() {
 		
 	}
 	
+	public void setTopScore(String name) {
+		finalScore = new Score(topScore, name); 
+		highScore.replaceHighScore(finalScore);
+	}
 }
