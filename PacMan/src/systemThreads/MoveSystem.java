@@ -3,7 +3,6 @@ package systemThreads;
 import java.util.List;
 
 import components.AIComponent;
-
 import components.GraphicsComponent;
 import components.MoveComponent;
 import entities.CollisionType;

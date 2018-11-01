@@ -1,9 +1,10 @@
 package components;
 
-import entities.Direction;
-import static configs.GameConfig.TILE_SIZE;
-import static configs.GameConfig.GAME_TILE_WIDTH_COUNT;
 import static configs.GameConfig.GAME_TILE_HEIGHT_COUNT;
+import static configs.GameConfig.GAME_TILE_WIDTH_COUNT;
+import static configs.GameConfig.TILE_SIZE;
+
+import entities.Direction;
 
 public class MoveComponent implements IComponent {
 	private int tileX;

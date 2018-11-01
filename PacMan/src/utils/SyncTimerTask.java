@@ -2,10 +2,6 @@ package utils;
 
 import java.util.TimerTask;
 
-import components.AudioComponent;
-import systemThreads.MessageEnum;
-import systemThreads.MessageQueue;
-
 public class SyncTimerTask extends TimerTask {
 	
 	private boolean hasStarted = false;

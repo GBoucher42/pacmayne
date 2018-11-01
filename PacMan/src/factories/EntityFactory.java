@@ -1,11 +1,5 @@
 package factories;
 
-import entities.Direction;
-import entities.Entity;
-import entities.EntityManager;
-import entities.SpritesEnum;
-import entities.Strategy;
-
 import static configs.GameConfig.TILE_SIZE;
 
 import java.util.HashMap;
@@ -20,8 +14,11 @@ import components.MoveComponent;
 import components.PhysicsComponent;
 import components.ScoreComponent;
 import components.UserInputComponent;
+import entities.Direction;
+import entities.Entity;
+import entities.EntityManager;
+import entities.SpritesEnum;
 import image.ImageRepository;
-import strategies.GhostAIRandom;
 import strategies.GhostAIStrategy;
 import systemThreads.MessageEnum;
 

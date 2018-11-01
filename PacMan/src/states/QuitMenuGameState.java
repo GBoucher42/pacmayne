@@ -1,7 +1,6 @@
 package states;
 
 import javafx.scene.input.KeyCode;
-
 import scenes.VerticalMenu;
 
 //DESIGN PATTERN : State

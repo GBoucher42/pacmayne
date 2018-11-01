@@ -4,7 +4,6 @@ import components.UserInputComponent;
 import entities.Entity;
 import gameThreads.Game;
 import javafx.scene.input.KeyCode;
-import scenes.VerticalMenu;
 import systemThreads.MessageEnum;
 import systemThreads.MessageQueue;
 

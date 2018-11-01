@@ -1,11 +1,7 @@
 package states;
 
-import components.UserInputComponent;
 import javafx.scene.input.KeyCode;
 import scenes.NameMenu;
-import scenes.VerticalMenu;
-import systemThreads.MessageEnum;
-import systemThreads.MessageQueue;
 
 public class HighScoreNameState implements IState {
 
